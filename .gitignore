@@ -9,7 +9,10 @@ __pycache__/
 *.db-wal
 *.db-shm
 
-# Workspace dev
+# Logs
+*.log
+
+# Temp/dev files
 .openclaw/
 .openclaw-attachments/
 .openclaw/tmp/

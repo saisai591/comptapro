@@ -25,7 +25,7 @@ logger = logging.getLogger("compta")
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from comptable.db import init_db, get_db
+from comptable.db import init_db, get_db, DB_PATH
 from comptable.exercices import creer_exercice, lister_exercices, exercice_actif
 from comptable.ecritures import saisir_ecriture, ecritures_journal, JOURNAUX
 from comptable.balance import balance_generale, compte_resultat, bilan_synthetique
@@ -722,6 +722,30 @@ class ComptaHandler(SimpleHTTPRequestHandler):
             if ex_id is None:
                 return
             return self._json(suggerer_regles(ex_id))
+
+        # Multi-societe
+        if path == "/api/societes":
+            import glob as _glob
+            data_dir = os.environ.get("COMPTAPRO_DATA_DIR", os.path.dirname(DB_PATH))
+            dbs = sorted(set(os.path.basename(d) for d in _glob.glob(os.path.join(data_dir, "*.db"))))
+            return self._json({"current": os.path.basename(DB_PATH), "available": dbs})
+        if path == "/api/societes/switch" and "db" in qs:
+            new_db = qs["db"][0]
+            if ".." in new_db or "/" in new_db or "\\" in new_db:
+                return self._json({"error": "Nom de base invalide"}, 400)
+            import comptable.db as _dbmod
+            data_dir = os.environ.get("COMPTAPRO_DATA_DIR", os.path.dirname(_dbmod.DB_PATH))
+            full_path = os.path.join(data_dir, new_db)
+            if not os.path.exists(full_path):
+                old = _dbmod.DB_PATH
+                try:
+                    _dbmod.DB_PATH = full_path
+                    _dbmod.init_db()
+                finally:
+                    _dbmod.DB_PATH = old
+            _dbmod.DB_PATH = full_path
+            _dbmod.init_db()
+            return self._json({"success": True, "db": new_db, "path": full_path})
 
         # Fichiers statiques
         if path == "/" or path == "":
@@ -1510,7 +1534,7 @@ def main():
 
     init_db()
     server = ThreadingHTTPServer(("0.0.0.0", args.port), ComptaHandler)
-    print(f"Agent comptable → http://localhost:{args.port}")
+    print(f"Agent comptable -> http://localhost:{args.port}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

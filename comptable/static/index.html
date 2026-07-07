@@ -123,6 +123,46 @@ tr:hover td{background:#f9fafb}
 .rapproche-panel{display:flex;gap:16px}
 .rapproche-panel>div{flex:1}
 
+/* ── DARK MODE ── */
+[data-theme="dark"] body{--bg:#0f1117;--card:#1a1d27;--dark:#e5e7eb;--text:#e5e7eb;--muted:#9ca3af;--border:#2d3143;--shadow:0 1px 3px rgba(0,0,0,.3);background:var(--bg)}
+[data-theme="dark"] #sidebar{background:#0c0e14}
+[data-theme="dark"] #sidebar nav a{color:rgba(255,255,255,.5)}
+[data-theme="dark"] #sidebar nav a:hover,[data-theme="dark"] #sidebar nav a.active{color:#fff;background:rgba(255,255,255,.08)}
+[data-theme="dark"] #topbar{background:var(--card);border-color:var(--border)}
+[data-theme="dark"] table tr:hover td{background:rgba(255,255,255,.03)}
+[data-theme="dark"] .total-row td{background:rgba(255,255,255,.05)}
+[data-theme="dark"] input,[data-theme="dark"] select,[data-theme="dark"] textarea{background:#1a1d27;color:#e5e7eb;border-color:#2d3143}
+[data-theme="dark"] input:focus,[data-theme="dark"] select:focus,[data-theme="dark"] textarea:focus{border-color:var(--accent)}
+[data-theme="dark"] .modal{background:var(--card)}
+[data-theme="dark"] .search-dropdown{background:#1a1d27;border-color:var(--border)}
+[data-theme="dark"] .search-dropdown .item:hover,[data-theme="dark"] .search-results div:hover{background:rgba(255,255,255,.05)}
+[data-theme="dark"] .notif-panel{background:#1a1d27;border-color:var(--border)}
+[data-theme="dark"] .notif-panel .item:hover{background:rgba(255,255,255,.05)}
+[data-theme="dark"] .btn-outline{background:transparent}
+[data-theme="dark"] .dash-card{background:var(--card)}
+[data-theme="dark"] .badge-neutral{background:#2d3143;color:#9ca3af}
+[data-theme="dark"] .badge-info{background:rgba(59,130,246,.2);color:#93c5fd}
+[data-theme="dark"] .badge-warning{background:rgba(245,158,11,.2);color:#fbbf24}
+[data-theme="dark"] .badge-success{background:rgba(16,185,129,.2);color:#6ee7b7}
+[data-theme="dark"] .pagination button{background:var(--card);border-color:var(--border);color:var(--text)}
+[data-theme="dark"] .pagination button.active{background:var(--accent);color:#fff}
+[data-theme="dark"] .progress-bar{background:#2d3143}
+
+/* ── KBD SHORTCUTS ── */
+.kbd{display:inline-block;padding:2px 8px;border-radius:4px;background:#e5e7eb;font-family:monospace;font-size:11px;font-weight:600;color:#1a1a2e;border:1px solid #d1d5db;box-shadow:0 1px 0 rgba(0,0,0,.15)}
+[data-theme="dark"] .kbd{background:#2d3143;border-color:#4b5563;color:#e5e7eb}
+.shortcut-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+.shortcut-row:last-child{border-bottom:none}
+.shortcut-row .sc-desc{font-size:13px}
+.shortcut-row .sc-keys{display:flex;gap:4px}
+
+/* ── WIDGET DRAG ── */
+.dash-card.dragging{opacity:.3;transform:scale(.98)}
+.dash-card.drag-over{border:2px dashed var(--accent)}
+.dash-card .grip{cursor:grab;position:absolute;top:8px;right:8px;color:var(--muted);font-size:12px;opacity:0;transition:opacity .15s}
+.dash-card:hover .grip{opacity:1}
+.dash-card{position:relative}
+
 /* ── UTILS ── */
 .panel{display:none}
 .panel.active{display:block}
@@ -241,7 +281,7 @@ tr:hover td{background:#f9fafb}
       <a data-page="recherche" onclick="navigate('recherche')"><span>🔎 Recherche</span></a>
     </div></div>
   </nav>
-  <div class="footer">ComptaPro v1.0</div>
+  <div class="footer" onclick="showSocietes()" style="cursor:pointer" title="Gérer les sociétés">🏢 Société actuelle · ComptaPro v1.0</div>
 </aside>
 
 <!-- ── MAIN ── -->
@@ -258,8 +298,10 @@ tr:hover td{background:#f9fafb}
     <div class="notif-panel" id="notif-panel"></div>
   </div>
     <div class="spacer"></div>
+    <button class="btn btn-ghost btn-sm" onclick="toggleDarkMode()" title="Thème sombre (Ctrl+D)" style="font-size:16px">🌙</button>
     <button class="btn btn-outline btn-sm" onclick="printPage()" title="Imprimer">🖨️</button>
     <button class="btn btn-outline btn-sm" onclick="exportCSV()" title="Export CSV">📥</button>
+    <button class="btn btn-outline btn-sm" onclick="showShortcuts()" title="Raccourcis (?)">⌨️</button>
     <button class="btn btn-outline btn-sm" onclick="showNewExercice()">+ Exercice</button>
   </header>
 
@@ -400,6 +442,14 @@ tr:hover td{background:#f9fafb}
     </div>
   </div>
 </div>
+
+<!-- SHORTCUTS MODAL -->
+<div class="modal-overlay" id="shortcuts-modal"><div class="modal" style="max-width:500px">
+<div class="modal-header"><h3>⌨️ Raccourcis clavier</h3><button class="btn-ghost" onclick="closeModal('shortcuts-modal')" style="font-size:18px">&times;</button></div>
+<div class="modal-body" id="shortcuts-body"></div>
+</div></div>
+
+<!-- MULTI-SOCIETE SWITCHER (sidebar footer) -->
 
 <!-- ── MODAL FACTURE ── -->
 <div class="modal-overlay" id="modal-facture">
@@ -718,6 +768,7 @@ function toast(msg,type='success'){
 
 function openModal(id){document.getElementById(id).classList.add('show')}
 function closeModal(id){document.getElementById(id).classList.remove('show')}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
 async function loadExercices(){
   exercices=await api('/api/exercices');
@@ -2757,6 +2808,117 @@ async function suggererRegles(){
 async function applySuggestions(){
   if(!confirm('Appliquer les suggestions ?'))return;
   try{await api('/api/categories/suggerer/appliquer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});loadRegles();toast('Suggestions appliquées');}catch(e){toast(e.message,'error');}
+}
+
+// ═══════════════ DARK MODE ═══════════════
+function toggleDarkMode(){
+  const t=document.documentElement.getAttribute('data-theme')==='dark'?'':'dark';
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('comptapro-theme',t);
+  updateThemeIcon(t);
+}
+function updateThemeIcon(t){
+  const buttons=document.querySelectorAll('#topbar .btn-ghost');
+  for(const b of buttons){if(b.onclick&&b.onclick.toString().includes('toggleDarkMode')){b.textContent=t==='dark'?'☀️':'🌙';break;}}
+}
+(function(){
+  const saved=localStorage.getItem('comptapro-theme');
+  if(saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme:dark)').matches)){
+    document.documentElement.setAttribute('data-theme','dark');
+    updateThemeIcon('dark');
+  }
+})();
+
+// ═══════════════ SHORTCUTS ═══════════════
+const SHORTCUTS=[
+  {keys:['Ctrl','D'],desc:'Thème sombre/clair'},
+  {keys:['Ctrl','K'],desc:'Recherche globale'},
+  {keys:['Ctrl','N'],desc:'Nouvelle écriture'},
+  {keys:['Ctrl','Enter'],desc:'Sauvegarder (formulaire ouvert)'},
+  {keys:['Ctrl','F'],desc:'Nouvelle facture'},
+  {keys:['Esc'],desc:'Fermer modale / annuler'},
+  {keys:['?'],desc:'Afficher cette liste'},
+  {keys:['1'],desc:'Dashboard'},
+  {keys:['2'],desc:'Factures'},
+  {keys:['3'],desc:'Banque'},
+  {keys:['4'],desc:'Écritures'},
+  {keys:['5'],desc:'Balance'},
+  {keys:['6'],desc:'Résultat'},
+  {keys:['7'],desc:'Bilan'},
+  {keys:['8'],desc:'Export'}
+];
+function showShortcuts(){
+  const el=document.getElementById('shortcuts-body');
+  el.innerHTML=SHORTCUTS.map(s=>`<div class="shortcut-row"><span class="sc-desc">${s.desc}</span><span class="sc-keys">${s.keys.map(k=>`<span class="kbd">${k}</span>`).join('')}</span></div>`).join('');
+  document.getElementById('shortcuts-modal').classList.add('show');
+}
+document.addEventListener('keydown',function(e){
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT'){
+    if(e.key==='Escape')e.target.blur();
+    if(e.key==='Enter'&&e.ctrlKey){const s=document.querySelector('.modal-overlay.show button.btn:not(.btn-ghost)');if(s)s.click();}
+    return;
+  }
+  if(e.key==='?'||e.key==='/'&&!e.ctrlKey){e.preventDefault();showShortcuts();return;}
+  if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleDarkMode();return;}
+  if(e.ctrlKey&&e.key==='k'){e.preventDefault();document.getElementById('search-input').focus();return;}
+  if(e.ctrlKey&&e.key==='n'){e.preventDefault();navigate('ecritures');return;}
+  if(e.ctrlKey&&e.key==='f'){e.preventDefault();navigate('factures');return;}
+  if(!isNaN(e.key)&&e.key!=='0'){e.preventDefault();const pages=['dashboard','factures','banque','ecritures','balance','resultat','bilan','export','parametres'];const i=parseInt(e.key)-1;if(pages[i])navigate(pages[i]);return;}
+  if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.show').forEach(m=>m.classList.remove('show'));return;}
+});
+
+// ═══════════════ DASHBOARD WIDGET DRAG ═══════════════
+let dragFrom=null;
+function initWidgetDrag(){
+  const g=document.querySelector('.dash-grid');
+  if(!g)return setTimeout(initWidgetDrag,500);
+  g.addEventListener('dragstart',e=>{
+    if(!e.target.closest('.dash-card'))return;
+    e.target.closest('.dash-card').classList.add('dragging');
+    dragFrom=e.target.closest('.dash-card');
+  });
+  g.addEventListener('dragend',e=>{
+    if(dragFrom)dragFrom.classList.remove('dragging');
+    document.querySelectorAll('.dash-card.drag-over').forEach(c=>c.classList.remove('drag-over'));
+    dragFrom=null;
+    saveDashboardOrder();
+  });
+  g.addEventListener('dragover',e=>{e.preventDefault();const c=e.target.closest('.dash-card');if(c&&c!==dragFrom){document.querySelectorAll('.dash-card.drag-over').forEach(x=>x.classList.remove('drag-over'));c.classList.add('drag-over');}});
+  g.addEventListener('drop',e=>{e.preventDefault();const t=e.target.closest('.dash-card');if(t&&t!==dragFrom){const after=t.getBoundingClientRect().top+t.offsetHeight/2<e.clientY;if(after){t.after(dragFrom)}else{t.before(dragFrom)}document.querySelectorAll('.dash-card.drag-over').forEach(c=>c.classList.remove('drag-over'));}});
+  // Add grips and draggable
+  document.querySelectorAll('.dash-card').forEach(c=>{c.setAttribute('draggable','true');if(!c.querySelector('.grip'))c.insertAdjacentHTML('afterbegin','<span class="grip" title="Déplacer">⋮⋮</span>');});
+}
+function saveDashboardOrder(){
+  const ids=[...document.querySelectorAll('.dash-grid .dash-card')].map((c,i)=>c.dataset.widget||`widget-${i}`);
+  localStorage.setItem('comptapro-dash-order',JSON.stringify(ids));
+}
+setTimeout(initWidgetDrag,2000);
+
+// ═══════════════ MULTI-SOCIETE ═══════════════
+function showSocietes(){
+  const el=document.getElementById('societes-list');
+  api('/api/societes').then(r=>{
+    const dbs=r.available||[];
+    if(dbs.length<=1){el.innerHTML='<div class="empty">Une seule base de données. Créez un nouvel exercice ou un nouveau fichier DB pour gérer plusieurs sociétés.</div><button class="btn btn-sm mt-sm" onclick="newSociete()">+ Nouvelle société</button>';}
+    else{el.innerHTML=dbs.map(db=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span>${esc(db)}${db===r.current?' <span class="badge badge-success">active</span>':''}</span><div><button class="btn btn-sm btn-outline" onclick="switchSociete('${esc(db)}')">Basculer</button></div></div>`).join('')+'<button class="btn btn-sm mt-sm" onclick="newSociete()">+ Nouvelle base</button>';}
+    document.getElementById('societes-modal').classList.add('show');
+  }).catch(e=>{el.innerHTML='<div class="empty">Erreur: '+e.message+'</div>';document.getElementById('societes-modal').classList.add('show');});
+}
+function newSociete(){
+  const nom=prompt('Nom du fichier de base :', 'ma_societe.db');
+  if(!nom)return;
+  api('/api/societes/switch?db='+encodeURIComponent(nom)).then(r=>{
+    toast('Base créée : '+nom);
+    closeModal('societes-modal');
+    setTimeout(()=>location.reload(),500);
+  }).catch(e=>toast(e.message,'error'));
+}
+function switchSociete(db){
+  api('/api/societes/switch?db='+encodeURIComponent(db)).then(r=>{
+    toast('Basculement vers : '+db);
+    closeModal('societes-modal');
+    setTimeout(()=>location.reload(),500);
+  }).catch(e=>toast(e.message,'error'));
 }
 
 // START
