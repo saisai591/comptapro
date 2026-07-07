@@ -807,7 +807,40 @@ class ComptaHandler(SimpleHTTPRequestHandler):
         # Fichiers statiques
         if path == "/" or path == "":
             self.path = "/index.html"
-        super().do_GET()
+        self._serve_static()
+
+    def _serve_static(self):
+        """Serve static files with proper Content-Type charset."""
+        path = self.path
+        ct_map = {
+            ".html": "text/html; charset=utf-8",
+            ".css": "text/css; charset=utf-8",
+            ".js": "application/javascript; charset=utf-8",
+            ".json": "application/json; charset=utf-8",
+            ".svg": "image/svg+xml; charset=utf-8",
+            ".png": "image/png",
+            ".jpg": "image/jpeg",
+            ".jpeg": "image/jpeg",
+            ".gif": "image/gif",
+            ".ico": "image/x-icon",
+            ".woff2": "font/woff2",
+        }
+        ext = os.path.splitext(path)[1].lower()
+        filepath = os.path.join(STATIC_DIR, path.lstrip("/"))
+        if not os.path.isfile(filepath):
+            self.send_error(404)
+            return
+        try:
+            with open(filepath, "rb") as f:
+                data = f.read()
+            self.send_response(200)
+            self.send_header("Content-Type", ct_map.get(ext, "application/octet-stream"))
+            self.send_header("Content-Length", len(data))
+            self.send_header("Cache-Control", "public, max-age=3600")
+            self.end_headers()
+            self.wfile.write(data)
+        except OSError:
+            self.send_error(404)
 
     # ── POST ────────────────────────────────────────────────────────
     def do_POST(self):

@@ -1,0 +1,27 @@
+# Preserve UTF-8 encoding and LF for all text files
+* text=auto
+
+# Python files: LF
+*.py text eol=lf
+
+# Web files: LF
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+
+# Shell scripts: LF
+*.sh text eol=lf
+
+# Docker configs: LF
+Dockerfile text eol=lf
+docker-compose*.yml text eol=lf
+.dockerignore text eol=lf
+
+# Markdown: LF
+*.md text eol=lf
+
+# Binary
+*.db binary
+*.png binary
+*.jpg binary
+*.ico binary
