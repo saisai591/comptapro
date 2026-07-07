@@ -390,5 +390,10 @@ def init_db(conn: Optional[sqlite3.Connection] = None):
     except sqlite3.OperationalError:
         pass  # colonne déjà existante
 
+    # Auth tables
+    from comptable.auth import init_auth_tables, setup_default_admin
+    init_auth_tables(conn)
+    setup_default_admin(conn)
+
     if doit_fermer:
         conn.close()

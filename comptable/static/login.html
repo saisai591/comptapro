@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComptaPro — Connexion</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f0f2f5;--card:#fff;--dark:#1a1a2e;--accent:#e94560;--text:#1a1a2e;--muted:#6b7280;--border:#e5e7eb}
+body{font:14px/1.5 system-ui,-apple-system,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);min-height:100vh;display:flex;align-items:center;justify-content:center}
+.login-box{background:var(--card);border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.3);width:100%;max-width:380px;padding:40px 32px}
+.login-box .logo{font-size:22px;font-weight:800;color:var(--dark);text-align:center;margin-bottom:8px}
+.login-box .subtitle{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.form-group input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;transition:border .15s}
+.form-group input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(233,69,96,.1)}
+.btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:background .15s}
+.btn:hover{background:#d63850}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.error{background:#fdecea;color:var(--accent);padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none}
+.error.show{display:block}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.info{text-align:center;font-size:12px;color:var(--muted);margin-top:16px}
+</style>
+</head>
+<body>
+<div class="login-box">
+  <div class="logo">ComptaPro</div>
+  <div class="subtitle">Logiciel de comptabilité français</div>
+
+  <div class="error" id="error"></div>
+
+  <form onsubmit="doLogin(event)">
+    <div class="form-group">
+      <label>Identifiant</label>
+      <input type="text" id="username" autocomplete="username" autofocus required placeholder="admin">
+    </div>
+    <div class="form-group">
+      <label>Mot de passe</label>
+      <input type="password" id="password" autocomplete="current-password" required placeholder="••••••••">
+    </div>
+    <button class="btn" type="submit" id="login-btn">Se connecter</button>
+  </form>
+
+  <div class="info">Compte par défaut : admin / admin</div>
+</div>
+
+<script>
+async function doLogin(e){
+  e.preventDefault();
+  const btn=document.getElementById('login-btn');
+  const err=document.getElementById('error');
+  const username=document.getElementById('username').value.trim();
+  const password=document.getElementById('password').value;
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>Connexion...';
+  err.classList.remove('show');
+  try{
+    const r=await fetch('/api/auth/login',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({username,password})
+    });
+    const d=await r.json();
+    if(r.ok&&d.token){
+      localStorage.setItem('comptapro_token',d.token);
+      localStorage.setItem('comptapro_user',d.username);
+      window.location.href='/';
+    }else{
+      err.textContent=d.error||'Erreur de connexion';
+      err.classList.add('show');
+    }
+  }catch(x){
+    err.textContent='Erreur réseau';
+    err.classList.add('show');
+  }
+  btn.disabled=false;
+  btn.textContent='Se connecter';
+}
+</script>
+</body>
+</html>

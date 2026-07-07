@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -6,13 +6,13 @@
 <title>ComptaPro</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
-/* ── RESET & BASE ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ RESET & BASE Ã¢â€â‚¬Ã¢â€â‚¬ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#f0f2f5;--card:#fff;--dark:#1a1a2e;--accent:#e94560;--green:#0a8f32;--warn:#f39c12;--text:#1a1a2e;--muted:#6b7280;--border:#e5e7eb;--shadow:0 1px 3px rgba(0,0,0,.08)}
 body{font:13px/1.5 system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
 a{color:var(--accent);text-decoration:none}
 
-/* ── SIDEBAR ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */
 #sidebar{width:220px;min-width:220px;background:var(--dark);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
 #sidebar .logo{padding:20px 16px;font-size:16px;font-weight:700;letter-spacing:.5px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:8px}
 #sidebar nav{flex:1;padding:8px 0;overflow-y:auto}
@@ -32,7 +32,7 @@ a{color:var(--accent);text-decoration:none}
 .s-body a{padding:6px 16px 6px 28px!important;font-size:12px!important}
 #sidebar .footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,.1);font-size:11px;color:rgba(255,255,255,.35)}
 
-/* ── MAIN AREA ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ MAIN AREA Ã¢â€â‚¬Ã¢â€â‚¬ */
 #main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
 #topbar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50}
 #topbar .ex-title{font-size:16px;font-weight:600;color:var(--dark)}
@@ -40,13 +40,13 @@ a{color:var(--accent);text-decoration:none}
 #topbar .spacer{flex:1}
 #content{padding:24px;flex:1}
 
-/* ── CARDS ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ CARDS Ã¢â€â‚¬Ã¢â€â‚¬ */
 .card{background:var(--card);border-radius:8px;box-shadow:var(--shadow);padding:20px;margin-bottom:20px}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .card-header h2{font-size:17px;font-weight:600;color:var(--dark)}
 .card-header h3{font-size:14px;font-weight:600;color:var(--dark)}
 
-/* ── BUTTONS ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ BUTTONS Ã¢â€â‚¬Ã¢â€â‚¬ */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;transition:background .15s}
 .btn:hover{background:#d63850}
 .btn-sm{padding:5px 12px;font-size:12px}
@@ -59,7 +59,7 @@ a{color:var(--accent);text-decoration:none}
 .btn-warn{background:var(--warn)}
 .btn-warn:hover{background:#e08e0b}
 
-/* ── TABLES ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ TABLES Ã¢â€â‚¬Ã¢â€â‚¬ */
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{padding:10px 12px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.3px;border-bottom:2px solid var(--border);white-space:nowrap}
 td{padding:9px 12px;border-bottom:1px solid var(--border)}
@@ -67,7 +67,7 @@ tr:hover td{background:#f9fafb}
 .num{text-align:right;font-variant-numeric:tabular-nums}
 .total-row td{font-weight:700;border-top:2px solid var(--dark);background:#f9fafb}
 
-/* ── STATUS BADGES ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ STATUS BADGES Ã¢â€â‚¬Ã¢â€â‚¬ */
 .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap}
 .badge-success{background:#d4edda;color:var(--green)}
 .badge-warning{background:#fff3cd;color:var(--warn)}
@@ -75,7 +75,7 @@ tr:hover td{background:#f9fafb}
 .badge-info{background:#dbeafe;color:#1d4ed8}
 .badge-neutral{background:#e5e7eb;color:#4b5563}
 
-/* ── FORMS ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ FORMS Ã¢â€â‚¬Ã¢â€â‚¬ */
 .form-group{margin-bottom:12px}
 .form-group label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
 .form-group input,.form-group select,.form-group textarea{width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;transition:border .15s}
@@ -83,7 +83,7 @@ tr:hover td{background:#f9fafb}
 .form-row{display:flex;gap:12px}
 .form-row>*{flex:1}
 
-/* ── MODAL ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ MODAL Ã¢â€â‚¬Ã¢â€â‚¬ */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.show{display:flex}
 .modal{background:var(--card);border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.2);width:90%;max-width:700px;max-height:85vh;overflow-y:auto;padding:0}
@@ -92,7 +92,7 @@ tr:hover td{background:#f9fafb}
 .modal-body{padding:20px}
 .modal-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 20px;border-top:1px solid var(--border)}
 
-/* ── DASHBOARD GRID ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ DASHBOARD GRID Ã¢â€â‚¬Ã¢â€â‚¬ */
 .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px}
 .dash-grid.wide{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
 .dash-card{background:var(--card);border-radius:8px;box-shadow:var(--shadow);padding:20px}
@@ -109,7 +109,7 @@ tr:hover td{background:#f9fafb}
 .alert-item:last-child{border-bottom:none}
 .alert-item .alert-count{font-size:18px;font-weight:700}
 
-/* ── FACTURES FILTERS ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ FACTURES FILTERS Ã¢â€â‚¬Ã¢â€â‚¬ */
 .filter-bar{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
 .filter-bar select,.filter-bar input{padding:7px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px}
 .pagination{display:flex;gap:4px;justify-content:center;margin-top:16px}
@@ -117,13 +117,13 @@ tr:hover td{background:#f9fafb}
 .pagination button.active{background:var(--dark);color:#fff;border-color:var(--dark)}
 .pagination button:disabled{opacity:.4;cursor:default}
 
-/* ── BANK ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ BANK Ã¢â€â‚¬Ã¢â€â‚¬ */
 .releve-row{cursor:pointer;transition:background .1s}
 .releve-row:hover td{background:#f3f4f6}
 .rapproche-panel{display:flex;gap:16px}
 .rapproche-panel>div{flex:1}
 
-/* ── DARK MODE ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ DARK MODE Ã¢â€â‚¬Ã¢â€â‚¬ */
 [data-theme="dark"] body{--bg:#0f1117;--card:#1a1d27;--dark:#e5e7eb;--text:#e5e7eb;--muted:#9ca3af;--border:#2d3143;--shadow:0 1px 3px rgba(0,0,0,.3);background:var(--bg)}
 [data-theme="dark"] #sidebar{background:#0c0e14}
 [data-theme="dark"] #sidebar nav a{color:rgba(255,255,255,.5)}
@@ -148,7 +148,7 @@ tr:hover td{background:#f9fafb}
 [data-theme="dark"] .pagination button.active{background:var(--accent);color:#fff}
 [data-theme="dark"] .progress-bar{background:#2d3143}
 
-/* ── KBD SHORTCUTS ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ KBD SHORTCUTS Ã¢â€â‚¬Ã¢â€â‚¬ */
 .kbd{display:inline-block;padding:2px 8px;border-radius:4px;background:#e5e7eb;font-family:monospace;font-size:11px;font-weight:600;color:#1a1a2e;border:1px solid #d1d5db;box-shadow:0 1px 0 rgba(0,0,0,.15)}
 [data-theme="dark"] .kbd{background:#2d3143;border-color:#4b5563;color:#e5e7eb}
 .shortcut-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
@@ -156,14 +156,14 @@ tr:hover td{background:#f9fafb}
 .shortcut-row .sc-desc{font-size:13px}
 .shortcut-row .sc-keys{display:flex;gap:4px}
 
-/* ── WIDGET DRAG ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ WIDGET DRAG Ã¢â€â‚¬Ã¢â€â‚¬ */
 .dash-card.dragging{opacity:.3;transform:scale(.98)}
 .dash-card.drag-over{border:2px dashed var(--accent)}
 .dash-card .grip{cursor:grab;position:absolute;top:8px;right:8px;color:var(--muted);font-size:12px;opacity:0;transition:opacity .15s}
 .dash-card:hover .grip{opacity:1}
 .dash-card{position:relative}
 
-/* ── UTILS ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ UTILS Ã¢â€â‚¬Ã¢â€â‚¬ */
 .panel{display:none}
 .panel.active{display:block}
 .empty{text-align:center;padding:40px;color:var(--muted);font-size:14px}
@@ -216,18 +216,18 @@ tr:hover td{background:#f9fafb}
 .chart-box{position:relative;height:220px}
 .chart-box canvas{width:100%!important;height:100%!important}
 
-/* ── NEW PANELS ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ NEW PANELS Ã¢â€â‚¬Ã¢â€â‚¬ */
 .progress-bar{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:4px}
 .progress-fill{height:100%;border-radius:3px;transition:width .3s}
 .progress-green{background:#0a8f32}.progress-orange{background:#f39c12}.progress-red{background:#e94560}
 .modal-body textarea{width:100%;min-height:80px;padding:8px;border:1px solid #d1d5db;border-radius:4px;font:12px monospace}
-/* ── LETTRAGE ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ LETTRAGE Ã¢â€â‚¬Ã¢â€â‚¬ */
 .lettrage-comptes tr{cursor:pointer}
 .lettrage-paires{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .lettrage-paire{border:1px solid var(--border);border-radius:8px;padding:12px;background:#f9fafb}
 .lettrage-paire .debit{color:var(--green);font-weight:600}
 .lettrage-paire .credit{color:var(--accent);font-weight:600}
-/* ── SMTP ── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ SMTP Ã¢â€â‚¬Ã¢â€â‚¬ */
 .smtp-form{max-width:500px}
 .smtp-result{padding:10px;border-radius:6px;margin-top:8px;font-size:13px}
 .smtp-success{background:#d4edda;color:var(--green)}
@@ -237,54 +237,54 @@ tr:hover td{background:#f9fafb}
 </head>
 <body>
 
-<!-- ── SIDEBAR ── -->
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ -->
 <aside id="sidebar">
-  <div class="logo"><span style="font-size:20px">🧮</span><span>ComptaPro</span></div>
+  <div class="logo"><span style="font-size:20px">Ã°Å¸Â§Â®</span><span>ComptaPro</span></div>
   <nav>
-    <a class="active" data-page="dashboard" onclick="navigate('dashboard')"><span class="icon">📊</span><span>Dashboard</span></a>
-    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>💰 Ventes</span><span class="s-arrow">▾</span></div><div class="s-body">
-      <a data-page="factures" onclick="navigate('factures')"><span>📄 Factures</span></a>
-      <a data-page="abonnements" onclick="navigate('abonnements')"><span>🔄 Abonnements</span></a>
-      <a data-page="relances" onclick="navigate('relances')"><span>📨 Relances</span></a>
-      <a data-page="bons" onclick="navigate('bons')"><span>📦 Bons</span></a>
+    <a class="active" data-page="dashboard" onclick="navigate('dashboard')"><span class="icon">Ã°Å¸â€œÅ </span><span>Dashboard</span></a>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>Ã°Å¸â€™Â° Ventes</span><span class="s-arrow">Ã¢â€“Â¾</span></div><div class="s-body">
+      <a data-page="factures" onclick="navigate('factures')"><span>Ã°Å¸â€œâ€ž Factures</span></a>
+      <a data-page="abonnements" onclick="navigate('abonnements')"><span>Ã°Å¸â€â€ž Abonnements</span></a>
+      <a data-page="relances" onclick="navigate('relances')"><span>Ã°Å¸â€œÂ¨ Relances</span></a>
+      <a data-page="bons" onclick="navigate('bons')"><span>Ã°Å¸â€œÂ¦ Bons</span></a>
     </div></div>
-    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>🛒 Achats</span><span class="s-arrow">▾</span></div><div class="s-body">
-      <a data-page="achats" onclick="navigate('achats')"><span>🛒 Validation</span></a>
-      <a data-page="notes-frais" onclick="navigate('notes-frais')"><span>🧾 Notes de frais</span></a>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>Ã°Å¸â€ºâ€™ Achats</span><span class="s-arrow">Ã¢â€“Â¾</span></div><div class="s-body">
+      <a data-page="achats" onclick="navigate('achats')"><span>Ã°Å¸â€ºâ€™ Validation</span></a>
+      <a data-page="notes-frais" onclick="navigate('notes-frais')"><span>Ã°Å¸Â§Â¾ Notes de frais</span></a>
     </div></div>
-    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>🏦 Banque</span><span class="s-arrow">▾</span></div><div class="s-body">
-      <a data-page="banque" onclick="navigate('banque')"><span>🏦 Import & rapprochement</span></a>
-      <a data-page="lettrage" onclick="navigate('lettrage')"><span>🔗 Lettrage</span></a>
-      <a data-page="categories" onclick="navigate('categories')"><span>🏷️ Classification</span></a>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>Ã°Å¸ÂÂ¦ Banque</span><span class="s-arrow">Ã¢â€“Â¾</span></div><div class="s-body">
+      <a data-page="banque" onclick="navigate('banque')"><span>Ã°Å¸ÂÂ¦ Import & rapprochement</span></a>
+      <a data-page="lettrage" onclick="navigate('lettrage')"><span>Ã°Å¸â€â€” Lettrage</span></a>
+      <a data-page="categories" onclick="navigate('categories')"><span>Ã°Å¸ÂÂ·Ã¯Â¸Â Classification</span></a>
     </div></div>
-    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>📒 Comptabilité</span><span class="s-arrow">▾</span></div><div class="s-body">
-      <a data-page="ecritures" onclick="navigate('ecritures')"><span>📒 Écritures</span></a>
-      <a data-page="balance" onclick="navigate('balance')"><span>📊 Balance</span></a>
-      <a data-page="resultat" onclick="navigate('resultat')"><span>📈 Résultat</span></a>
-      <a data-page="bilan" onclick="navigate('bilan')"><span>📋 Bilan</span></a>
-      <a data-page="grand-livre" onclick="navigate('grand-livre')"><span>📖 Grand-Livre</span></a>
-      <a data-page="paie" onclick="navigate('paie')"><span>💰 OD Paie</span></a>
-      <a data-page="cloture" onclick="navigate('cloture')"><span>🔒 Clôture</span></a>
-      <a data-page="immo" onclick="navigate('immo')"><span>🏢 Immobilisations</span></a>
-      <a data-page="emprunts" onclick="navigate('emprunts')"><span>🏦 Emprunts</span></a>
-      <a data-page="export" onclick="navigate('export')"><span>📥 Export</span></a>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>Ã°Å¸â€œâ€™ ComptabilitÃƒÂ©</span><span class="s-arrow">Ã¢â€“Â¾</span></div><div class="s-body">
+      <a data-page="ecritures" onclick="navigate('ecritures')"><span>Ã°Å¸â€œâ€™ Ãƒâ€°critures</span></a>
+      <a data-page="balance" onclick="navigate('balance')"><span>Ã°Å¸â€œÅ  Balance</span></a>
+      <a data-page="resultat" onclick="navigate('resultat')"><span>Ã°Å¸â€œË† RÃƒÂ©sultat</span></a>
+      <a data-page="bilan" onclick="navigate('bilan')"><span>Ã°Å¸â€œâ€¹ Bilan</span></a>
+      <a data-page="grand-livre" onclick="navigate('grand-livre')"><span>Ã°Å¸â€œâ€“ Grand-Livre</span></a>
+      <a data-page="paie" onclick="navigate('paie')"><span>Ã°Å¸â€™Â° OD Paie</span></a>
+      <a data-page="cloture" onclick="navigate('cloture')"><span>Ã°Å¸â€â€™ ClÃƒÂ´ture</span></a>
+      <a data-page="immo" onclick="navigate('immo')"><span>Ã°Å¸ÂÂ¢ Immobilisations</span></a>
+      <a data-page="emprunts" onclick="navigate('emprunts')"><span>Ã°Å¸ÂÂ¦ Emprunts</span></a>
+      <a data-page="export" onclick="navigate('export')"><span>Ã°Å¸â€œÂ¥ Export</span></a>
     </div></div>
-    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>📈 Pilotage</span><span class="s-arrow">▾</span></div><div class="s-body">
-      <a data-page="budget" onclick="navigate('budget')"><span>💰 Budget</span></a>
-      <a data-page="previsionnel" onclick="navigate('previsionnel')"><span>📈 Prévisions</span></a>
-      <a data-page="tva" onclick="navigate('tva')"><span>💰 TVA</span></a>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>Ã°Å¸â€œË† Pilotage</span><span class="s-arrow">Ã¢â€“Â¾</span></div><div class="s-body">
+      <a data-page="budget" onclick="navigate('budget')"><span>Ã°Å¸â€™Â° Budget</span></a>
+      <a data-page="previsionnel" onclick="navigate('previsionnel')"><span>Ã°Å¸â€œË† PrÃƒÂ©visions</span></a>
+      <a data-page="tva" onclick="navigate('tva')"><span>Ã°Å¸â€™Â° TVA</span></a>
     </div></div>
-    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>⚙️ Admin</span><span class="s-arrow">▾</span></div><div class="s-body">
-      <a data-page="parametres" onclick="navigate('parametres')"><span>⚙️ Paramètres</span></a>
-      <a data-page="email" onclick="navigate('email')"><span>📧 Email SMTP</span></a>
-      <a data-page="audit" onclick="navigate('audit')"><span>🔍 Audit</span></a>
-      <a data-page="recherche" onclick="navigate('recherche')"><span>🔎 Recherche</span></a>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>Ã¢Å¡â„¢Ã¯Â¸Â Admin</span><span class="s-arrow">Ã¢â€“Â¾</span></div><div class="s-body">
+      <a data-page="parametres" onclick="navigate('parametres')"><span>Ã¢Å¡â„¢Ã¯Â¸Â ParamÃƒÂ¨tres</span></a>
+      <a data-page="email" onclick="navigate('email')"><span>Ã°Å¸â€œÂ§ Email SMTP</span></a>
+      <a data-page="audit" onclick="navigate('audit')"><span>Ã°Å¸â€Â Audit</span></a>
+      <a data-page="recherche" onclick="navigate('recherche')"><span>Ã°Å¸â€Å½ Recherche</span></a>
     </div></div>
   </nav>
-  <div class="footer" onclick="showSocietes()" style="cursor:pointer" title="Gérer les sociétés">🏢 Société actuelle · ComptaPro v1.0</div>
+  <div class="footer" onclick="showSocietes()" style="cursor:pointer" title="GÃƒÂ©rer les sociÃƒÂ©tÃƒÂ©s">Ã°Å¸ÂÂ¢ SociÃƒÂ©tÃƒÂ© actuelle Ã‚Â· ComptaPro v1.0</div>
 </aside>
 
-<!-- ── MAIN ── -->
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ MAIN Ã¢â€â‚¬Ã¢â€â‚¬ -->
 <div id="main">
   <header id="topbar">
     <div class="ex-title" id="topbar-title">ComptaPro</div>
@@ -294,14 +294,14 @@ tr:hover td{background:#f9fafb}
     <div class="search-dropdown" id="search-results"></div>
   </div>
   <div class="notif-badge" onclick="toggleNotifs()">
-    <span style="font-size:18px">🔔</span><span class="cnt" id="notif-count" style="display:none">0</span>
+    <span style="font-size:18px">Ã°Å¸â€â€</span><span class="cnt" id="notif-count" style="display:none">0</span>
     <div class="notif-panel" id="notif-panel"></div>
   </div>
     <div class="spacer"></div>
-    <button class="btn btn-ghost btn-sm" onclick="toggleDarkMode()" title="Thème sombre (Ctrl+D)" style="font-size:16px">🌙</button>
-    <button class="btn btn-outline btn-sm" onclick="printPage()" title="Imprimer">🖨️</button>
-    <button class="btn btn-outline btn-sm" onclick="exportCSV()" title="Export CSV">📥</button>
-    <button class="btn btn-outline btn-sm" onclick="showShortcuts()" title="Raccourcis (?)">⌨️</button>
+    <button class="btn btn-ghost btn-sm" onclick="toggleDarkMode()" title="ThÃƒÂ¨me sombre (Ctrl+D)" style="font-size:16px">Ã°Å¸Å’â„¢</button>
+    <button class="btn btn-outline btn-sm" onclick="printPage()" title="Imprimer">Ã°Å¸â€“Â¨Ã¯Â¸Â</button>
+    <button class="btn btn-outline btn-sm" onclick="exportCSV()" title="Export CSV">Ã°Å¸â€œÂ¥</button>
+    <button class="btn btn-outline btn-sm" onclick="showShortcuts()" title="Raccourcis (?)">Ã¢Å’Â¨Ã¯Â¸Â</button>
     <button class="btn btn-outline btn-sm" onclick="showNewExercice()">+ Exercice</button>
   </header>
 
@@ -445,13 +445,13 @@ tr:hover td{background:#f9fafb}
 
 <!-- SHORTCUTS MODAL -->
 <div class="modal-overlay" id="shortcuts-modal"><div class="modal" style="max-width:500px">
-<div class="modal-header"><h3>⌨️ Raccourcis clavier</h3><button class="btn-ghost" onclick="closeModal('shortcuts-modal')" style="font-size:18px">&times;</button></div>
+<div class="modal-header"><h3>Ã¢Å’Â¨Ã¯Â¸Â Raccourcis clavier</h3><button class="btn-ghost" onclick="closeModal('shortcuts-modal')" style="font-size:18px">&times;</button></div>
 <div class="modal-body" id="shortcuts-body"></div>
 </div></div>
 
 <!-- MULTI-SOCIETE SWITCHER (sidebar footer) -->
 
-<!-- ── MODAL FACTURE ── -->
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ MODAL FACTURE Ã¢â€â‚¬Ã¢â€â‚¬ -->
 <div class="modal-overlay" id="modal-facture">
   <div class="modal">
     <div class="modal-header"><h3 id="modal-facture-title">Nouvelle facture</h3><button class="btn-ghost" onclick="closeModal('modal-facture')" style="font-size:18px">&times;</button></div>
@@ -459,7 +459,7 @@ tr:hover td{background:#f9fafb}
       <div class="form-row">
         <div class="form-group"><label>Type</label><select id="fact-type"><option value="FACTURE">Facture</option><option value="DEVIS">Devis</option><option value="AVOIR">Avoir</option></select></div>
         <div class="form-group"><label>Date</label><input type="date" id="fact-date"></div>
-        <div class="form-group"><label>Échéance</label><input type="date" id="fact-echeance"></div>
+        <div class="form-group"><label>Ãƒâ€°chÃƒÂ©ance</label><input type="date" id="fact-echeance"></div>
       </div>
       <div class="form-group"><label>Client</label><input id="fact-client" placeholder="Nom du client" list="clients-list"><datalist id="clients-list"></datalist></div>
       <div class="form-group"><label>Objet</label><input id="fact-objet" placeholder="Objet de la facture"></div>
@@ -467,8 +467,8 @@ tr:hover td{background:#f9fafb}
       <div id="fact-lignes"></div>
       <button class="btn btn-outline btn-sm mt-sm" onclick="addFactLigne()">+ Ligne</button>
       <div class="flex-between mt-sm" style="font-size:14px">
-        <span class="text-muted">Total HT: <strong id="fact-total-ht">0.00</strong> €</span>
-        <span style="font-weight:600">Total TTC: <strong id="fact-total-ttc">0.00</strong> €</span>
+        <span class="text-muted">Total HT: <strong id="fact-total-ht">0.00</strong> Ã¢â€šÂ¬</span>
+        <span style="font-weight:600">Total TTC: <strong id="fact-total-ttc">0.00</strong> Ã¢â€šÂ¬</span>
       </div>
     </div>
     <div class="modal-footer">
@@ -478,12 +478,12 @@ tr:hover td{background:#f9fafb}
   </div>
 </div>
 
-<!-- ── MODAL RAPPROCHEMENT ── -->
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ MODAL RAPPROCHEMENT Ã¢â€â‚¬Ã¢â€â‚¬ -->
 <div class="modal-overlay" id="modal-rapproche">
   <div class="modal" style="max-width:500px">
     <div class="modal-header"><h3>Rapprocher</h3><button class="btn-ghost" onclick="closeModal('modal-rapproche')" style="font-size:18px">&times;</button></div>
     <div class="modal-body">
-      <div class="form-group"><label>Rechercher une écriture</label><input id="rapproche-search" placeholder="Libellé, compte..." oninput="searchEcritures()"></div>
+      <div class="form-group"><label>Rechercher une ÃƒÂ©criture</label><input id="rapproche-search" placeholder="LibellÃƒÂ©, compte..." oninput="searchEcritures()"></div>
       <div id="rapproche-results" style="max-height:300px;overflow-y:auto"></div>
       <input type="hidden" id="rapproche-ligne-id">
     </div>
@@ -491,32 +491,32 @@ tr:hover td{background:#f9fafb}
   </div>
 </div>
 
-<!-- ── MODAL SCENARIO ── -->
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ MODAL SCENARIO Ã¢â€â‚¬Ã¢â€â‚¬ -->
 <div class="modal-overlay" id="modal-scenario">
   <div class="modal">
-    <div class="modal-header"><h3>Nouveau scénario de relance</h3><button class="btn-ghost" onclick="closeModal('modal-scenario')" style="font-size:18px">&times;</button></div>
+    <div class="modal-header"><h3>Nouveau scÃƒÂ©nario de relance</h3><button class="btn-ghost" onclick="closeModal('modal-scenario')" style="font-size:18px">&times;</button></div>
     <div class="modal-body">
-      <div class="form-group"><label>Nom du scénario</label><input id="scenario-nom" placeholder="Ex: Relance J+7"></div>
-      <div class="form-group"><label>Délai (jours après échéance)</label><input type="number" id="scenario-delai" value="7" min="1"></div>
-      <div class="form-group"><label>Modèle d'email</label><textarea id="scenario-modele" placeholder="Bonjour {{client}},
-Votre facture {{facture_num}} d'un montant de {{montant}} arrivée à échéance le {{date_echeance}}..."></textarea></div>
+      <div class="form-group"><label>Nom du scÃƒÂ©nario</label><input id="scenario-nom" placeholder="Ex: Relance J+7"></div>
+      <div class="form-group"><label>DÃƒÂ©lai (jours aprÃƒÂ¨s ÃƒÂ©chÃƒÂ©ance)</label><input type="number" id="scenario-delai" value="7" min="1"></div>
+      <div class="form-group"><label>ModÃƒÂ¨le d'email</label><textarea id="scenario-modele" placeholder="Bonjour {{client}},
+Votre facture {{facture_num}} d'un montant de {{montant}} arrivÃƒÂ©e ÃƒÂ  ÃƒÂ©chÃƒÂ©ance le {{date_echeance}}..."></textarea></div>
       <div class="form-group"><label>Conditions (JSON)</label><textarea id="scenario-conditions">{"statut":"en_retard","age_min_jours":7}</textarea></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('modal-scenario')">Annuler</button>
-      <button class="btn" onclick="createScenario()">Créer</button>
+      <button class="btn" onclick="createScenario()">CrÃƒÂ©er</button>
     </div>
   </div>
 </div>
 
-<!-- ── MODAL BUDGET ── -->
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ MODAL BUDGET Ã¢â€â‚¬Ã¢â€â‚¬ -->
 <div class="modal-overlay" id="modal-budget">
   <div class="modal">
-    <div class="modal-header"><h3>Définir un budget</h3><button class="btn-ghost" onclick="closeModal('modal-budget')" style="font-size:18px">&times;</button></div>
+    <div class="modal-header"><h3>DÃƒÂ©finir un budget</h3><button class="btn-ghost" onclick="closeModal('modal-budget')" style="font-size:18px">&times;</button></div>
     <div class="modal-body">
-      <div class="form-group"><label>Compte</label><input id="budget-compte" placeholder="N° de compte"></div>
+      <div class="form-group"><label>Compte</label><input id="budget-compte" placeholder="NÃ‚Â° de compte"></div>
       <div class="form-row">
-        <div class="form-group"><label>Mois (1-12 ou 0=Année)</label><input type="number" id="budget-mois" value="1" min="0" max="12"></div>
+        <div class="form-group"><label>Mois (1-12 ou 0=AnnÃƒÂ©e)</label><input type="number" id="budget-mois" value="1" min="0" max="12"></div>
         <div class="form-group"><label>Montant</label><input type="number" id="budget-montant" step="0.01" min="0"></div>
       </div>
       <div class="form-group"><label>Notes</label><input id="budget-notes" placeholder="Optionnel"></div>
@@ -532,23 +532,23 @@ Votre facture {{facture_num}} d'un montant de {{montant}} arrivée à échéance
   </div>
 </div>
 
-<!-- ── MODAL NOTE DE FRAIS ── -->
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ MODAL NOTE DE FRAIS Ã¢â€â‚¬Ã¢â€â‚¬ -->
 <div class="modal-overlay" id="modal-note-frais">
   <div class="modal">
     <div class="modal-header"><h3>Nouvelle note de frais</h3><button class="btn-ghost" onclick="closeModal('modal-note-frais')" style="font-size:18px">&times;</button></div>
     <div class="modal-body">
       <div class="form-row">
         <div class="form-group"><label>Date</label><input type="date" id="nf-date"></div>
-        <div class="form-group"><label>Catégorie</label><select id="nf-categorie"><option value="deplacement">Déplacement</option><option value="repas">Repas</option><option value="hebergement">Hébergement</option><option value="fournitures">Fournitures</option><option value="divers">Divers</option></select></div>
+        <div class="form-group"><label>CatÃƒÂ©gorie</label><select id="nf-categorie"><option value="deplacement">DÃƒÂ©placement</option><option value="repas">Repas</option><option value="hebergement">HÃƒÂ©bergement</option><option value="fournitures">Fournitures</option><option value="divers">Divers</option></select></div>
       </div>
-      <div class="form-group"><label>Description</label><input id="nf-description" placeholder="Description de la dépense"></div>
+      <div class="form-group"><label>Description</label><input id="nf-description" placeholder="Description de la dÃƒÂ©pense"></div>
       <div class="form-row">
         <div class="form-group"><label>Montant HT</label><input type="number" id="nf-montant-ht" step="0.01" min="0" oninput="calcNFTotal()"></div>
         <div class="form-group"><label>TVA</label><select id="nf-tva" onchange="calcNFTotal()"><option value="20">20%</option><option value="10">10%</option><option value="5.5">5.5%</option><option value="0">0%</option></select></div>
         <div class="form-group"><label>Montant TTC</label><input type="number" id="nf-montant-ttc" step="0.01" readonly style="background:#f3f4f6"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Employé</label><input id="nf-employe" value="Moi"></div>
+        <div class="form-group"><label>EmployÃƒÂ©</label><input id="nf-employe" value="Moi"></div>
         <div class="form-group"><label>Justificatif</label><input id="nf-justificatif" placeholder="Nom du fichier"></div>
       </div>
     </div>
@@ -559,10 +559,10 @@ Votre facture {{facture_num}} d'un montant de {{montant}} arrivée à échéance
   </div>
 </div>
 
-<!-- ── MODAL CATALOGUE ── -->
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ MODAL CATALOGUE Ã¢â€â‚¬Ã¢â€â‚¬ -->
 <div class="modal-overlay" id="modal-catalogue">
   <div class="modal" style="max-width:800px">
-    <div class="modal-header"><h3>📦 Catalogue Produits / Clients</h3><button class="btn-ghost" onclick="closeModal('modal-catalogue')" style="font-size:18px">&times;</button></div>
+    <div class="modal-header"><h3>Ã°Å¸â€œÂ¦ Catalogue Produits / Clients</h3><button class="btn-ghost" onclick="closeModal('modal-catalogue')" style="font-size:18px">&times;</button></div>
     <div class="modal-body">
       <div class="filter-bar">
         <select id="cat-filter-type" onchange="loadCatalogue()">
@@ -583,7 +583,7 @@ Votre facture {{facture_num}} d'un montant de {{montant}} arrivée à échéance
       </div>
       <div class="form-row">
         <div class="form-group"><label>Email</label><input type="email" id="cat-email"></div>
-        <div class="form-group"><label>Téléphone</label><input id="cat-tel"></div>
+        <div class="form-group"><label>TÃƒÂ©lÃƒÂ©phone</label><input id="cat-tel"></div>
       </div>
       <button class="btn btn-sm" onclick="saveCatalogue()">Ajouter</button>
       <span id="cat-msg" style="margin-left:10px;font-size:13px"></span>
@@ -653,8 +653,8 @@ Votre facture {{facture_num}} d'un montant de {{montant}} arrivée à échéance
       <div id="bon-lignes"></div>
       <button class="btn btn-outline btn-sm mt-sm" onclick="addBonLigne()">+ Ligne</button>
       <div class="flex-between mt-sm" style="font-size:14px">
-        <span class="text-muted">Total HT: <strong id="bon-total-ht">0.00</strong> €</span>
-        <span style="font-weight:600">Total TTC: <strong id="bon-total-ttc">0.00</strong> €</span>
+        <span class="text-muted">Total HT: <strong id="bon-total-ht">0.00</strong> Ã¢â€šÂ¬</span>
+        <span style="font-weight:600">Total TTC: <strong id="bon-total-ttc">0.00</strong> Ã¢â€šÂ¬</span>
       </div>
     </div>
     <div class="modal-footer">
@@ -664,7 +664,7 @@ Votre facture {{facture_num}} d'un montant de {{montant}} arrivée à échéance
   </div>
 </div>
 
-<!-- ── MODAL IMMOBILISATION ── -->
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ MODAL IMMOBILISATION Ã¢â€â‚¬Ã¢â€â‚¬ -->
 <div class="modal-overlay" id="modal-immo">
   <div class="modal">
     <div class="modal-header"><h3 id="modal-immo-title">Nouvelle immobilisation</h3><button class="btn-ghost" onclick="closeModal('modal-immo')" style="font-size:18px">&times;</button></div>
@@ -673,18 +673,18 @@ Votre facture {{facture_num}} d'un montant de {{montant}} arrivée à échéance
         <div class="form-group"><label>Compte immo</label><input id="immo-compte" value="218" placeholder="218"></div>
         <div class="form-group"><label>Compte amort</label><input id="immo-compte-amort" value="2818" placeholder="2818"></div>
       </div>
-      <div class="form-group"><label>Désignation</label><input id="immo-designation" placeholder="Désignation du bien"></div>
+      <div class="form-group"><label>DÃƒÂ©signation</label><input id="immo-designation" placeholder="DÃƒÂ©signation du bien"></div>
       <div class="form-row">
         <div class="form-group"><label>Date acquisition</label><input type="date" id="immo-date"></div>
         <div class="form-group"><label>Valeur</label><input type="number" id="immo-valeur" step="0.01" min="0"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Durée (années)</label><input type="number" id="immo-duree" value="5" min="1"></div>
-        <div class="form-group"><label>Mode</label><select id="immo-mode"><option value="lineaire">Linéaire</option><option value="degressif">Dégressif</option></select></div>
+        <div class="form-group"><label>DurÃƒÂ©e (annÃƒÂ©es)</label><input type="number" id="immo-duree" value="5" min="1"></div>
+        <div class="form-group"><label>Mode</label><select id="immo-mode"><option value="lineaire">LinÃƒÂ©aire</option><option value="degressif">DÃƒÂ©gressif</option></select></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Coeff dégressif</label><input type="number" id="immo-coeff" value="1.75" step="0.25" min="1"></div>
-        <div class="form-group"><label>V. résiduelle</label><input type="number" id="immo-vres" value="0" step="0.01" min="0"></div>
+        <div class="form-group"><label>Coeff dÃƒÂ©gressif</label><input type="number" id="immo-coeff" value="1.75" step="0.25" min="1"></div>
+        <div class="form-group"><label>V. rÃƒÂ©siduelle</label><input type="number" id="immo-vres" value="0" step="0.01" min="0"></div>
       </div>
       <div class="form-group"><label>Compte dotation</label><input id="immo-compte-dotation" value="6811" placeholder="6811"></div>
     </div>
@@ -695,23 +695,23 @@ Votre facture {{facture_num}} d'un montant de {{montant}} arrivée à échéance
   </div>
 </div>
 
-<!-- ── MODAL EMPRUNT ── -->
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ MODAL EMPRUNT Ã¢â€â‚¬Ã¢â€â‚¬ -->
 <div class="modal-overlay" id="modal-emprunt">
   <div class="modal">
     <div class="modal-header"><h3>Nouvel emprunt</h3><button class="btn-ghost" onclick="closeModal('modal-emprunt')" style="font-size:18px">&times;</button></div>
     <div class="modal-body">
-      <div class="form-group"><label>Désignation</label><input id="emprunt-designation" placeholder="Ex: Emprunt bancaire 50k"></div>
+      <div class="form-group"><label>DÃƒÂ©signation</label><input id="emprunt-designation" placeholder="Ex: Emprunt bancaire 50k"></div>
       <div class="form-row">
-        <div class="form-group"><label>Date début</label><input type="date" id="emprunt-date"></div>
+        <div class="form-group"><label>Date dÃƒÂ©but</label><input type="date" id="emprunt-date"></div>
         <div class="form-group"><label>Montant</label><input type="number" id="emprunt-montant" step="0.01" min="0"></div>
       </div>
       <div class="form-row">
         <div class="form-group"><label>Taux (%)</label><input type="number" id="emprunt-taux" step="0.01" min="0" value="2"></div>
-        <div class="form-group"><label>Durée (mois)</label><input type="number" id="emprunt-duree" min="1" value="120"></div>
+        <div class="form-group"><label>DurÃƒÂ©e (mois)</label><input type="number" id="emprunt-duree" min="1" value="120"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Périodicité</label><select id="emprunt-periodicite"><option value="mensuelle">Mensuelle</option><option value="trimestrielle">Trimestrielle</option></select></div>
-        <div class="form-group"><label>Type</label><select id="emprunt-type"><option value="constant">Mensualité constante</option><option value="annuite">Annuité constante</option></select></div>
+        <div class="form-group"><label>PÃƒÂ©riodicitÃƒÂ©</label><select id="emprunt-periodicite"><option value="mensuelle">Mensuelle</option><option value="trimestrielle">Trimestrielle</option></select></div>
+        <div class="form-group"><label>Type</label><select id="emprunt-type"><option value="constant">MensualitÃƒÂ© constante</option><option value="annuite">AnnuitÃƒÂ© constante</option></select></div>
       </div>
       <div class="form-row">
         <div class="form-group"><label>Frais dossier</label><input type="number" id="emprunt-frais" value="0" step="0.01" min="0"></div>
@@ -726,9 +726,9 @@ Votre facture {{facture_num}} d'un montant de {{montant}} arrivée à échéance
 </div>
 
 <script>
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  CORE
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 const API='';
 let exercices=[],exerciceId=null,currentPage='dashboard';
 
@@ -773,7 +773,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 async function loadExercices(){
   exercices=await api('/api/exercices');
   const sel=document.getElementById('exercice-select');
-  sel.innerHTML=exercices.map(e=>`<option value="${e.id}">${e.libelle} (${e.date_debut} → ${e.date_fin}) ${e.cloture?'🔒':''}</option>`).join('');
+  sel.innerHTML=exercices.map(e=>`<option value="${e.id}">${e.libelle} (${e.date_debut} Ã¢â€ â€™ ${e.date_fin}) ${e.cloture?'Ã°Å¸â€â€™':''}</option>`).join('');
   if(exercices.length&&!exerciceId)exerciceId=exercices[0].id;
   sel.value=exerciceId||'';
   document.getElementById('topbar-title').textContent=exercices.length?exercices.find(e=>e.id===exerciceId)?.libelle||'ComptaPro':'ComptaPro';
@@ -785,9 +785,9 @@ function onExerciceChange(){
   navigate(currentPage);
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  RELANCES
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadRelances(){
   if(!exerciceId)return;
   const el=document.getElementById('relances-content');
@@ -798,7 +798,7 @@ async function loadRelances(){
       api(`/api/relances/resume?exercice_id=${exerciceId}`)
     ]);
     let ht=`<div class="card">
-      <div class="card-header"><h2>📨 Relances</h2><button class="btn btn-sm" onclick="execRelances()">📧 Exécuter les relances</button></div>
+      <div class="card-header"><h2>Ã°Å¸â€œÂ¨ Relances</h2><button class="btn btn-sm" onclick="execRelances()">Ã°Å¸â€œÂ§ ExÃƒÂ©cuter les relances</button></div>
       <div class="dash-grid" style="margin-bottom:12px">
         <div class="dash-card"><div class="label">Factures en retard</div><div class="big-num red">${resume.nb_retard||0}</div></div>
         <div class="dash-card"><div class="label">Relances J7</div><div class="big-num">${resume.relances_j7||0}</div></div>
@@ -807,16 +807,16 @@ async function loadRelances(){
       </div>
     </div>
     <div class="card">
-      <div class="card-header"><h2>Scénarios</h2><button class="btn btn-sm" onclick="openScenarioModal()">+ Nouveau scénario</button></div>
-      <table><thead><tr><th>Nom</th><th>Délai (j)</th><th>Conditions</th><th></th></tr></thead><tbody>`;
+      <div class="card-header"><h2>ScÃƒÂ©narios</h2><button class="btn btn-sm" onclick="openScenarioModal()">+ Nouveau scÃƒÂ©nario</button></div>
+      <table><thead><tr><th>Nom</th><th>DÃƒÂ©lai (j)</th><th>Conditions</th><th></th></tr></thead><tbody>`;
     for(const s of(scenarios||[])){
       ht+=`<tr>
         <td><strong>${s.nom||''}</strong></td><td>${s.delai||0} jours</td>
         <td><span class="text-muted">${(s.conditions||'').substring(0,60)}</span></td>
-        <td><button class="btn btn-outline btn-sm" onclick="deleteScenario(${s.id})">🗑️</button></td>
+        <td><button class="btn btn-outline btn-sm" onclick="deleteScenario(${s.id})">Ã°Å¸â€”â€˜Ã¯Â¸Â</button></td>
       </tr>`;
     }
-    if(!(scenarios||[]).length)ht+=`<tr><td colspan="4" class="empty">Aucun scénario</td></tr>`;
+    if(!(scenarios||[]).length)ht+=`<tr><td colspan="4" class="empty">Aucun scÃƒÂ©nario</td></tr>`;
     ht+=`</tbody></table></div>`;
     el.innerHTML=ht;
   }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
@@ -838,23 +838,23 @@ async function createScenario(){
       modele:document.getElementById('scenario-modele').value,
       conditions:JSON.parse(document.getElementById('scenario-conditions').value)
     })});
-    closeModal('modal-scenario');loadRelances();toast('Scénario créé');
+    closeModal('modal-scenario');loadRelances();toast('ScÃƒÂ©nario crÃƒÂ©ÃƒÂ©');
   }catch(e){toast(e.message,'error')}
 }
 
 async function deleteScenario(id){
-  if(!confirm('Supprimer ce scénario ?'))return;
-  try{await api(`/api/relances/scenarios/${id}`,{method:'DELETE'});loadRelances();toast('Scénario supprimé')}catch(e){toast(e.message,'error')}
+  if(!confirm('Supprimer ce scÃƒÂ©nario ?'))return;
+  try{await api(`/api/relances/scenarios/${id}`,{method:'DELETE'});loadRelances();toast('ScÃƒÂ©nario supprimÃƒÂ©')}catch(e){toast(e.message,'error')}
 }
 
 async function execRelances(){
-  if(!confirm('Exécuter les relances pour les factures en retard ?'))return;
-  try{const r=await api(`/api/relances/executer?exercice_id=${exerciceId}`,{method:'POST'});toast(`${r.nb_relances||0} relance(s) générée(s)`);loadRelances()}catch(e){toast(e.message,'error')}
+  if(!confirm('ExÃƒÂ©cuter les relances pour les factures en retard ?'))return;
+  try{const r=await api(`/api/relances/executer?exercice_id=${exerciceId}`,{method:'POST'});toast(`${r.nb_relances||0} relance(s) gÃƒÂ©nÃƒÂ©rÃƒÂ©e(s)`);loadRelances()}catch(e){toast(e.message,'error')}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  BUDGET
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadBudget(){
   if(!exerciceId)return;
   const el=document.getElementById('budget-content');
@@ -865,25 +865,25 @@ async function loadBudget(){
       api(`/api/budget/comparaison?exercice_id=${exerciceId}${mois?`&mois=${mois}`:''}`),
       api(`/api/budget/resume?exercice_id=${exerciceId}`)
     ]);
-    const moisLabels=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+    const moisLabels=['Jan','FÃƒÂ©v','Mar','Avr','Mai','Juin','Juil','AoÃƒÂ»t','Sep','Oct','Nov','DÃƒÂ©c'];
     let ht=`<div class="card">
-      <div class="card-header"><h2>💰 Suivi budgétaire</h2>
+      <div class="card-header"><h2>Ã°Å¸â€™Â° Suivi budgÃƒÂ©taire</h2>
         <div style="display:flex;gap:8px">
           <select id="budget-mois-filter" onchange="loadBudget()" style="padding:6px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px">
-            <option value="">Année</option>`;
+            <option value="">AnnÃƒÂ©e</option>`;
     for(let i=0;i<12;i++)ht+=`<option value="${i+1}" ${mois===String(i+1)?'selected':''}>${moisLabels[i]}</option>`;
     ht+=`</select>
-          <button class="btn btn-sm" onclick="openBudgetModal()">+ Définir budget</button>
+          <button class="btn btn-sm" onclick="openBudgetModal()">+ DÃƒÂ©finir budget</button>
         </div>
       </div>
-      <table><thead><tr><th>Compte</th><th class="num">Budget</th><th class="num">Réel</th><th class="num">Écart</th><th style="width:120px">% Conso</th></tr></thead><tbody>`;
+      <table><thead><tr><th>Compte</th><th class="num">Budget</th><th class="num">RÃƒÂ©el</th><th class="num">Ãƒâ€°cart</th><th style="width:120px">% Conso</th></tr></thead><tbody>`;
     let totalBudget=0,totalReel=0;
     for(const l of(comparaison||[])){
       const pct=l.budget>0?((l.reel||0)/l.budget*100):0;
       const cls=pct>100?'progress-red':pct>=80?'progress-orange':'progress-green';
       totalBudget+=l.budget||0;totalReel+=l.reel||0;
       ht+=`<tr>
-        <td><strong>${l.compte||''}</strong>${l.libelle?' — '+l.libelle:''}</td>
+        <td><strong>${l.compte||''}</strong>${l.libelle?' Ã¢â‚¬â€ '+l.libelle:''}</td>
         <td class="num">${(l.budget||0).toFixed(2)}</td>
         <td class="num">${(l.reel||0).toFixed(2)}</td>
         <td class="num" style="color:${(l.ecart||0)<0?'var(--accent)':'var(--green)'}">${(l.ecart||0).toFixed(2)}</td>
@@ -897,10 +897,10 @@ async function loadBudget(){
       <td class="num" style="color:${(totalReel-totalBudget)<0?'var(--accent)':'var(--green)'}">${(totalReel-totalBudget).toFixed(2)}</td>
       <td><div class="progress-bar"><div class="progress-fill ${totalCls}" style="width:${Math.min(totalPct,100)}%"></div></div><span style="font-size:10px;color:var(--muted)">${totalPct.toFixed(0)}%</span></td>
     </tr>`;
-    if(!(comparaison||[]).length)ht+=`<tr><td colspan="5" class="empty">Aucune donnée budgétaire</td></tr>`;
+    if(!(comparaison||[]).length)ht+=`<tr><td colspan="5" class="empty">Aucune donnÃƒÂ©e budgÃƒÂ©taire</td></tr>`;
     ht+=`</tbody></table></div>`;
     if(resume&&resume.top_depassements&&resume.top_depassements.length){
-      ht+=`<div class="card mt-sm"><div class="card-header"><h3>⚠️ Top dépassements</h3></div><table><thead><tr><th>Compte</th><th class="num">Budget</th><th class="num">Réel</th><th class="num">Écart</th></tr></thead><tbody>`;
+      ht+=`<div class="card mt-sm"><div class="card-header"><h3>Ã¢Å¡Â Ã¯Â¸Â Top dÃƒÂ©passements</h3></div><table><thead><tr><th>Compte</th><th class="num">Budget</th><th class="num">RÃƒÂ©el</th><th class="num">Ãƒâ€°cart</th></tr></thead><tbody>`;
       for(const d of resume.top_depassements){
         ht+=`<tr><td><strong>${d.compte||''}</strong></td><td class="num">${(d.budget||0).toFixed(2)}</td><td class="num">${(d.reel||0).toFixed(2)}</td><td class="num" style="color:var(--accent)">${(d.ecart||0).toFixed(2)}</td></tr>`;
       }
@@ -927,7 +927,7 @@ async function saveBudget(){
       montant:parseFloat(document.getElementById('budget-montant').value)||0,
       notes:document.getElementById('budget-notes').value
     })});
-    closeModal('modal-budget');loadBudget();toast('Budget enregistré');
+    closeModal('modal-budget');loadBudget();toast('Budget enregistrÃƒÂ©');
   }catch(e){toast(e.message,'error')}
 }
 
@@ -937,14 +937,14 @@ async function importBudgetCSV(e){
   const text=await file.text();
   try{
     await api('/api/budget/importer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,csv:text,filename:file.name})});
-    loadBudget();toast('Budgets importés');
+    loadBudget();toast('Budgets importÃƒÂ©s');
   }catch(e){toast(e.message,'error')}
   e.target.value='';
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  NOTES DE FRAIS
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 let nfFilter={statut:'',categorie:''};
 
 async function loadNotesFrais(){
@@ -957,27 +957,27 @@ async function loadNotesFrais(){
     if(nfFilter.categorie)url+=`&categorie=${nfFilter.categorie}`;
     const[notes,stats]=await Promise.all([api(url),api(`/api/notes-frais/stats?exercice_id=${exerciceId}`)]);
     let ht=`<div class="card">
-      <div class="card-header"><h2>🧾 Notes de frais</h2><button class="btn btn-sm" onclick="openNoteModal()">+ Nouvelle note</button></div>
+      <div class="card-header"><h2>Ã°Å¸Â§Â¾ Notes de frais</h2><button class="btn btn-sm" onclick="openNoteModal()">+ Nouvelle note</button></div>
       <div class="filter-bar">
         <select onchange="nfFilter.statut=this.value;loadNotesFrais()">
           <option value="">Tous statuts</option>
-          <option value="brouillon">Brouillon</option><option value="soumis">Soumis</option><option value="valide">Validé</option><option value="rembourse">Remboursé</option>
+          <option value="brouillon">Brouillon</option><option value="soumis">Soumis</option><option value="valide">ValidÃƒÂ©</option><option value="rembourse">RemboursÃƒÂ©</option>
         </select>
         <select onchange="nfFilter.categorie=this.value;loadNotesFrais()">
-          <option value="">Toutes catégories</option>
-          <option value="deplacement">Déplacement</option><option value="repas">Repas</option><option value="hebergement">Hébergement</option><option value="fournitures">Fournitures</option><option value="divers">Divers</option>
+          <option value="">Toutes catÃƒÂ©gories</option>
+          <option value="deplacement">DÃƒÂ©placement</option><option value="repas">Repas</option><option value="hebergement">HÃƒÂ©bergement</option><option value="fournitures">Fournitures</option><option value="divers">Divers</option>
         </select>
       </div>
-      <table><thead><tr><th>Date</th><th>Description</th><th>Catégorie</th><th class="num">Montant TTC</th><th>Statut</th><th></th></tr></thead><tbody>`;
+      <table><thead><tr><th>Date</th><th>Description</th><th>CatÃƒÂ©gorie</th><th class="num">Montant TTC</th><th>Statut</th><th></th></tr></thead><tbody>`;
     for(const n of(notes||[])){
       const statClass={brouillon:'badge-neutral',soumis:'badge-info',valide:'badge-success',rembourse:'badge-warning'};
       ht+=`<tr>
         <td>${n.date||''}</td><td>${n.description||''}</td><td>${n.categorie||''}</td>
-        <td class="num">${(n.montant_ttc||0).toFixed(2)} €</td>
+        <td class="num">${(n.montant_ttc||0).toFixed(2)} Ã¢â€šÂ¬</td>
         <td><span class="badge ${statClass[n.statut]||'badge-neutral'}">${n.statut||'?'}</span></td>
         <td style="white-space:nowrap">
           ${n.statut==='soumis'?`<button class="btn btn-green btn-sm" onclick="validerNote(${n.id})">Valider</button>`:''}
-          ${n.statut==='valide'?`<button class="btn btn-outline btn-sm" onclick="genererEcritureNote(${n.id})">Générer écriture</button>`:''}
+          ${n.statut==='valide'?`<button class="btn btn-outline btn-sm" onclick="genererEcritureNote(${n.id})">GÃƒÂ©nÃƒÂ©rer ÃƒÂ©criture</button>`:''}
         </td>
       </tr>`;
     }
@@ -985,12 +985,12 @@ async function loadNotesFrais(){
     ht+=`</tbody></table></div>`;
     // Stats
     ht+=`<div class="dash-grid" style="margin-top:16px">
-      <div class="dash-card"><div class="label">Total</div><div class="big-num">${(stats.total||0).toFixed(2)} €</div></div>`;
+      <div class="dash-card"><div class="label">Total</div><div class="big-num">${(stats.total||0).toFixed(2)} Ã¢â€šÂ¬</div></div>`;
     if(stats.par_categorie)for(const[c,m]of Object.entries(stats.par_categorie||{})){
-      ht+=`<div class="dash-card"><div class="label">${c}</div><div class="big-num" style="font-size:20px">${(m||0).toFixed(2)} €</div></div>`;
+      ht+=`<div class="dash-card"><div class="label">${c}</div><div class="big-num" style="font-size:20px">${(m||0).toFixed(2)} Ã¢â€šÂ¬</div></div>`;
     }
     if(stats.par_mois)for(const[m,v]of Object.entries(stats.par_mois||{})){
-      ht+=`<div class="dash-card"><div class="label">Mois ${m}</div><div class="big-num" style="font-size:18px">${(v||0).toFixed(2)} €</div></div>`;
+      ht+=`<div class="dash-card"><div class="label">Mois ${m}</div><div class="big-num" style="font-size:18px">${(v||0).toFixed(2)} Ã¢â€šÂ¬</div></div>`;
     }
     ht+=`</div>`;
     el.innerHTML=ht;
@@ -1027,21 +1027,21 @@ async function saveNote(){
       employe:document.getElementById('nf-employe').value,
       justificatif:document.getElementById('nf-justificatif').value
     })});
-    closeModal('modal-note-frais');loadNotesFrais();toast('Note de frais enregistrée');
+    closeModal('modal-note-frais');loadNotesFrais();toast('Note de frais enregistrÃƒÂ©e');
   }catch(e){toast(e.message,'error')}
 }
 
 async function validerNote(id){
-  try{await api(`/api/notes-frais/${id}/valider`,{method:'POST'});loadNotesFrais();toast('Note validée')}catch(e){toast(e.message,'error')}
+  try{await api(`/api/notes-frais/${id}/valider`,{method:'POST'});loadNotesFrais();toast('Note validÃƒÂ©e')}catch(e){toast(e.message,'error')}
 }
 
 async function genererEcritureNote(id){
-  try{await api(`/api/notes-frais/${id}/ecriture`,{method:'POST'});loadNotesFrais();toast('Écriture générée')}catch(e){toast(e.message,'error')}
+  try{await api(`/api/notes-frais/${id}/ecriture`,{method:'POST'});loadNotesFrais();toast('Ãƒâ€°criture gÃƒÂ©nÃƒÂ©rÃƒÂ©e')}catch(e){toast(e.message,'error')}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  LETTRAGE
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 let lettrageCompte=null;
 
 async function loadLettrage(){
@@ -1054,12 +1054,12 @@ async function loadLettrage(){
       api(`/api/lettrage?exercice_id=${exerciceId}`)
     ]);
     let ht=`<div class="card">
-      <div class="card-header"><h2>🔗 Lettrage comptable</h2><button class="btn btn-sm" onclick="nouveauLettrage()">+ Nouveau lettrage</button></div>
+      <div class="card-header"><h2>Ã°Å¸â€â€” Lettrage comptable</h2><button class="btn btn-sm" onclick="nouveauLettrage()">+ Nouveau lettrage</button></div>
       <h3 style="margin-bottom:8px;font-size:14px">Comptes lettrables</h3>
-      <table class="lettrage-comptes"><thead><tr><th>Compte</th><th class="num">Solde</th><th class="num">Nb non-lettrées</th><th></th></tr></thead><tbody>`;
+      <table class="lettrage-comptes"><thead><tr><th>Compte</th><th class="num">Solde</th><th class="num">Nb non-lettrÃƒÂ©es</th><th></th></tr></thead><tbody>`;
     for(const c of(comptes||[])){
       ht+=`<tr onclick="chargerSuggestion('${c.compte}')">
-        <td><strong>${c.compte||''}</strong>${c.libelle?' — '+c.libelle:''}</td>
+        <td><strong>${c.compte||''}</strong>${c.libelle?' Ã¢â‚¬â€ '+c.libelle:''}</td>
         <td class="num" style="color:${(c.solde||0)>=0?'var(--green)':'var(--accent)'}">${(c.solde||0).toFixed(2)}</td>
         <td class="num">${c.nb_non_lettrees||0}</td>
         <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();lettrageAuto('${c.compte}')">Lettrage auto</button></td>
@@ -1070,13 +1070,13 @@ async function loadLettrage(){
     <div id="lettrage-suggestions"></div></div>`;
     // Lettrages existants
     ht+=`<div class="card"><div class="card-header"><h3>Lettrages existants</h3></div>
-      <table><thead><tr><th>Code</th><th class="num">Nb lignes</th><th>Équilibré</th><th></th></tr></thead><tbody>`;
+      <table><thead><tr><th>Code</th><th class="num">Nb lignes</th><th>Ãƒâ€°quilibrÃƒÂ©</th><th></th></tr></thead><tbody>`;
     for(const l of(lettrages||[])){
       ht+=`<tr onclick="detailLettrage(${l.id})" style="cursor:pointer">
         <td><strong>${l.code||'LTR-'+l.id}</strong></td>
         <td class="num">${l.nb_lignes||0}</td>
-        <td>${l.equilibre?'<span class="badge badge-success">✅ Oui</span>':'<span class="badge badge-danger">❌ Non</span>'}</td>
-        <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();detailLettrage(${l.id})">Détail</button></td>
+        <td>${l.equilibre?'<span class="badge badge-success">Ã¢Å“â€¦ Oui</span>':'<span class="badge badge-danger">Ã¢ÂÅ’ Non</span>'}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();detailLettrage(${l.id})">DÃƒÂ©tail</button></td>
       </tr>`;
     }
     if(!(lettrages||[]).length)ht+=`<tr><td colspan="4" class="empty">Aucun lettrage</td></tr>`;
@@ -1088,7 +1088,7 @@ async function loadLettrage(){
 async function nouveauLettrage(){
   try{
     const r=await api('/api/lettrage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});
-    loadLettrage();toast('Lettrage créé: '+(r.code||'#'+r.id));
+    loadLettrage();toast('Lettrage crÃƒÂ©ÃƒÂ©: '+(r.code||'#'+r.id));
   }catch(e){toast(e.message,'error')}
 }
 
@@ -1102,9 +1102,9 @@ async function chargerSuggestion(compte){
     let ht=`<div class="card mt-sm"><div class="card-header"><h3>Suggestions pour ${compte}</h3></div><div class="lettrage-paires">`;
     for(const p of paires){
       ht+=`<div class="lettrage-paire">
-        <div style="margin-bottom:4px"><span class="debit">Débit: ${(p.debit||0).toFixed(2)}</span> — ${p.libelle_debit||''}</div>
-        <div style="margin-bottom:8px"><span class="credit">Crédit: ${(p.credit||0).toFixed(2)}</span> — ${p.libelle_credit||''}</div>
-        <button class="btn btn-sm btn-green" onclick="creerLettrageAuto('${compte}',${p.debit_id||0},${p.credit_id||0})">Créer lettrage</button>
+        <div style="margin-bottom:4px"><span class="debit">DÃƒÂ©bit: ${(p.debit||0).toFixed(2)}</span> Ã¢â‚¬â€ ${p.libelle_debit||''}</div>
+        <div style="margin-bottom:8px"><span class="credit">CrÃƒÂ©dit: ${(p.credit||0).toFixed(2)}</span> Ã¢â‚¬â€ ${p.libelle_credit||''}</div>
+        <button class="btn btn-sm btn-green" onclick="creerLettrageAuto('${compte}',${p.debit_id||0},${p.credit_id||0})">CrÃƒÂ©er lettrage</button>
       </div>`;
     }
     ht+=`</div></div>`;
@@ -1115,14 +1115,14 @@ async function chargerSuggestion(compte){
 async function creerLettrageAuto(compte,debitId,creditId){
   try{
     await api('/api/lettrage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,compte,lignes:[debitId,creditId]})});
-    loadLettrage();toast('Lettrage créé avec succès');
+    loadLettrage();toast('Lettrage crÃƒÂ©ÃƒÂ© avec succÃƒÂ¨s');
   }catch(e){toast(e.message,'error')}
 }
 
 async function lettrageAuto(compte){
   try{
     const r=await api('/api/lettrage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,compte,auto:true})});
-    loadLettrage();toast(r.code?`Lettrage ${r.code} créé`:('Lettrage créé avec '+((r.nb_lignes||0)+' ligne(s)')));
+    loadLettrage();toast(r.code?`Lettrage ${r.code} crÃƒÂ©ÃƒÂ©`:('Lettrage crÃƒÂ©ÃƒÂ© avec '+((r.nb_lignes||0)+' ligne(s)')));
   }catch(e){toast(e.message,'error')}
 }
 
@@ -1133,21 +1133,21 @@ async function detailLettrage(id){
     const l=await api(`/api/lettrage?id=${id}`);
     let sumD=0,sumC=0;
     let ht=`<div class="card mt-sm"><div class="card-header"><h3>Lettrage ${l.code||'#'+l.id}</h3></div>
-      <table class="lettrage-detail"><thead><tr><th>Date</th><th>Compte</th><th>Libellé</th><th class="num">Débit</th><th class="num">Crédit</th></tr></thead><tbody>`;
+      <table class="lettrage-detail"><thead><tr><th>Date</th><th>Compte</th><th>LibellÃƒÂ©</th><th class="num">DÃƒÂ©bit</th><th class="num">CrÃƒÂ©dit</th></tr></thead><tbody>`;
     for(const ln of(l.lignes||[])){
       sumD+=ln.debit||0;sumC+=ln.credit||0;
       ht+=`<tr><td>${ln.date||''}</td><td>${ln.compte||''}</td><td>${ln.libelle||''}</td><td class="num">${(ln.debit||0).toFixed(2)}</td><td class="num">${(ln.credit||0).toFixed(2)}</td></tr>`;
     }
     if(!(l.lignes||[]).length)ht+=`<tr><td colspan="5" class="empty">Aucune ligne</td></tr>`;
     ht+=`<tr class="total-row"><td colspan="3">Totaux</td><td class="num">${sumD.toFixed(2)}</td><td class="num">${sumC.toFixed(2)}</td></tr></tbody></table>
-      <div class="mt-sm">${l.equilibre?'<span class="badge badge-success">✅ Équilibré</span>':'<span class="badge badge-danger">❌ Écart: '+(Math.abs(sumD-sumC)).toFixed(2)+'</span>'}</div></div>`;
+      <div class="mt-sm">${l.equilibre?'<span class="badge badge-success">Ã¢Å“â€¦ Ãƒâ€°quilibrÃƒÂ©</span>':'<span class="badge badge-danger">Ã¢ÂÅ’ Ãƒâ€°cart: '+(Math.abs(sumD-sumC)).toFixed(2)+'</span>'}</div></div>`;
     el.innerHTML=ht;
   }catch(e){el.innerHTML=`<div class="text-muted mt-sm">Erreur: ${e.message}</div>`}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  EMAIL / SMTP
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadEmailConfig(){
   const el=document.getElementById('email-content');
   el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
@@ -1158,7 +1158,7 @@ async function loadEmailConfig(){
     ]);
     const cfg=config||{};
     let ht=`<div class="card">
-      <div class="card-header"><h2>📧 Configuration Email</h2></div>
+      <div class="card-header"><h2>Ã°Å¸â€œÂ§ Configuration Email</h2></div>
       <div class="smtp-form">
         <div class="form-row">
           <div class="form-group"><label>Serveur SMTP</label><input id="smtp-host" value="${cfg.host||''}" placeholder="smtp.example.com"></div>
@@ -1168,9 +1168,9 @@ async function loadEmailConfig(){
           <div class="form-group"><label>Utilisateur</label><input id="smtp-user" value="${cfg.user||''}" placeholder="user@example.com"></div>
           <div class="form-group"><label>Mot de passe</label><input type="password" id="smtp-pass" value="${cfg.pass||''}"></div>
         </div>
-        <div class="form-group"><label>Expéditeur (From)</label><input id="smtp-from" value="${cfg.from||''}" placeholder="comptabilite@example.com"></div>
+        <div class="form-group"><label>ExpÃƒÂ©diteur (From)</label><input id="smtp-from" value="${cfg.from||''}" placeholder="comptabilite@example.com"></div>
         <div class="form-group"><label>Signature</label><textarea id="smtp-signature" rows="3" placeholder="Cordialement,
-L'équipe ComptaPro">${cfg.signature||''}</textarea></div>
+L'ÃƒÂ©quipe ComptaPro">${cfg.signature||''}</textarea></div>
         <div style="display:flex;gap:10px;align-items:center">
           <button class="btn btn-sm" onclick="saveEmailConfig()">Enregistrer</button>
           <button class="btn btn-sm btn-outline" onclick="testSmtp()">Tester la connexion</button>
@@ -1181,11 +1181,11 @@ L'équipe ComptaPro">${cfg.signature||''}</textarea></div>
     // Historique
     const envois=(historique||[]).filter(h=>h.action==='envoi_email');
     ht+=`<div class="card mt-sm"><div class="card-header"><h3>Historique des envois</h3></div>
-      <table><thead><tr><th>Date</th><th>Action</th><th>Détails</th></tr></thead><tbody>`;
+      <table><thead><tr><th>Date</th><th>Action</th><th>DÃƒÂ©tails</th></tr></thead><tbody>`;
     for(const e of envois.slice(0,20)){
       ht+=`<tr><td>${e.date||''}</td><td>${e.action||''}</td><td style="font-size:12px;max-width:400px;overflow:hidden;text-overflow:ellipsis">${(e.details||'').substring(0,100)}</td></tr>`;
     }
-    if(!envois.length)ht+=`<tr><td colspan="3" class="empty">Aucun envoi récent</td></tr>`;
+    if(!envois.length)ht+=`<tr><td colspan="3" class="empty">Aucun envoi rÃƒÂ©cent</td></tr>`;
     ht+=`</tbody></table></div>`;
     el.innerHTML=ht;
   }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
@@ -1201,7 +1201,7 @@ async function saveEmailConfig(){
       from:document.getElementById('smtp-from').value,
       signature:document.getElementById('smtp-signature').value
     })});
-    toast('Configuration email enregistrée');
+    toast('Configuration email enregistrÃƒÂ©e');
   }catch(e){toast(e.message,'error')}
 }
 
@@ -1210,15 +1210,15 @@ async function testSmtp(){
   result.innerHTML='<div class="smtp-result" style="background:#e5e7eb"><div class="spinner"></div> Test en cours...</div>';
   try{
     await api('/api/email/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});
-    result.innerHTML='<div class="smtp-result smtp-success">✅ Connexion SMTP réussie</div>';
+    result.innerHTML='<div class="smtp-result smtp-success">Ã¢Å“â€¦ Connexion SMTP rÃƒÂ©ussie</div>';
   }catch(e){
-    result.innerHTML=`<div class="smtp-result smtp-error">❌ Échec: ${e.message}</div>`;
+    result.innerHTML=`<div class="smtp-result smtp-error">Ã¢ÂÅ’ Ãƒâ€°chec: ${e.message}</div>`;
   }
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  AUDIT
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 let auditFilter={type:'',dateDebut:'',dateFin:''};
 
 async function loadAudit(){
@@ -1227,36 +1227,36 @@ async function loadAudit(){
   try{
     const rows=await api('/api/audit/recent?limite=50');
     let data=rows||[];
-    // Filtres JS côté client
+    // Filtres JS cÃƒÂ´tÃƒÂ© client
     if(auditFilter.type)data=data.filter(r=>r.type===auditFilter.type);
     if(auditFilter.dateDebut)data=data.filter(r=>r.date>=auditFilter.dateDebut);
     if(auditFilter.dateFin)data=data.filter(r=>r.date<=auditFilter.dateFin);
     let ht=`<div class="card">
-      <div class="card-header"><h2>🔍 Audit</h2></div>
+      <div class="card-header"><h2>Ã°Å¸â€Â Audit</h2></div>
       <div class="filter-bar">
         <select onchange="auditFilter.type=this.value;loadAudit()">
           <option value="">Tous types</option>
-          <option value="facture">Facture</option><option value="ecriture">Écriture</option><option value="note_frais">Note de frais</option>
+          <option value="facture">Facture</option><option value="ecriture">Ãƒâ€°criture</option><option value="note_frais">Note de frais</option>
         </select>
-        <input type="date" placeholder="Date début" onchange="auditFilter.dateDebut=this.value;loadAudit()">
+        <input type="date" placeholder="Date dÃƒÂ©but" onchange="auditFilter.dateDebut=this.value;loadAudit()">
         <input type="date" placeholder="Date fin" onchange="auditFilter.dateFin=this.value;loadAudit()">
       </div>
-      <table><thead><tr><th>Date</th><th>Type</th><th>ID</th><th>Action</th><th>Détails</th></tr></thead><tbody>`;
+      <table><thead><tr><th>Date</th><th>Type</th><th>ID</th><th>Action</th><th>DÃƒÂ©tails</th></tr></thead><tbody>`;
     for(const r of data){
       ht+=`<tr>
         <td>${r.date||''}</td><td><span class="badge badge-info">${r.type||''}</span></td><td>${r.entity_id||''}</td>
         <td>${r.action||''}</td><td style="font-size:12px;max-width:300px;overflow:hidden;text-overflow:ellipsis">${(r.details||'').substring(0,120)}</td>
       </tr>`;
     }
-    if(!data.length)ht+=`<tr><td colspan="5" class="empty">Aucune entrée d'audit</td></tr>`;
+    if(!data.length)ht+=`<tr><td colspan="5" class="empty">Aucune entrÃƒÂ©e d'audit</td></tr>`;
     ht+=`</tbody></table></div>`;
     el.innerHTML=ht;
   }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  CATALOGUE
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 function openCatalogue(){
   document.getElementById('cat-code').value='';
   document.getElementById('cat-type').value='client';
@@ -1284,7 +1284,7 @@ async function loadCatalogue(){
       <td><strong>${r.code||''}</strong></td>
       <td><span class="badge ${r.type==='client'?'badge-success':'badge-warning'}">${r.type||''}</span></td>
       <td>${r.nom||''}</td><td>${r.email||''}</td>
-      <td><button class="btn btn-outline btn-sm" onclick="supprimerCatalogue('${r.code}')">🗑️</button></td>
+      <td><button class="btn btn-outline btn-sm" onclick="supprimerCatalogue('${r.code}')">Ã°Å¸â€”â€˜Ã¯Â¸Â</button></td>
     </tr>`).join('')||'<tr><td colspan="5" class="empty">Aucun enregistrement</td></tr>';
   }catch(e){}
 }
@@ -1303,14 +1303,14 @@ async function saveCatalogue(){
       email:document.getElementById('cat-email').value,
       tel:document.getElementById('cat-tel').value
     })});
-    document.getElementById('cat-msg').innerHTML='<span style="color:var(--green)">✅ Ajouté</span>';
+    document.getElementById('cat-msg').innerHTML='<span style="color:var(--green)">Ã¢Å“â€¦ AjoutÃƒÂ©</span>';
     loadCatalogue();
-  }catch(e){document.getElementById('cat-msg').innerHTML=`<span style="color:var(--accent)">❌ ${e.message}</span>`}
+  }catch(e){document.getElementById('cat-msg').innerHTML=`<span style="color:var(--accent)">Ã¢ÂÅ’ ${e.message}</span>`}
 }
 
 async function supprimerCatalogue(code){
   if(!confirm(`Supprimer ${code} ?`))return;
-  try{await api(`/api/comptes-aux/${encodeURIComponent(code)}`,{method:'DELETE'});loadCatalogue();toast('Supprimé')}catch(e){toast(e.message,'error')}
+  try{await api(`/api/comptes-aux/${encodeURIComponent(code)}`,{method:'DELETE'});loadCatalogue();toast('SupprimÃƒÂ©')}catch(e){toast(e.message,'error')}
 }
 
 // TVA
@@ -1437,7 +1437,7 @@ async function rechercher(){
   try{
     const results=await api(`/api/recherche?exercice_id=${exerciceId}&q=${encodeURIComponent(q)}`);
     if(!results.length){el.innerHTML='<div class="empty">Aucun resultat</div>';return}
-    const types={ecriture:'📒',facture:'📄',note_frais:'🧾',compte_aux:'👤',compte_pcg:'📊'};
+    const types={ecriture:'Ã°Å¸â€œâ€™',facture:'Ã°Å¸â€œâ€ž',note_frais:'Ã°Å¸Â§Â¾',compte_aux:'Ã°Å¸â€˜Â¤',compte_pcg:'Ã°Å¸â€œÅ '};
     el.innerHTML=results.map(r=>`<div class="card" style="margin-bottom:6px;cursor:pointer" onclick="if('${r.type}'==='facture')navigate('factures');else if('${r.type}'==='ecriture')navigate('ecritures');else navigate('${r.type}')"><strong>${types[r.type]||'?'} ${r.label}</strong><br><span style="font-size:11px;color:var(--muted)">${r.detail||''}</span></div>`).join('');
   }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
 }
@@ -1491,9 +1491,9 @@ function navigate(page){
 }
 
 async function showNewExercice(){
-  const libelle=prompt("Libellé de l'exercice :");
+  const libelle=prompt("LibellÃƒÂ© de l'exercice :");
   if(!libelle)return;
-  const debut=prompt('Date début (YYYY-MM-DD) :',new Date().getFullYear()+'-01-01');
+  const debut=prompt('Date dÃƒÂ©but (YYYY-MM-DD) :',new Date().getFullYear()+'-01-01');
   const fin=prompt('Date fin (YYYY-MM-DD) :',new Date().getFullYear()+'-12-31');
   try{
     await api('/api/exercices',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({libelle,date_debut:debut,date_fin:fin})});
@@ -1501,13 +1501,13 @@ async function showNewExercice(){
     exerciceId=exercices[exercices.length-1].id;
     document.getElementById('exercice-select').value=exerciceId;
     navigate(currentPage);
-    toast('Exercice créé');
+    toast('Exercice crÃƒÂ©ÃƒÂ©');
   }catch(e){toast(e.message,'error')}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  DASHBOARD
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadDashboard(){
   if(!exerciceId)return;
   const el=document.getElementById('dashboard-content');
@@ -1521,47 +1521,47 @@ async function loadDashboard(){
     const nbNonRapproche=treso.non_rapprochees||0;
     let ht=`<div class="dash-grid">`;
     ht+=`<div class="dash-card">
-      <div class="label">Trésorerie</div>
+      <div class="label">TrÃƒÂ©sorerie</div>
       <div class="big-num ${(treso.solde_banque||0)>=0?'green':'red'}">${(treso.solde_banque||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div>
       <div class="kpi-row">
-        <div class="kpi"><div class="kpi-val">${(treso.creances_clients||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Créances clients</div></div>
+        <div class="kpi"><div class="kpi-val">${(treso.creances_clients||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">CrÃƒÂ©ances clients</div></div>
         <div class="kpi"><div class="kpi-val">${(treso.dettes_fournisseurs||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Dettes fournisseurs</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:${(treso.treso_nette||0)>=0?'var(--green)':'var(--accent)'}">${(treso.treso_nette||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Trésorerie nette</div></div>
+        <div class="kpi"><div class="kpi-val" style="color:${(treso.treso_nette||0)>=0?'var(--green)':'var(--accent)'}">${(treso.treso_nette||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">TrÃƒÂ©sorerie nette</div></div>
       </div>
     </div>`;
     ht+=`<div class="dash-card">
       <div class="label">CA Mensuel (6 derniers mois)</div>
-      <table class="mini-table"><thead><tr><th>Mois</th><th class="num">Charges</th><th class="num">Produits</th><th class="num">Résultat</th></tr></thead><tbody>`;
+      <table class="mini-table"><thead><tr><th>Mois</th><th class="num">Charges</th><th class="num">Produits</th><th class="num">RÃƒÂ©sultat</th></tr></thead><tbody>`;
     for(const m of(evo||[]))ht+=`<tr><td>${m.mois}</td><td class="num">${m.charges.toFixed(0)}</td><td class="num">${m.produits.toFixed(0)}</td><td class="num" style="color:${m.resultat>=0?'var(--green)':'var(--accent)'}">${m.resultat.toFixed(0)}</td></tr>`;
     ht+=`</tbody></table></div>`;
     ht+=`<div class="dash-card">
       <div class="label">TVA</div>
       <div class="kpi-row">
-        <div class="kpi"><div class="kpi-val green">${(tva.collectee||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Collectée</div></div>
-        <div class="kpi"><div class="kpi-val">${(tva.deductible||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Déductible</div></div>
-        <div class="kpi"><div class="kpi-val" style="color:${(tva.a_payer||0)>0?'var(--accent)':'var(--green)'}">${(tva.a_payer||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">À payer</div></div>
+        <div class="kpi"><div class="kpi-val green">${(tva.collectee||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">CollectÃƒÂ©e</div></div>
+        <div class="kpi"><div class="kpi-val">${(tva.deductible||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">DÃƒÂ©ductible</div></div>
+        <div class="kpi"><div class="kpi-val" style="color:${(tva.a_payer||0)>0?'var(--accent)':'var(--green)'}">${(tva.a_payer||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Ãƒâ‚¬ payer</div></div>
       </div>
     </div>`;
     ht+=`</div><div class="dash-grid wide">`;
     ht+=`<div class="dash-card">
       <div class="label">Alertes</div>`;
     if(nbFactRetard>0)ht+=`<div class="alert-item"><span class="alert-count" style="color:var(--accent)">${nbFactRetard}</span> Facture(s) en retard</div>`;
-    if(nbNonRapproche>0)ht+=`<div class="alert-item"><span class="alert-count" style="color:var(--warn)">${nbNonRapproche}</span> Ligne(s) bancaire(s) non rapprochée(s)</div>`;
+    if(nbNonRapproche>0)ht+=`<div class="alert-item"><span class="alert-count" style="color:var(--warn)">${nbNonRapproche}</span> Ligne(s) bancaire(s) non rapprochÃƒÂ©e(s)</div>`;
     if(!nbFactRetard&&!nbNonRapproche)ht+=`<div class="text-muted">Aucune alerte</div>`;
     ht+=`</div>`;
     ht+=`<div class="dash-card">
       <div class="label">Top Clients</div>
       <table class="mini-table"><thead><tr><th>Client</th><th class="num">CA</th></tr></thead><tbody>`;
     for(const c of(top||[]))ht+=`<tr><td>${c.client}</td><td class="num">${(c.ca||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td></tr>`;
-    if(!(top||[]).length)ht+=`<tr><td colspan="2" class="text-muted">Aucune données</td></tr>`;
+    if(!(top||[]).length)ht+=`<tr><td colspan="2" class="text-muted">Aucune donnÃƒÂ©es</td></tr>`;
     ht+=`</tbody></table></div></div>`;
     el.innerHTML=ht;
   }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  FACTURES
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 let factures=[],factPage=1,factFilter={};
 
 async function loadFactures(){
@@ -1581,30 +1581,30 @@ async function loadFactures(){
         <div style="display:flex;gap:8px">
           <button class="btn btn-outline btn-sm" onclick="openFactureModal('DEVIS')">+ Devis</button>
           <button class="btn btn-sm" onclick="openFactureModal('FACTURE')">+ Facture</button>
-          <button class="btn btn-outline btn-sm" onclick="openCatalogue()">📦 Catalogue</button>
+          <button class="btn btn-outline btn-sm" onclick="openCatalogue()">Ã°Å¸â€œÂ¦ Catalogue</button>
         </div>
       </div>
       <div class="filter-bar">
         <select onchange="factFilter.statut=this.value||null;factPage=1;loadFactures()">
           <option value="">Tous statuts</option>
-          <option value="BROUILLON">Brouillon</option><option value="ENVOYEE">Envoyée</option><option value="PAYEE">Payée</option><option value="RETARD">En retard</option>
+          <option value="BROUILLON">Brouillon</option><option value="ENVOYEE">EnvoyÃƒÂ©e</option><option value="PAYEE">PayÃƒÂ©e</option><option value="RETARD">En retard</option>
         </select>
         <select onchange="factFilter.type=this.value||null;factPage=1;loadFactures()">
           <option value="">Tous types</option>
           <option value="FACTURE">Facture</option><option value="DEVIS">Devis</option><option value="AVOIR">Avoir</option>
         </select>
       </div>
-      <table><thead><tr><th>N°</th><th>Date</th><th>Client</th><th class="num">Total TTC</th><th>Statut</th><th></th></tr></thead><tbody>`;
+      <table><thead><tr><th>NÃ‚Â°</th><th>Date</th><th>Client</th><th class="num">Total TTC</th><th>Statut</th><th></th></tr></thead><tbody>`;
     for(const f of page){
       const statClass={BROUILLON:'badge-neutral',ENVOYEE:'badge-info',PAYEE:'badge-success',RETARD:'badge-danger'};
       ht+=`<tr>
         <td><strong>${f.numero||f.id}</strong></td><td>${f.date}</td><td>${f.client||''}</td>
-        <td class="num">${(f.total_ttc||0).toFixed(2)} €</td>
+        <td class="num">${(f.total_ttc||0).toFixed(2)} Ã¢â€šÂ¬</td>
         <td><span class="badge ${statClass[f.statut]||'badge-neutral'}">${f.statut}</span></td>
         <td style="white-space:nowrap">
-          <button class="btn btn-outline btn-sm" onclick="printFacturePDF(${f.id})" title="Imprimer">🖨️</button>
-          ${f.statut!=='PAYEE'?`<button class="btn btn-green btn-sm" onclick="marquerPayee(${f.id})">Payée</button>`:''}
-          ${f.statut==='BROUILLON'||f.statut==='ENVOYEE'?`<button class="btn btn-outline btn-sm" onclick="genererEcriture(${f.id})">Générer écriture</button>`:''}
+          <button class="btn btn-outline btn-sm" onclick="printFacturePDF(${f.id})" title="Imprimer">Ã°Å¸â€“Â¨Ã¯Â¸Â</button>
+          ${f.statut!=='PAYEE'?`<button class="btn btn-green btn-sm" onclick="marquerPayee(${f.id})">PayÃƒÂ©e</button>`:''}
+          ${f.statut==='BROUILLON'||f.statut==='ENVOYEE'?`<button class="btn btn-outline btn-sm" onclick="genererEcriture(${f.id})">GÃƒÂ©nÃƒÂ©rer ÃƒÂ©criture</button>`:''}
         </td>
       </tr>`;
     }
@@ -1616,10 +1616,10 @@ async function loadFactures(){
       ht+=`</div>`;
     }
     ht+=`</div>`;
-    // Balance âgée
+    // Balance ÃƒÂ¢gÃƒÂ©e
     try{
       const ba=await api(`/api/factures/balance-agee?exercice_id=${exerciceId}`);
-      ht+=`<div class="card"><div class="card-header"><h2>Balance âgée</h2></div><table><thead><tr><th>Client</th><th class="num">Total</th><th class="num">-30j</th><th class="num">30-60j</th><th class="num">+60j</th></tr></thead><tbody>`;
+      ht+=`<div class="card"><div class="card-header"><h2>Balance ÃƒÂ¢gÃƒÂ©e</h2></div><table><thead><tr><th>Client</th><th class="num">Total</th><th class="num">-30j</th><th class="num">30-60j</th><th class="num">+60j</th></tr></thead><tbody>`;
       for(const b of(ba||[]))ht+=`<tr><td>${b.client}</td><td class="num">${(b.total||0).toFixed(2)}</td><td class="num">${(b['moins_30']||0).toFixed(2)}</td><td class="num">${(b['30_60']||0).toFixed(2)}</td><td class="num" style="color:var(--accent)">${(b['plus_60']||0).toFixed(2)}</td></tr>`;
       ht+=`</tbody></table></div>`;
     }catch(e){}
@@ -1643,7 +1643,7 @@ function openFactureModal(type){
 function addFactLigne(){
   const d=document.createElement('div');
   d.className='form-row gap-xs mb-sm';
-  d.innerHTML=`<input placeholder="Description" style="flex:2"><input type="number" placeholder="Qté" value="1" min="1" style="flex:0 0 60px" oninput="calculeFactTotal()"><input type="number" placeholder="PU HT" step="0.01" min="0" style="flex:0 0 90px" oninput="calculeFactTotal()"><select style="flex:0 0 80px" onchange="calculeFactTotal()"><option value="20">TVA 20%</option><option value="10">TVA 10%</option><option value="5.5">TVA 5.5%</option><option value="0">Exonéré</option></select><button class="btn-ghost" onclick="this.parentElement.remove();calculeFactTotal()">✕</button>`;
+  d.innerHTML=`<input placeholder="Description" style="flex:2"><input type="number" placeholder="QtÃƒÂ©" value="1" min="1" style="flex:0 0 60px" oninput="calculeFactTotal()"><input type="number" placeholder="PU HT" step="0.01" min="0" style="flex:0 0 90px" oninput="calculeFactTotal()"><select style="flex:0 0 80px" onchange="calculeFactTotal()"><option value="20">TVA 20%</option><option value="10">TVA 10%</option><option value="5.5">TVA 5.5%</option><option value="0">ExonÃƒÂ©rÃƒÂ©</option></select><button class="btn-ghost" onclick="this.parentElement.remove();calculeFactTotal()">Ã¢Å“â€¢</button>`;
   document.getElementById('fact-lignes').appendChild(d);
 }
 
@@ -1670,22 +1670,22 @@ async function saveFacture(){
       echeance:document.getElementById('fact-echeance').value,client:document.getElementById('fact-client').value,
       objet:document.getElementById('fact-objet').value,lignes
     })});
-    closeModal('modal-facture');loadFactures();toast('Facture enregistrée');
+    closeModal('modal-facture');loadFactures();toast('Facture enregistrÃƒÂ©e');
   }catch(e){toast(e.message,'error')}
 }
 
 async function marquerPayee(id){
-  if(!confirm('Marquer cette facture comme payée ?'))return;
-  try{await api(`/api/factures/${id}/statut`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:'PAYEE'})});loadFactures();toast('Facture marquée payée')}catch(e){toast(e.message,'error')}
+  if(!confirm('Marquer cette facture comme payÃƒÂ©e ?'))return;
+  try{await api(`/api/factures/${id}/statut`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:'PAYEE'})});loadFactures();toast('Facture marquÃƒÂ©e payÃƒÂ©e')}catch(e){toast(e.message,'error')}
 }
 
 async function genererEcriture(id){
-  try{await api(`/api/factures/${id}/ecriture`,{method:'POST'});loadFactures();toast('Écriture générée')}catch(e){toast(e.message,'error')}
+  try{await api(`/api/factures/${id}/ecriture`,{method:'POST'});loadFactures();toast('Ãƒâ€°criture gÃƒÂ©nÃƒÂ©rÃƒÂ©e')}catch(e){toast(e.message,'error')}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  BANQUE
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 let banqueReleveId=null;
 
 async function loadBanque(){
@@ -1695,24 +1695,24 @@ async function loadBanque(){
   try{
     const releves=await api(`/api/banque/releves?exercice_id=${exerciceId}`);
     let ht=`<div class="card">
-      <div class="card-header"><h2>Relevés bancaires</h2>
+      <div class="card-header"><h2>RelevÃƒÂ©s bancaires</h2>
         <div style="display:flex;gap:8px">
           <input type="file" id="banque-csv-input" accept=".csv" style="display:none" onchange="importerCSV(event)">
-        <button class="btn btn-sm btn-green mt-sm" onclick="autoRapprocherBanque()" title="Rapprochement automatique">🤖 Rapprochement auto</button>
-        <button class="btn btn-sm btn-outline mt-sm" onclick="autoEtatBanque()" title="État auto-match">📊 État</button>
+        <button class="btn btn-sm btn-green mt-sm" onclick="autoRapprocherBanque()" title="Rapprochement automatique">Ã°Å¸Â¤â€“ Rapprochement auto</button>
+        <button class="btn btn-sm btn-outline mt-sm" onclick="autoEtatBanque()" title="Ãƒâ€°tat auto-match">Ã°Å¸â€œÅ  Ãƒâ€°tat</button>
         <span id="auto-match-msg">
-          <button class="btn btn-sm" onclick="document.getElementById('banque-csv-input').click()">📥 Importer CSV</button>
+          <button class="btn btn-sm" onclick="document.getElementById('banque-csv-input').click()">Ã°Å¸â€œÂ¥ Importer CSV</button>
         </div>
       </div>
-      <table><thead><tr><th>Relevé</th><th>Date</th><th>Banque</th><th class="num">Lignes</th><th class="num">Pointées</th><th></th></tr></thead><tbody>`;
+      <table><thead><tr><th>RelevÃƒÂ©</th><th>Date</th><th>Banque</th><th class="num">Lignes</th><th class="num">PointÃƒÂ©es</th><th></th></tr></thead><tbody>`;
     for(const r of(releves||[])){
       ht+=`<tr class="releve-row" onclick="loadBanqueDetail(${r.id})">
-        <td><strong>${r.libelle||'Relevé #'+r.id}</strong></td><td>${r.date||''}</td><td>${r.banque||''}</td>
+        <td><strong>${r.libelle||'RelevÃƒÂ© #'+r.id}</strong></td><td>${r.date||''}</td><td>${r.banque||''}</td>
         <td class="num">${r.nb_lignes||0}</td><td class="num">${r.nb_rapprochees||0}</td>
-        <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();loadBanqueDetail(${r.id})">Détail</button></td>
+        <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();loadBanqueDetail(${r.id})">DÃƒÂ©tail</button></td>
       </tr>`;
     }
-    if(!(releves||[]).length)ht+=`<tr><td colspan="6" class="empty">Aucun relevé importé</td></tr>`;
+    if(!(releves||[]).length)ht+=`<tr><td colspan="6" class="empty">Aucun relevÃƒÂ© importÃƒÂ©</td></tr>`;
     ht+=`</tbody></table></div><div id="banque-detail"></div>`;
     el.innerHTML=ht;
     if(banqueReleveId)loadBanqueDetail(banqueReleveId);
@@ -1723,15 +1723,15 @@ async function loadBanqueDetail(releveId){
   banqueReleveId=releveId;
   try{
     const detail=await api(`/api/banque/releves/${releveId}`);
-    let ht=`<div class="card mt-sm"><div class="card-header"><h2>Détail du relevé</h2>
-      <span>Pointées: ${detail.nb_rapprochees||0} / ${detail.lignes?.length||0}</span></div>
-      <table><thead><tr><th>Date</th><th>Libellé</th><th class="num">Montant</th><th>Suggestion</th><th></th></tr></thead><tbody>`;
+    let ht=`<div class="card mt-sm"><div class="card-header"><h2>DÃƒÂ©tail du relevÃƒÂ©</h2>
+      <span>PointÃƒÂ©es: ${detail.nb_rapprochees||0} / ${detail.lignes?.length||0}</span></div>
+      <table><thead><tr><th>Date</th><th>LibellÃƒÂ©</th><th class="num">Montant</th><th>Suggestion</th><th></th></tr></thead><tbody>`;
     for(const l of(detail.lignes||[])){
       const rapp=!!l.ecriture_id;
       ht+=`<tr>
         <td>${l.date||''}</td><td>${l.libelle||''}</td><td class="num" style="color:${(l.montant||0)>=0?'var(--green)':'var(--accent)'}">${(l.montant||0).toFixed(2)}</td>
         <td><span class="text-muted">${l.compte_suggere||'?'}</span></td>
-        <td>${rapp?`<span class="badge badge-success">Rapproché</span>`:`<button class="btn btn-sm btn-outline" onclick="openRapproche(${l.id},${releveId})">Rapprocher</button>`}</td>
+        <td>${rapp?`<span class="badge badge-success">RapprochÃƒÂ©</span>`:`<button class="btn btn-sm btn-outline" onclick="openRapproche(${l.id},${releveId})">Rapprocher</button>`}</td>
       </tr>`;
     }
     ht+=`</tbody></table></div>`;
@@ -1754,8 +1754,8 @@ async function searchEcritures(){
     const rows=await api(`/api/ecritures?exercice_id=${exerciceId}&q=${encodeURIComponent(q)}`);
     const el=document.getElementById('rapproche-results');
     el.innerHTML=(rows||[]).map(r=>`<div style="padding:8px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between" onclick="doRapproche(${r.id})">
-      <span>${r.date} ${r.journal} — ${r.libelle||''}</span><span class="text-muted">${r.piece||''}</span></div>`).join('');
-    if(!(rows||[]).length)el.innerHTML='<div class="text-muted" style="padding:8px">Aucune écriture trouvée</div>';
+      <span>${r.date} ${r.journal} Ã¢â‚¬â€ ${r.libelle||''}</span><span class="text-muted">${r.piece||''}</span></div>`).join('');
+    if(!(rows||[]).length)el.innerHTML='<div class="text-muted" style="padding:8px">Aucune ÃƒÂ©criture trouvÃƒÂ©e</div>';
   }catch(e){}
 }
 
@@ -1763,7 +1763,7 @@ async function doRapproche(ecritureId){
   const ligneId=+document.getElementById('rapproche-ligne-id').value;
   try{
     await api('/api/banque/rapprocher',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ligne_id:ligneId,ecriture_id:ecritureId})});
-    closeModal('modal-rapproche');loadBanqueDetail(banqueReleveId);toast('Rapprochement effectué');
+    closeModal('modal-rapproche');loadBanqueDetail(banqueReleveId);toast('Rapprochement effectuÃƒÂ©');
   }catch(e){toast(e.message,'error')}
 }
 
@@ -1773,14 +1773,14 @@ async function importerCSV(e){
   const text=await file.text();
   try{
     await api('/api/banque/import',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,csv:text,filename:file.name})});
-    loadBanque();toast('Relevé importé');
+    loadBanque();toast('RelevÃƒÂ© importÃƒÂ©');
   }catch(e){toast(e.message,'error')}
   e.target.value='';
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  ECRITURES
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadEcritures(){
   if(!exerciceId)return;
   const el=document.getElementById('ecritures-content');
@@ -1788,27 +1788,27 @@ async function loadEcritures(){
   try{
     const ecritures=await api(`/api/ecritures?exercice_id=${exerciceId}`);
     let ht=`<div class="card">
-      <div class="card-header"><h2>Journal des écritures</h2><button class="btn btn-sm" onclick="showSaisieEcriture()">+ Nouvelle écriture</button></div>
+      <div class="card-header"><h2>Journal des ÃƒÂ©critures</h2><button class="btn btn-sm" onclick="showSaisieEcriture()">+ Nouvelle ÃƒÂ©criture</button></div>
       <div class="filter-bar"><input placeholder="Rechercher par compte..." oninput="filterEcritures(this.value)" id="ecr-search"></div>
-      <table id="ecritures-table"><thead><tr><th>Date</th><th>Journal</th><th>Pièce</th><th>Réf.</th><th>Libellé</th><th class="num">Débit</th><th class="num">Crédit</th></tr></thead><tbody>`;
+      <table id="ecritures-table"><thead><tr><th>Date</th><th>Journal</th><th>PiÃƒÂ¨ce</th><th>RÃƒÂ©f.</th><th>LibellÃƒÂ©</th><th class="num">DÃƒÂ©bit</th><th class="num">CrÃƒÂ©dit</th></tr></thead><tbody>`;
     for(const e of(ecritures||[])){
       ht+=`<tr data-search="${(e.comptes||'').toLowerCase()}">
         <td>${e.date}</td><td>${e.journal||''}</td><td>${e.piece||''}</td><td>${e.reference||''}</td><td>${e.libelle||''}</td>
         <td class="num">${(e.total_debit||0).toFixed(2)}</td><td class="num">${(e.total_credit||0).toFixed(2)}</td>
       </tr>`;
     }
-    if(!(ecritures||[]).length)ht+=`<tr><td colspan="7" class="empty">Aucune écriture</td></tr>`;
+    if(!(ecritures||[]).length)ht+=`<tr><td colspan="7" class="empty">Aucune ÃƒÂ©criture</td></tr>`;
     ht+=`</tbody></table></div>`;
     // Formulaire de saisie
     ht+=`<div class="card mt-sm" id="saisie-card" style="display:none">
-      <div class="card-header"><h2>Nouvelle écriture</h2><button class="btn btn-outline btn-sm" onclick="document.getElementById('saisie-card').style.display='none'">✕</button></div>
+      <div class="card-header"><h2>Nouvelle ÃƒÂ©criture</h2><button class="btn btn-outline btn-sm" onclick="document.getElementById('saisie-card').style.display='none'">Ã¢Å“â€¢</button></div>
       <div class="form-row"><div class="form-group"><label>Journal</label><select id="ecr-journal-saisie"></select></div><div class="form-group"><label>Date</label><input type="date" id="ecr-date-saisie"></div></div>
-      <div class="form-row"><div class="form-group"><label>Pièce</label><input id="ecr-piece-saisie"></div><div class="form-group"><label>Référence</label><input id="ecr-ref-saisie"></div></div>
-      <div class="form-group"><label>Libellé</label><input id="ecr-libelle-saisie"></div>
+      <div class="form-row"><div class="form-group"><label>PiÃƒÂ¨ce</label><input id="ecr-piece-saisie"></div><div class="form-group"><label>RÃƒÂ©fÃƒÂ©rence</label><input id="ecr-ref-saisie"></div></div>
+      <div class="form-group"><label>LibellÃƒÂ©</label><input id="ecr-libelle-saisie"></div>
       <div class="card-header"><h3>Lignes</h3></div>
       <div id="ecr-lignes-saisie"></div>
       <button class="btn btn-outline btn-sm mt-sm" onclick="addEcrLigne()">+ Ligne</button>
-      <div class="mt-sm text-muted">Total débit: <strong id="ecr-sum-debit">0.00</strong> | Total crédit: <strong id="ecr-sum-credit">0.00</strong> <span id="ecr-ecart"></span></div>
+      <div class="mt-sm text-muted">Total dÃƒÂ©bit: <strong id="ecr-sum-debit">0.00</strong> | Total crÃƒÂ©dit: <strong id="ecr-sum-credit">0.00</strong> <span id="ecr-ecart"></span></div>
       <button class="btn mt-sm" onclick="submitSaisieEcriture()">Enregistrer</button>
       <span id="ecr-saisie-msg" style="margin-left:10px;font-size:13px"></span>
     </div>`;
@@ -1827,7 +1827,7 @@ function filterEcritures(q){
 async function loadJournauxSaisie(){
   try{
     const jx=await api('/api/journaux');
-    document.getElementById('ecr-journal-saisie').innerHTML=jx.map(j=>`<option value="${j.code}">${j.code} — ${j.libelle}</option>`).join('');
+    document.getElementById('ecr-journal-saisie').innerHTML=jx.map(j=>`<option value="${j.code}">${j.code} Ã¢â‚¬â€ ${j.libelle}</option>`).join('');
   }catch(e){}
 }
 
@@ -1847,7 +1847,7 @@ function showSaisieEcriture(){
 function addEcrLigne(){
   const d=document.createElement('div');
   d.className='form-row gap-xs mb-sm';
-  d.innerHTML=`<input placeholder="Compte" style="flex:0 0 80px" oninput="updateEcrSums()"><input type="number" placeholder="Débit" step="0.01" min="0" value="0" style="flex:1" oninput="updateEcrSums()"><input type="number" placeholder="Crédit" step="0.01" min="0" value="0" style="flex:1" oninput="updateEcrSums()"><input placeholder="Libellé" style="flex:2"><button class="btn-ghost" onclick="this.parentElement.remove();updateEcrSums()">✕</button>`;
+  d.innerHTML=`<input placeholder="Compte" style="flex:0 0 80px" oninput="updateEcrSums()"><input type="number" placeholder="DÃƒÂ©bit" step="0.01" min="0" value="0" style="flex:1" oninput="updateEcrSums()"><input type="number" placeholder="CrÃƒÂ©dit" step="0.01" min="0" value="0" style="flex:1" oninput="updateEcrSums()"><input placeholder="LibellÃƒÂ©" style="flex:2"><button class="btn-ghost" onclick="this.parentElement.remove();updateEcrSums()">Ã¢Å“â€¢</button>`;
   document.getElementById('ecr-lignes-saisie').appendChild(d);
 }
 
@@ -1861,7 +1861,7 @@ function updateEcrSums(){
   document.getElementById('ecr-sum-credit').textContent=sc.toFixed(2);
   const ecart=Math.abs(sd-sc);
   const m=document.getElementById('ecr-ecart');
-  m.textContent=ecart<0.005?'✅ Équilibré':`⚠️ Écart: ${ecart.toFixed(2)}`;
+  m.textContent=ecart<0.005?'Ã¢Å“â€¦ Ãƒâ€°quilibrÃƒÂ©':`Ã¢Å¡Â Ã¯Â¸Â Ãƒâ€°cart: ${ecart.toFixed(2)}`;
   m.style.color=ecart<0.005?'var(--green)':'var(--accent)';
 }
 
@@ -1877,43 +1877,43 @@ async function submitSaisieEcriture(){
       date:document.getElementById('ecr-date-saisie').value,libelle:document.getElementById('ecr-libelle-saisie').value,
       piece:document.getElementById('ecr-piece-saisie').value||null,reference:document.getElementById('ecr-ref-saisie').value||null,lignes
     })});
-    document.getElementById('ecr-saisie-msg').innerHTML='<span style="color:var(--green)">✅ Écriture enregistrée</span>';
+    document.getElementById('ecr-saisie-msg').innerHTML='<span style="color:var(--green)">Ã¢Å“â€¦ Ãƒâ€°criture enregistrÃƒÂ©e</span>';
     loadEcritures();
-  }catch(e){document.getElementById('ecr-saisie-msg').innerHTML=`<span style="color:var(--accent)">❌ ${e.message}</span>`}
+  }catch(e){document.getElementById('ecr-saisie-msg').innerHTML=`<span style="color:var(--accent)">Ã¢ÂÅ’ ${e.message}</span>`}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  BALANCE
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadBalance(){
   if(!exerciceId)return;
   const el=document.getElementById('balance-content');
   el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
   try{
     const rows=await api(`/api/balance?exercice_id=${exerciceId}`);
-    let ht=`<div class="card"><div class="card-header"><h2>Balance Générale</h2></div>
-      <table><thead><tr><th>Compte</th><th class="num">Débit</th><th class="num">Crédit</th><th class="num">Solde Débit</th><th class="num">Solde Crédit</th></tr></thead><tbody>`;
+    let ht=`<div class="card"><div class="card-header"><h2>Balance GÃƒÂ©nÃƒÂ©rale</h2></div>
+      <table><thead><tr><th>Compte</th><th class="num">DÃƒÂ©bit</th><th class="num">CrÃƒÂ©dit</th><th class="num">Solde DÃƒÂ©bit</th><th class="num">Solde CrÃƒÂ©dit</th></tr></thead><tbody>`;
     let td=0,tc=0,sd=0,sc=0;
     for(const r of rows){
       ht+=`<tr><td><strong>${r.compte}</strong></td><td class="num">${r.total_debit.toFixed(2)}</td><td class="num">${r.total_credit.toFixed(2)}</td><td class="num">${r.solde_debit?r.solde_debit.toFixed(2):''}</td><td class="num">${r.solde_credit?r.solde_credit.toFixed(2):''}</td></tr>`;
       td+=r.total_debit;tc+=r.total_credit;sd+=r.solde_debit;sc+=r.solde_credit;
     }
     ht+=`<tr class="total-row"><td>TOTAL</td><td class="num">${td.toFixed(2)}</td><td class="num">${tc.toFixed(2)}</td><td class="num">${sd.toFixed(2)}</td><td class="num">${sc.toFixed(2)}</td></tr></tbody></table>`;
-    if(!rows.length)ht='<div class="empty">Aucune écriture dans cet exercice.</div>';
+    if(!rows.length)ht='<div class="empty">Aucune ÃƒÂ©criture dans cet exercice.</div>';
     ht+=`</div>`;el.innerHTML=ht;
   }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  RESULTAT
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadResultat(){
   if(!exerciceId)return;
   const el=document.getElementById('resultat-content');
   el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
   try{
     const cr=await api(`/api/resultat?exercice_id=${exerciceId}`);
-    let ht=`<div class="card"><div class="card-header"><h2>Compte de Résultat</h2></div>
+    let ht=`<div class="card"><div class="card-header"><h2>Compte de RÃƒÂ©sultat</h2></div>
       <div class="form-row"><div style="flex:1"><h3 style="margin-bottom:8px;font-size:14px;color:var(--accent)">CHARGES</h3><table><thead><tr><th>Compte</th><th class="num">Montant</th></tr></thead><tbody>`;
     for(const c of cr.charges)ht+=`<tr><td>${c.compte}</td><td class="num">${c.solde_debit.toFixed(2)}</td></tr>`;
     ht+=`<tr class="total-row"><td>Total</td><td class="num">${cr.total_charges.toFixed(2)}</td></tr></tbody></table></div>`;
@@ -1921,46 +1921,46 @@ async function loadResultat(){
     for(const p of cr.produits)ht+=`<tr><td>${p.compte}</td><td class="num">${p.solde_credit.toFixed(2)}</td></tr>`;
     ht+=`<tr class="total-row"><td>Total</td><td class="num">${cr.total_produits.toFixed(2)}</td></tr></tbody></table></div></div>`;
     const rn=cr.resultat_net;
-    ht+=`<div style="text-align:center;padding:20px"><div style="font-size:36px;font-weight:700;color:${rn>=0?'var(--green)':'var(--accent)'}">${rn>=0?'+':''}${rn.toFixed(2)} €</div>
-      <span class="badge ${rn>=0?'badge-success':'badge-danger'}">${rn>=0?'BÉNÉFICE':'PERTE'}</span></div></div>`;
+    ht+=`<div style="text-align:center;padding:20px"><div style="font-size:36px;font-weight:700;color:${rn>=0?'var(--green)':'var(--accent)'}">${rn>=0?'+':''}${rn.toFixed(2)} Ã¢â€šÂ¬</div>
+      <span class="badge ${rn>=0?'badge-success':'badge-danger'}">${rn>=0?'BÃƒâ€°NÃƒâ€°FICE':'PERTE'}</span></div></div>`;
     el.innerHTML=ht;
   }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  BILAN
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadBilan(){
   if(!exerciceId)return;
   const el=document.getElementById('bilan-content');
   el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
   try{
     const b=await api(`/api/bilan?exercice_id=${exerciceId}`);
-    let ht=`<div class="card"><div class="card-header"><h2>Bilan Synthétique</h2></div><div class="form-row">`;
+    let ht=`<div class="card"><div class="card-header"><h2>Bilan SynthÃƒÂ©tique</h2></div><div class="form-row">`;
     ht+=`<div style="flex:1"><h3 style="margin-bottom:8px;font-size:14px">ACTIF</h3><table><thead><tr><th>Compte</th><th class="num">Montant</th></tr></thead><tbody>`;
     for(const l of b.actif)ht+=`<tr><td>${l.compte} ${l.libelle||''}</td><td class="num">${(l.solde_debit||0).toFixed(2)}</td></tr>`;
     ht+=`<tr class="total-row"><td>Total Actif</td><td class="num">${b.total_actif.toFixed(2)}</td></tr></tbody></table></div>`;
     ht+=`<div style="flex:1"><h3 style="margin-bottom:8px;font-size:14px">PASSIF</h3><table><thead><tr><th>Compte</th><th class="num">Montant</th></tr></thead><tbody>`;
     for(const l of b.passif)ht+=`<tr><td>${l.compte} ${l.libelle||''}</td><td class="num">${(l.solde_credit||0).toFixed(2)}</td></tr>`;
     ht+=`<tr class="total-row"><td>Total Passif</td><td class="num">${b.total_passif.toFixed(2)}</td></tr></tbody></table></div></div>`;
-    ht+=`<p style="text-align:center;margin-top:12px;font-weight:600;font-size:15px;color:${b.equilibre?'var(--green)':'var(--accent)'}">${b.equilibre?'✅ Bilan équilibré':'⚠️ Déséquilibre — Actif ≠ Passif'}</p></div>`;
+    ht+=`<p style="text-align:center;margin-top:12px;font-weight:600;font-size:15px;color:${b.equilibre?'var(--green)':'var(--accent)'}">${b.equilibre?'Ã¢Å“â€¦ Bilan ÃƒÂ©quilibrÃƒÂ©':'Ã¢Å¡Â Ã¯Â¸Â DÃƒÂ©sÃƒÂ©quilibre Ã¢â‚¬â€ Actif Ã¢â€°Â  Passif'}</p></div>`;
     el.innerHTML=ht;
   }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  GRAND-LIVRE
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadGrandLivre(){
   if(!exerciceId)return;
   const el=document.getElementById('grand-livre-content');
   el.innerHTML=`<div class="card">
     <div class="card-header"><h2>Grand-Livre</h2></div>
     <div class="search-box" style="max-width:300px;margin-bottom:16px">
-      <input placeholder="Rechercher un compte (n° ou libellé)..." id="gl-search" oninput="searchCompteGL()" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px">
+      <input placeholder="Rechercher un compte (nÃ‚Â° ou libellÃƒÂ©)..." id="gl-search" oninput="searchCompteGL()" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px">
       <div class="search-results" id="gl-results"></div>
     </div>
-    <div id="gl-detail"><div class="text-muted">Sélectionnez un compte ci-dessus</div></div>
+    <div id="gl-detail"><div class="text-muted">SÃƒÂ©lectionnez un compte ci-dessus</div></div>
   </div>`;
 }
 
@@ -1973,22 +1973,22 @@ async function searchCompteGL(){
     try{
       const comptes=await api(`/api/plan-comptable?q=${encodeURIComponent(q)}`);
       const el=document.getElementById('gl-results');
-      el.innerHTML=comptes.map(c=>`<div onclick="selectCompteGL('${c.numero}','${c.libelle}')"><strong>${c.numero}</strong> — ${c.libelle}</div>`).join('');
+      el.innerHTML=comptes.map(c=>`<div onclick="selectCompteGL('${c.numero}','${c.libelle}')"><strong>${c.numero}</strong> Ã¢â‚¬â€ ${c.libelle}</div>`).join('');
       el.classList.add('show');
     }catch(e){}
   },250);
 }
 
 async function selectCompteGL(numero,libelle){
-  document.getElementById('gl-search').value=`${numero} — ${libelle}`;
+  document.getElementById('gl-search').value=`${numero} Ã¢â‚¬â€ ${libelle}`;
   document.getElementById('gl-results').classList.remove('show');
   const el=document.getElementById('gl-detail');
   el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
   try{
     const gl=await api(`/api/grand-livre?compte=${numero}&exercice_id=${exerciceId}`);
     let ht=`<h3 style="margin-bottom:8px">Compte ${gl.compte}</h3>`;
-    if(gl.solde_ouverture)ht+=`<p class="text-muted">Solde ouverture: ${gl.solde_ouverture.toFixed(2)} €</p>`;
-    ht+=`<table><thead><tr><th>Date</th><th>Journal</th><th>Pièce</th><th>Libellé</th><th class="num">Débit</th><th class="num">Crédit</th><th class="num">Solde</th></tr></thead><tbody>`;
+    if(gl.solde_ouverture)ht+=`<p class="text-muted">Solde ouverture: ${gl.solde_ouverture.toFixed(2)} Ã¢â€šÂ¬</p>`;
+    ht+=`<table><thead><tr><th>Date</th><th>Journal</th><th>PiÃƒÂ¨ce</th><th>LibellÃƒÂ©</th><th class="num">DÃƒÂ©bit</th><th class="num">CrÃƒÂ©dit</th><th class="num">Solde</th></tr></thead><tbody>`;
     for(const m of gl.mouvements)ht+=`<tr><td>${m.date}</td><td>${m.journal}</td><td>${m.piece||''}</td><td>${m.libelle}</td><td class="num">${m.debit?m.debit.toFixed(2):''}</td><td class="num">${m.credit?m.credit.toFixed(2):''}</td><td class="num"><strong>${m.solde_cumul.toFixed(2)}</strong></td></tr>`;
     ht+=`<tr class="total-row"><td colspan="4">Totaux / Solde final</td><td class="num">${gl.total_debit.toFixed(2)}</td><td class="num">${gl.total_credit.toFixed(2)}</td><td class="num">${gl.solde_final.toFixed(2)}</td></tr></tbody></table>`;
     if(!gl.mouvements.length)ht='<div class="empty">Aucun mouvement sur ce compte.</div>';
@@ -1996,9 +1996,9 @@ async function selectCompteGL(numero,libelle){
   }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  PARAMETRES
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadParametres(){
   const el=document.getElementById('parametres-content');
   el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
@@ -2006,7 +2006,7 @@ async function loadParametres(){
     const p=await api('/api/parametres');
     const infos=p||{};
     let ht=`<div class="card" style="max-width:600px">
-      <div class="card-header"><h2>Paramètres de l'entreprise</h2></div>
+      <div class="card-header"><h2>ParamÃƒÂ¨tres de l'entreprise</h2></div>
       <div class="form-group"><label>Nom de l'entreprise</label><input id="param-nom" value="${infos.nom||''}"></div>
       <div class="form-group"><label>Adresse</label><input id="param-adresse" value="${infos.adresse||''}"></div>
       <div class="form-row">
@@ -2015,9 +2015,9 @@ async function loadParametres(){
       </div>
       <div class="form-row">
         <div class="form-group"><label>IBAN</label><input id="param-iban" value="${infos.iban||''}"></div>
-        <div class="form-group"><label>Préfixe facture</label><input id="param-prefix" value="${infos.prefixe_facture||'FACT-'}"></div>
+        <div class="form-group"><label>PrÃƒÂ©fixe facture</label><input id="param-prefix" value="${infos.prefixe_facture||'FACT-'}"></div>
       </div>
-      <div class="form-group"><label>Prochain numéro de facture</label><input type="number" id="param-prochain" value="${infos.prochain_numero||1}"></div>
+      <div class="form-group"><label>Prochain numÃƒÂ©ro de facture</label><input type="number" id="param-prochain" value="${infos.prochain_numero||1}"></div>
       <button class="btn" onclick="saveParametres()">Enregistrer</button>
       <span id="param-msg" style="margin-left:10px;font-size:13px"></span>
     </div>`;
@@ -2033,13 +2033,13 @@ async function saveParametres(){
       iban:document.getElementById('param-iban').value,prefixe_facture:document.getElementById('param-prefix').value,
       prochain_numero:parseInt(document.getElementById('param-prochain').value)||1
     })});
-    document.getElementById('param-msg').innerHTML='<span style="color:var(--green)">✅ Paramètres enregistrés</span>';
-  }catch(e){document.getElementById('param-msg').innerHTML=`<span style="color:var(--accent)">❌ ${e.message}</span>`}
+    document.getElementById('param-msg').innerHTML='<span style="color:var(--green)">Ã¢Å“â€¦ ParamÃƒÂ¨tres enregistrÃƒÂ©s</span>';
+  }catch(e){document.getElementById('param-msg').innerHTML=`<span style="color:var(--accent)">Ã¢ÂÅ’ ${e.message}</span>`}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  INIT
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 document.addEventListener('click',e=>{
   if(!e.target.closest('.search-box'))document.querySelectorAll('.search-results').forEach(r=>r.classList.remove('show'));
   if(e.target.classList.contains('modal-overlay'))e.target.classList.remove('show');
@@ -2047,7 +2047,7 @@ document.addEventListener('click',e=>{
 
 loadExercices().then(()=>navigate('dashboard'));
 
-// ═══ SEARCH ═══
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â SEARCH Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 let searchTimer=null;
 async function onSearch(q){
   clearTimeout(searchTimer);
@@ -2071,7 +2071,7 @@ function goTo(type,id){
 }
 document.addEventListener('click',e=>{if(!e.target.closest('.search-dropdown')&&!e.target.closest('#search-input'))document.getElementById('search-results').classList.remove('show');});
 
-// ═══ NOTIFICATIONS ═══
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â NOTIFICATIONS Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadNotifs(){
   if(!exerciceId)return;
   try{
@@ -2088,18 +2088,18 @@ function toggleNotifs(){
 }
 document.addEventListener('click',e=>{if(!e.target.closest('.notif-badge'))document.getElementById('notif-panel').classList.remove('show');});
 
-// ═══ CHARTS DASHBOARD ═══
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â CHARTS DASHBOARD Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 let charts={};
 async function loadDashboard(){
-  if(!exerciceId){document.getElementById('dashboard-content').innerHTML='<div class="empty">Sélectionnez un exercice</div>';return;}
+  if(!exerciceId){document.getElementById('dashboard-content').innerHTML='<div class="empty">SÃƒÂ©lectionnez un exercice</div>';return;}
   try{
     const[kpi,evo]=await Promise.all([api('/api/dashboard/tresorerie?exercice_id='+exerciceId),api('/api/dashboard/evolution?exercice_id='+exerciceId)]);
     let h='<div class="dash-grid">';
-    h+=`<div class="dash-card"><div class="label">Trésorerie</div><div class="big-num">${(kpi.treso_nette||0).toLocaleString()} €</div><div class="kpi-row"><div class="kpi"><div class="kpi-val">${(kpi.solde_banque||0).toLocaleString()}</div><div class="kpi-lbl">Banque</div></div><div class="kpi"><div class="kpi-val">${(kpi.creances_clients||0).toLocaleString()}</div><div class="kpi-lbl">Clients</div></div><div class="kpi"><div class="kpi-val">${(kpi.dettes_fournisseurs||0).toLocaleString()}</div><div class="kpi-lbl">Dettes</div></div></div></div>`;
+    h+=`<div class="dash-card"><div class="label">TrÃƒÂ©sorerie</div><div class="big-num">${(kpi.treso_nette||0).toLocaleString()} Ã¢â€šÂ¬</div><div class="kpi-row"><div class="kpi"><div class="kpi-val">${(kpi.solde_banque||0).toLocaleString()}</div><div class="kpi-lbl">Banque</div></div><div class="kpi"><div class="kpi-val">${(kpi.creances_clients||0).toLocaleString()}</div><div class="kpi-lbl">Clients</div></div><div class="kpi"><div class="kpi-val">${(kpi.dettes_fournisseurs||0).toLocaleString()}</div><div class="kpi-lbl">Dettes</div></div></div></div>`;
     h+=`<div class="dash-card"><div class="label">Factures</div><div class="big-num">${kpi.factures_retard||0}</div><div style="font-size:12px;color:var(--muted)">en retard</div></div>`;
-    h+=`<div class="dash-card"><div class="label">Rapprochement</div><div class="big-num">${kpi.non_rapprochees||0}</div><div style="font-size:12px;color:var(--muted)">non rapprochées</div></div>`;
+    h+=`<div class="dash-card"><div class="label">Rapprochement</div><div class="big-num">${kpi.non_rapprochees||0}</div><div style="font-size:12px;color:var(--muted)">non rapprochÃƒÂ©es</div></div>`;
     h+='</div>';
-    h+='<div class="dash-grid wide"><div class="dash-card"><div class="card-header"><h3>Évolution CA</h3></div><div class="chart-box"><canvas id="chart-ca"></canvas></div></div></div>';
+    h+='<div class="dash-grid wide"><div class="dash-card"><div class="card-header"><h3>Ãƒâ€°volution CA</h3></div><div class="chart-box"><canvas id="chart-ca"></canvas></div></div></div>';
     document.getElementById('dashboard-content').innerHTML=h;
     // Chart
     setTimeout(()=>{
@@ -2111,26 +2111,26 @@ async function loadDashboard(){
   }catch(e){document.getElementById('dashboard-content').innerHTML='<div class="empty">Erreur chargement dashboard</div>';}
 }
 
-// ═══ EXPORT ═══
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â EXPORT Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 function exportCSV(){window.open('/api/export/csv?exercice_id='+exerciceId+'&type=ecritures');}
 
-// ═══ HOOK DASHBOARD NAVIGATION ═══
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â HOOK DASHBOARD NAVIGATION Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 const origNavigate=navigate;
 navigate=function(page){
   origNavigate(page);
   setTimeout(()=>{if(page==='dashboard')loadDashboard();if(page==='ecritures')loadEcritures();loadNotifs();},50);
 };
 
-// ═══ INIT ═══
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â INIT Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 const origInit=loadExercices;
 loadExercices=async function(){
   await origInit();
   loadNotifs();
 };
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  PAIE
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadPaie(){
   if(!exerciceId)return;
   const el=document.getElementById('paie-content');
@@ -2138,21 +2138,21 @@ async function loadPaie(){
   try{
     const modele=await api(`/api/paie/modele?exercice_id=${exerciceId}`);
     let ht=`<div class="card">
-      <div class="card-header"><h2>💰 OD Paie</h2></div>
-      <h3 style="margin-bottom:8px;font-size:14px">Modèle d'écritures de paie</h3>
-      <table><thead><tr><th>Compte</th><th>Libellé</th><th class="num">Débit</th><th class="num">Crédit</th></tr></thead><tbody>`;
+      <div class="card-header"><h2>Ã°Å¸â€™Â° OD Paie</h2></div>
+      <h3 style="margin-bottom:8px;font-size:14px">ModÃƒÂ¨le d'ÃƒÂ©critures de paie</h3>
+      <table><thead><tr><th>Compte</th><th>LibellÃƒÂ©</th><th class="num">DÃƒÂ©bit</th><th class="num">CrÃƒÂ©dit</th></tr></thead><tbody>`;
     if(modele&&modele.ecritures)for(const e of modele.ecritures){
       ht+=`<tr><td>${e.compte||''}</td><td>${e.libelle||''}</td><td class="num">${(e.debit||0).toFixed(2)}</td><td class="num">${(e.credit||0).toFixed(2)}</td></tr>`;
     }
-    if(!(modele&&modele.ecritures&&modele.ecritures.length))ht+=`<tr><td colspan="4" class="empty">Aucun modèle chargé</td></tr>`;
+    if(!(modele&&modele.ecritures&&modele.ecritures.length))ht+=`<tr><td colspan="4" class="empty">Aucun modÃƒÂ¨le chargÃƒÂ©</td></tr>`;
     ht+=`</tbody></table></div>
     <div class="card mt-sm">
       <div class="card-header"><h3>Importer une OD de paie</h3></div>
       <div class="form-group"><label>Coller le CSV de paie</label><textarea id="paie-csv-text" rows="6" placeholder="compte,libelle,debit,credit\n421,Salaires nets,0,50000.00\n641,Salaires bruts,65000.00,0\n..."></textarea></div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <button class="btn btn-sm" onclick="importerPaieTexte()">📋 Importer le texte</button>
+        <button class="btn btn-sm" onclick="importerPaieTexte()">Ã°Å¸â€œâ€¹ Importer le texte</button>
         <span class="text-muted">ou</span>
-        <label class="btn btn-sm btn-outline" style="cursor:pointer">📂 Charger fichier CSV<input type="file" accept=".csv" style="display:none" onchange="importerPaieFichier(event)"></label>
+        <label class="btn btn-sm btn-outline" style="cursor:pointer">Ã°Å¸â€œâ€š Charger fichier CSV<input type="file" accept=".csv" style="display:none" onchange="importerPaieFichier(event)"></label>
       </div>
       <div id="paie-resultat"></div>
     </div>`;
@@ -2179,17 +2179,17 @@ async function envoyerPaieCSV(csv,source){
   try{
     const r=await api('/api/paie/importer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,csv,source})});
     el.innerHTML=`<div class="smtp-success mt-sm">
-      <strong>✅ Import réussi</strong><br>
-      ${r.nb_ecritures||0} écriture(s) générée(s)<br>
-      Total débit: <strong>${(r.total_debit||0).toFixed(2)} €</strong> — Total crédit: <strong>${(r.total_credit||0).toFixed(2)} €</strong><br>
-      ${r.equilibre?'<span class="badge badge-success">✅ Équilibré</span>':'<span class="badge badge-danger">❌ Non équilibré</span>'}
+      <strong>Ã¢Å“â€¦ Import rÃƒÂ©ussi</strong><br>
+      ${r.nb_ecritures||0} ÃƒÂ©criture(s) gÃƒÂ©nÃƒÂ©rÃƒÂ©e(s)<br>
+      Total dÃƒÂ©bit: <strong>${(r.total_debit||0).toFixed(2)} Ã¢â€šÂ¬</strong> Ã¢â‚¬â€ Total crÃƒÂ©dit: <strong>${(r.total_credit||0).toFixed(2)} Ã¢â€šÂ¬</strong><br>
+      ${r.equilibre?'<span class="badge badge-success">Ã¢Å“â€¦ Ãƒâ€°quilibrÃƒÂ©</span>':'<span class="badge badge-danger">Ã¢ÂÅ’ Non ÃƒÂ©quilibrÃƒÂ©</span>'}
     </div>`;
   }catch(e){el.innerHTML=`<div class="smtp-error mt-sm">Erreur: ${e.message}</div>`}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  BONS
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 let bonsFilter='bon_commande';
 
 async function loadBons(){
@@ -2199,7 +2199,7 @@ async function loadBons(){
   try{
     const bons=await api(`/api/bons?sous_type=${bonsFilter}&exercice_id=${exerciceId}`);
     let ht=`<div class="card">
-      <div class="card-header"><h2>📦 Bons</h2>
+      <div class="card-header"><h2>Ã°Å¸â€œÂ¦ Bons</h2>
         <div style="display:flex;gap:8px">
           <button class="btn btn-sm" onclick="openBonModal('bon_commande')">+ Bon de commande</button>
           <button class="btn btn-sm btn-outline" onclick="openBonModal('pro_forma')">+ Pro-forma</button>
@@ -2218,11 +2218,11 @@ async function loadBons(){
       ht+=`<tr>
         <td>${b.date||''}</td><td>${b.client_nom||b.client||''}</td><td>${b.type||'Bon'}</td>
         <td><span class="badge badge-info">${sousTypeLabel[b.sous_type]||b.sous_type||''}</span></td>
-        <td class="num">${(b.montant_total||0).toFixed(2)} €</td>
+        <td class="num">${(b.montant_total||0).toFixed(2)} Ã¢â€šÂ¬</td>
         <td style="white-space:nowrap">
-          ${b.sous_type==='bon_commande'?`<button class="btn btn-outline btn-sm" onclick="bonToLivraison(${b.id})">→ BL</button>`:''}
-          ${b.sous_type==='bon_commande'?`<button class="btn btn-green btn-sm" onclick="bonToFacture(${b.id})">→ Facture</button>`:''}
-          ${b.sous_type==='pro_forma'?`<button class="btn btn-green btn-sm" onclick="bonToFacture(${b.id})">→ Facture</button>`:''}
+          ${b.sous_type==='bon_commande'?`<button class="btn btn-outline btn-sm" onclick="bonToLivraison(${b.id})">Ã¢â€ â€™ BL</button>`:''}
+          ${b.sous_type==='bon_commande'?`<button class="btn btn-green btn-sm" onclick="bonToFacture(${b.id})">Ã¢â€ â€™ Facture</button>`:''}
+          ${b.sous_type==='pro_forma'?`<button class="btn btn-green btn-sm" onclick="bonToFacture(${b.id})">Ã¢â€ â€™ Facture</button>`:''}
         </td>
       </tr>`;
     }
@@ -2251,7 +2251,7 @@ function addBonLigne(data){
     <input type="number" value="${data?.quantite||1}" min="1" style="width:60px" onchange="updateBonTotals()">
     <input type="number" value="${data?.prix_unitaire||0}" step="0.01" min="0" style="width:90px" onchange="updateBonTotals()">
     <select style="width:70px" onchange="updateBonTotals()"><option value="20" ${tvaTaux===20?'selected':''}>20%</option><option value="10" ${tvaTaux===10?'selected':''}>10%</option><option value="0" ${tvaTaux===0?'selected':''}>0%</option></select>
-    <button class="btn-ghost" onclick="this.parentElement.remove();updateBonTotals()" style="color:var(--accent)">✕</button>`;
+    <button class="btn-ghost" onclick="this.parentElement.remove();updateBonTotals()" style="color:var(--accent)">Ã¢Å“â€¢</button>`;
   document.getElementById('bon-lignes').appendChild(div);
 }
 
@@ -2280,21 +2280,21 @@ async function saveBon(){
       objet:document.getElementById('bon-objet').value,
       sous_type:document.getElementById('bon-sous-type').value,lignes
     })});
-    closeModal('modal-bon');loadBons();toast('Bon créé');
+    closeModal('modal-bon');loadBons();toast('Bon crÃƒÂ©ÃƒÂ©');
   }catch(e){toast(e.message,'error')}
 }
 
 async function bonToLivraison(id){
-  try{await api(`/api/bons/${id}/livraison`,{method:'PUT'});loadBons();toast('Bon de livraison créé')}catch(e){toast(e.message,'error')}
+  try{await api(`/api/bons/${id}/livraison`,{method:'PUT'});loadBons();toast('Bon de livraison crÃƒÂ©ÃƒÂ©')}catch(e){toast(e.message,'error')}
 }
 
 async function bonToFacture(id){
   try{await api(`/api/bons/${id}/convertir`,{method:'POST'});loadBons();toast('Converti en facture')}catch(e){toast(e.message,'error')}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  CLOTURE
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadCloture(){
   if(!exerciceId)return;
   const el=document.getElementById('cloture-content');
@@ -2302,14 +2302,14 @@ async function loadCloture(){
   const ex=exercices.find(e=>e.id===exerciceId);
   const estCloture=ex&&ex.cloture;
   let ht=`<div class="card">
-    <div class="card-header"><h2>🔒 Clôture d'exercice</h2>
-      <span class="badge ${estCloture?'badge-success':'badge-warning'}">${estCloture?'Clôturé':'Ouvert'}</span>
+    <div class="card-header"><h2>Ã°Å¸â€â€™ ClÃƒÂ´ture d'exercice</h2>
+      <span class="badge ${estCloture?'badge-success':'badge-warning'}">${estCloture?'ClÃƒÂ´turÃƒÂ©':'Ouvert'}</span>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
-      <button class="btn btn-sm" onclick="verifierCloture()">🔍 Vérifications</button>
-      <button class="btn btn-sm btn-outline" onclick="simulerCloture()" ${estCloture?'disabled':''}>📊 Simuler la clôture</button>
-      <button class="btn btn-sm btn-green" onclick="executerCloture()" ${estCloture?'disabled':''}>✅ Exécuter la clôture</button>
-      ${estCloture?`<button class="btn btn-sm btn-warn" onclick="reouvrirCloture()">🔓 Rouvrir l'exercice</button>`:''}
+      <button class="btn btn-sm" onclick="verifierCloture()">Ã°Å¸â€Â VÃƒÂ©rifications</button>
+      <button class="btn btn-sm btn-outline" onclick="simulerCloture()" ${estCloture?'disabled':''}>Ã°Å¸â€œÅ  Simuler la clÃƒÂ´ture</button>
+      <button class="btn btn-sm btn-green" onclick="executerCloture()" ${estCloture?'disabled':''}>Ã¢Å“â€¦ ExÃƒÂ©cuter la clÃƒÂ´ture</button>
+      ${estCloture?`<button class="btn btn-sm btn-warn" onclick="reouvrirCloture()">Ã°Å¸â€â€œ Rouvrir l'exercice</button>`:''}
     </div>
     <div id="cloture-resultat"></div>
   </div>`;
@@ -2318,14 +2318,14 @@ async function loadCloture(){
 
 async function verifierCloture(){
   const el=document.getElementById('cloture-resultat');
-  el.innerHTML='<div class="text-muted"><div class="spinner"></div> Vérification en cours...</div>';
+  el.innerHTML='<div class="text-muted"><div class="spinner"></div> VÃƒÂ©rification en cours...</div>';
   try{
     const r=await api(`/api/cloture/verifications?exercice_id=${exerciceId}`);
-    let ht=`<div class="card mt-sm"><div class="card-header"><h3>✅ Résultat des vérifications</h3></div>
-      <table><thead><tr><th>Vérification</th><th>Statut</th><th>Détail</th></tr></thead><tbody>`;
+    let ht=`<div class="card mt-sm"><div class="card-header"><h3>Ã¢Å“â€¦ RÃƒÂ©sultat des vÃƒÂ©rifications</h3></div>
+      <table><thead><tr><th>VÃƒÂ©rification</th><th>Statut</th><th>DÃƒÂ©tail</th></tr></thead><tbody>`;
     ht+=verifLigne('Partie double',r.partie_double_ok);
-    ht+=verifLigne('Journaux équilibrés',r.journaux_equilibres);
-    ht+=verifLigne('Écritures non lettrées',r.nb_non_lettrees!=null?r.nb_non_lettrees===0:null,`${r.nb_non_lettrees||0} écriture(s)`);
+    ht+=verifLigne('Journaux ÃƒÂ©quilibrÃƒÂ©s',r.journaux_equilibres);
+    ht+=verifLigne('Ãƒâ€°critures non lettrÃƒÂ©es',r.nb_non_lettrees!=null?r.nb_non_lettrees===0:null,`${r.nb_non_lettrees||0} ÃƒÂ©criture(s)`);
     ht+=verifLigne('Comptes tiers suspects',r.tiers_suspects_ok!=null?r.tiers_suspects_ok:null,r.tiers_suspects_detail||'');
     ht+=`</tbody></table></div>`;
     el.innerHTML=ht;
@@ -2333,8 +2333,8 @@ async function verifierCloture(){
 }
 
 function verifLigne(nom,ok,detail){
-  if(ok===null||ok===undefined)return `<tr><td>${nom}</td><td><span class="badge badge-neutral">—</span></td><td>${detail||''}</td></tr>`;
-  const badge=ok?'<span class="badge badge-success">✅ OK</span>':'<span class="badge badge-danger">❌ Échec</span>';
+  if(ok===null||ok===undefined)return `<tr><td>${nom}</td><td><span class="badge badge-neutral">Ã¢â‚¬â€</span></td><td>${detail||''}</td></tr>`;
+  const badge=ok?'<span class="badge badge-success">Ã¢Å“â€¦ OK</span>':'<span class="badge badge-danger">Ã¢ÂÅ’ Ãƒâ€°chec</span>';
   return `<tr><td>${nom}</td><td>${badge}</td><td>${detail||''}</td></tr>`;
 }
 
@@ -2343,14 +2343,14 @@ async function simulerCloture(){
   el.innerHTML='<div class="text-muted"><div class="spinner"></div> Simulation en cours...</div>';
   try{
     const r=await api(`/api/cloture/simuler?exercice_id=${exerciceId}`);
-    let ht=`<div class="card mt-sm"><div class="card-header"><h3>📊 Simulation de clôture</h3></div>
+    let ht=`<div class="card mt-sm"><div class="card-header"><h3>Ã°Å¸â€œÅ  Simulation de clÃƒÂ´ture</h3></div>
       <div class="dash-grid" style="margin-bottom:12px">
-        <div class="dash-card"><div class="label">À-nouveaux</div><div class="big-num">${r.nb_a_nouveaux||0}</div></div>
-        <div class="dash-card"><div class="label">Comptes concernés</div><div class="big-num">${r.nb_comptes||0}</div></div>
-        <div class="dash-card"><div class="label">Résultat net</div><div class="big-num ${(r.resultat_net||0)>=0?'green':'red'}">${(r.resultat_net||0).toFixed(2)} €</div></div>
+        <div class="dash-card"><div class="label">Ãƒâ‚¬-nouveaux</div><div class="big-num">${r.nb_a_nouveaux||0}</div></div>
+        <div class="dash-card"><div class="label">Comptes concernÃƒÂ©s</div><div class="big-num">${r.nb_comptes||0}</div></div>
+        <div class="dash-card"><div class="label">RÃƒÂ©sultat net</div><div class="big-num ${(r.resultat_net||0)>=0?'green':'red'}">${(r.resultat_net||0).toFixed(2)} Ã¢â€šÂ¬</div></div>
       </div>`;
     if(r.comptes&&r.comptes.length){
-      ht+=`<table><thead><tr><th>Compte</th><th class="num">Solde</th><th class="num">À-nouveau</th></tr></thead><tbody>`;
+      ht+=`<table><thead><tr><th>Compte</th><th class="num">Solde</th><th class="num">Ãƒâ‚¬-nouveau</th></tr></thead><tbody>`;
       for(const c of r.comptes){ht+=`<tr><td>${c.compte||''}</td><td class="num">${(c.solde||0).toFixed(2)}</td><td class="num">${(c.a_nouveau||0).toFixed(2)}</td></tr>`}
       ht+=`</tbody></table>`;
     }
@@ -2361,16 +2361,16 @@ async function simulerCloture(){
 
 async function executerCloture(){
   const ex=exercices.find(e=>e.id===exerciceId);
-  if(!confirm(`Confirmer la clôture définitive de l'exercice « ${ex?.libelle||''} » ?\n\nCette action est irréversible. Assurez-vous d'avoir fait une sauvegarde.`))return;
+  if(!confirm(`Confirmer la clÃƒÂ´ture dÃƒÂ©finitive de l'exercice Ã‚Â« ${ex?.libelle||''} Ã‚Â» ?\n\nCette action est irrÃƒÂ©versible. Assurez-vous d'avoir fait une sauvegarde.`))return;
   const el=document.getElementById('cloture-resultat');
-  el.innerHTML='<div class="text-muted"><div class="spinner"></div> Clôture en cours...</div>';
+  el.innerHTML='<div class="text-muted"><div class="spinner"></div> ClÃƒÂ´ture en cours...</div>';
   try{
     const r=await api('/api/cloture/executer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});
-    let ht=`<div class="card mt-sm"><div class="card-header"><h3>✅ Clôture exécutée</h3></div>
-      <div class="dash-grid"><div class="dash-card"><div class="label">À-nouveaux créés</div><div class="big-num green">${r.nb_a_nouveaux||0}</div></div><div class="dash-card"><div class="label">Résultat transféré</div><div class="big-num">${(r.resultat_net||0).toFixed(2)} €</div></div></div></div>`;
+    let ht=`<div class="card mt-sm"><div class="card-header"><h3>Ã¢Å“â€¦ ClÃƒÂ´ture exÃƒÂ©cutÃƒÂ©e</h3></div>
+      <div class="dash-grid"><div class="dash-card"><div class="label">Ãƒâ‚¬-nouveaux crÃƒÂ©ÃƒÂ©s</div><div class="big-num green">${r.nb_a_nouveaux||0}</div></div><div class="dash-card"><div class="label">RÃƒÂ©sultat transfÃƒÂ©rÃƒÂ©</div><div class="big-num">${(r.resultat_net||0).toFixed(2)} Ã¢â€šÂ¬</div></div></div></div>`;
     el.innerHTML=ht;
     await loadExercices();
-    toast('Exercice clôturé avec succès');
+    toast('Exercice clÃƒÂ´turÃƒÂ© avec succÃƒÂ¨s');
   }catch(e){el.innerHTML=`<div class="smtp-error mt-sm">Erreur: ${e.message}</div>`}
 }
 
@@ -2384,16 +2384,16 @@ async function reouvrirCloture(){
   }catch(e){toast(e.message,'error')}
 }
 
-// ═══ AUTO-MATCH RAPPROCHEMENT ═══
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â AUTO-MATCH RAPPROCHEMENT Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function autoMatch(){
   const btn=event.target;btn.disabled=true;btn.textContent='...';
   try{
     const r=await api('/api/banque/auto-match',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});
-    if(r.nb_matches>0)toast(`${r.nb_matches} rapprochement(s) automatique(s) effectué(s)`);
-    else toast('Aucune correspondance trouvée','error');
+    if(r.nb_matches>0)toast(`${r.nb_matches} rapprochement(s) automatique(s) effectuÃƒÂ©(s)`);
+    else toast('Aucune correspondance trouvÃƒÂ©e','error');
     loadReleves();
   }catch(e){toast('Erreur: '+e.message,'error')}
-  btn.disabled=false;btn.textContent='🤖 Auto-match';
+  btn.disabled=false;btn.textContent='Ã°Å¸Â¤â€“ Auto-match';
 }
 
 async function autoRapprocherBanque(){
@@ -2401,8 +2401,8 @@ async function autoRapprocherBanque(){
   const el=document.getElementById('banque-detail');
   try{
     const r=await api(`/api/banque/auto-match?exercice_id=${exerciceId}`,{method:'POST'});
-    let msg=`${r.nb_rapproches||0} rapproché(s) — ${r.nb_restants||0} restant(s)`;
-    if((r.nb_rapproches||0)>0)toast(msg);else toast('Aucune correspondance trouvée','error');
+    let msg=`${r.nb_rapproches||0} rapprochÃƒÂ©(s) Ã¢â‚¬â€ ${r.nb_restants||0} restant(s)`;
+    if((r.nb_rapproches||0)>0)toast(msg);else toast('Aucune correspondance trouvÃƒÂ©e','error');
     loadBanque();
   }catch(e){toast('Erreur: '+e.message,'error')}
 }
@@ -2411,10 +2411,10 @@ async function autoEtatBanque(){
   if(!exerciceId)return;
   try{
     const r=await api(`/api/banque/etat-auto?exercice_id=${exerciceId}`);
-    let ht=`<div class="card mt-sm"><div class="card-header"><h3>📊 État du rapprochement automatique</h3></div>
+    let ht=`<div class="card mt-sm"><div class="card-header"><h3>Ã°Å¸â€œÅ  Ãƒâ€°tat du rapprochement automatique</h3></div>
       <div class="dash-grid"><div class="dash-card"><div class="label">Taux de rapprochement</div><div class="big-num">${(r.pct_rapproche||0).toFixed(1)}%</div></div></div>`;
     if(r.par_compte&&r.par_compte.length){
-      ht+=`<table><thead><tr><th>Compte</th><th class="num">Lignes</th><th class="num">Rapprochées</th><th class="num">%</th></tr></thead><tbody>`;
+      ht+=`<table><thead><tr><th>Compte</th><th class="num">Lignes</th><th class="num">RapprochÃƒÂ©es</th><th class="num">%</th></tr></thead><tbody>`;
       for(const c of r.par_compte){
         const pct=c.lignes>0?(c.rapprochees/c.lignes*100):0;
         ht+=`<tr><td>${c.compte||''}</td><td class="num">${c.lignes||0}</td><td class="num">${c.rapprochees||0}</td><td class="num">${pct.toFixed(1)}%</td></tr>`;
@@ -2426,9 +2426,9 @@ async function autoEtatBanque(){
   }catch(e){toast('Erreur: '+e.message,'error')}
 }
 
-// ═══ TEMPLATES FACTURES ═══
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â TEMPLATES FACTURES Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function saveTemplate(){
-  const name=prompt('Nom du modèle :');
+  const name=prompt('Nom du modÃƒÂ¨le :');
   if(!name)return;
   const lignes=[];
   document.querySelectorAll('#fact-lignes .ligne-row').forEach(r=>{
@@ -2436,21 +2436,21 @@ async function saveTemplate(){
     lignes.push({description:inputs[0].value,quantite:parseFloat(inputs[1].value)||1,prix_unitaire:parseFloat(inputs[2].value)||0,tva_taux:parseFloat(inputs[3].value)||20});
   });
   await api('/api/factures/templates',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,lignes})});
-  toast('Modèle sauvegardé');
+  toast('ModÃƒÂ¨le sauvegardÃƒÂ©');
 }
 async function loadTemplate(){
   const templates=await api('/api/factures/templates');
-  if(!templates.length){toast('Aucun modèle','error');return;}
+  if(!templates.length){toast('Aucun modÃƒÂ¨le','error');return;}
   const names=templates.map(t=>t.name).join('\n');
-  const name=prompt('Modèles disponibles :\n'+names+'\n\nNom du modèle à charger :');
+  const name=prompt('ModÃƒÂ¨les disponibles :\n'+names+'\n\nNom du modÃƒÂ¨le ÃƒÂ  charger :');
   if(!name)return;
   const t=templates.find(t=>t.name===name);
-  if(!t){toast('Modèle introuvable','error');return;}
+  if(!t){toast('ModÃƒÂ¨le introuvable','error');return;}
   const lignes=JSON.parse(t.data);
   document.getElementById('fact-lignes').innerHTML='';
   lignes.forEach(l=>addFactLigne(l));
   updateFactTotals();
-  toast('Modèle chargé');
+  toast('ModÃƒÂ¨le chargÃƒÂ©');
 }
 
 // IMPRESSION
@@ -2486,9 +2486,9 @@ function printFacture(id){
 }
 
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  IMMOBILISATIONS
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadImmo(){
   if(!exerciceId)return;
   const el=document.getElementById('immo-content');
@@ -2506,13 +2506,13 @@ async function loadImmo(){
         <div class="dash-card"><div class="label">VNC</div><div class="big-num">${(resume.vnc||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div></div>
       </div>`;
     }
-    h+=`<div class="card"><div class="card-header"><h2>🏢 Immobilisations</h2><button class="btn btn-sm" onclick="openImmoModal()">+ Immobilisation</button></div>
-    <table><thead><tr><th>Désignation</th><th>Date</th><th>Valeur</th><th>Durée</th><th>Mode</th><th>VNC</th><th></th></tr></thead><tbody>`;
+    h+=`<div class="card"><div class="card-header"><h2>Ã°Å¸ÂÂ¢ Immobilisations</h2><button class="btn btn-sm" onclick="openImmoModal()">+ Immobilisation</button></div>
+    <table><thead><tr><th>DÃƒÂ©signation</th><th>Date</th><th>Valeur</th><th>DurÃƒÂ©e</th><th>Mode</th><th>VNC</th><th></th></tr></thead><tbody>`;
     if(Array.isArray(immo)&&immo.length>0){
       immo.forEach(i=>{
-        h+=`<tr><td>${esc(i.designation||'')}</td><td>${i.date_acquisition||''}</td><td class="num">${(i.valeur||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td>${i.duree||''} ans</td><td>${i.mode||'linéaire'}</td><td class="num">${(i.vnc||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td>
+        h+=`<tr><td>${esc(i.designation||'')}</td><td>${i.date_acquisition||''}</td><td class="num">${(i.valeur||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td>${i.duree||''} ans</td><td>${i.mode||'linÃƒÂ©aire'}</td><td class="num">${(i.vnc||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td>
         <td><button class="btn btn-sm btn-outline" onclick="showPlanAmort(${i.id})">Plan amort.</button>
-        <button class="btn btn-sm btn-warn" onclick="openCederImmoModal(${i.id})">Céder</button></td></tr>`;
+        <button class="btn btn-sm btn-warn" onclick="openCederImmoModal(${i.id})">CÃƒÂ©der</button></td></tr>`;
       });
     }else{h+='<tr><td colspan="7" class="empty">Aucune immobilisation</td></tr>';}
     h+='</tbody></table></div>';
@@ -2555,7 +2555,7 @@ async function saveImmo(){
     await api('/api/immobilisations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     closeModal('modal-immo');
     loadImmo();
-    toast('Immobilisation créée');
+    toast('Immobilisation crÃƒÂ©ÃƒÂ©e');
   }catch(e){toast(e.message,'error');}
 }
 
@@ -2563,7 +2563,7 @@ async function showPlanAmort(id){
   try{
     const r=await api(`/api/immobilisations/plan?id=${id}`);
     let h='<div class="card" style="margin-top:16px"><div class="card-header"><h3>Plan d\'amortissement</h3><button class="btn-ghost" onclick="this.closest(\'.card\').remove()">&times;</button></div>';
-    h+='<table><thead><tr><th>Année</th><th>Dotation</th><th>Cumul</th><th>VNC</th></tr></thead><tbody>';
+    h+='<table><thead><tr><th>AnnÃƒÂ©e</th><th>Dotation</th><th>Cumul</th><th>VNC</th></tr></thead><tbody>';
     if(Array.isArray(r.lignes)&&r.lignes.length>0){
       r.lignes.forEach(l=>{h+=`<tr><td>${l.annee||''}</td><td class="num">${(l.dotation||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.cumul||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.vnc||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td></tr>`;});
     }else{h+='<tr><td colspan="4" class="empty">Aucune ligne</td></tr>';}
@@ -2575,7 +2575,7 @@ async function showPlanAmort(id){
 let _cederImmoId=null;
 function openCederImmoModal(id){
   _cederImmoId=id;
-  document.getElementById('modal-immo-title').textContent='Céder une immobilisation';
+  document.getElementById('modal-immo-title').textContent='CÃƒÂ©der une immobilisation';
   document.getElementById('immo-compte').closest('.form-row').style.display='none';
   document.getElementById('immo-designation').closest('.form-group').style.display='none';
   document.getElementById('immo-date').closest('.form-row').style.display='none';
@@ -2593,7 +2593,7 @@ function openCederImmoModal(id){
   }
   document.getElementById('immo-cession-fields').style.display='';
   document.getElementById('modal-immo').querySelector('.modal-footer .btn').onclick=saveCederImmo;
-  document.getElementById('modal-immo').querySelector('.modal-footer .btn').textContent='Céder';
+  document.getElementById('modal-immo').querySelector('.modal-footer .btn').textContent='CÃƒÂ©der';
   openModal('modal-immo');
 }
 
@@ -2608,7 +2608,7 @@ async function saveCederImmo(){
     closeModal('modal-immo');
     resetImmoModal();
     loadImmo();
-    toast('Immobilisation cédée');
+    toast('Immobilisation cÃƒÂ©dÃƒÂ©e');
   }catch(e){toast(e.message,'error');}
 }
 
@@ -2628,9 +2628,9 @@ function resetImmoModal(){
   btn.textContent='Enregistrer';
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  EMPRUNTS
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadEmprunts(){
   if(!exerciceId)return;
   const el=document.getElementById('emprunts-content');
@@ -2643,18 +2643,18 @@ async function loadEmprunts(){
     let h='';
     if(resume){
       h+=`<div class="dash-grid" style="margin-bottom:16px">
-        <div class="dash-card"><div class="label">Capital dû</div><div class="big-num">${(resume.capital_du||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div></div>
-        <div class="dash-card"><div class="label">Intérêts restants</div><div class="big-num">${(resume.interets_restants||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div></div>
-        <div class="dash-card"><div class="label">Prochaine échéance</div><div class="big-num" style="font-size:20px">${resume.prochaine_echeance||'-'}</div></div>
+        <div class="dash-card"><div class="label">Capital dÃƒÂ»</div><div class="big-num">${(resume.capital_du||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div></div>
+        <div class="dash-card"><div class="label">IntÃƒÂ©rÃƒÂªts restants</div><div class="big-num">${(resume.interets_restants||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div></div>
+        <div class="dash-card"><div class="label">Prochaine ÃƒÂ©chÃƒÂ©ance</div><div class="big-num" style="font-size:20px">${resume.prochaine_echeance||'-'}</div></div>
       </div>`;
     }
-    h+=`<div class="card"><div class="card-header"><h2>🏦 Emprunts</h2><button class="btn btn-sm" onclick="openEmpruntModal()">+ Emprunt</button></div>
-    <table><thead><tr><th>Désignation</th><th>Date</th><th>Montant</th><th>Taux</th><th>Durée</th><th>Capital dû</th><th></th></tr></thead><tbody>`;
+    h+=`<div class="card"><div class="card-header"><h2>Ã°Å¸ÂÂ¦ Emprunts</h2><button class="btn btn-sm" onclick="openEmpruntModal()">+ Emprunt</button></div>
+    <table><thead><tr><th>DÃƒÂ©signation</th><th>Date</th><th>Montant</th><th>Taux</th><th>DurÃƒÂ©e</th><th>Capital dÃƒÂ»</th><th></th></tr></thead><tbody>`;
     if(Array.isArray(emprunts)&&emprunts.length>0){
       emprunts.forEach(e=>{
         h+=`<tr><td>${esc(e.designation||'')}</td><td>${e.date_debut||''}</td><td class="num">${(e.montant||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td>${e.taux||0}%</td><td>${e.duree||''} mois</td><td class="num">${(e.capital_du||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td>
         <td><button class="btn btn-sm btn-outline" onclick="showTableauEmprunt(${e.id})">Tableau</button>
-        <button class="btn btn-sm btn-outline" onclick="genererTableauEmprunt(${e.id})">Générer tableau</button></td></tr>`;
+        <button class="btn btn-sm btn-outline" onclick="genererTableauEmprunt(${e.id})">GÃƒÂ©nÃƒÂ©rer tableau</button></td></tr>`;
       });
     }else{h+='<tr><td colspan="7" class="empty">Aucun emprunt</td></tr>';}
     h+='</tbody></table></div>';
@@ -2692,7 +2692,7 @@ async function saveEmprunt(){
     await api('/api/emprunts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     closeModal('modal-emprunt');
     loadEmprunts();
-    toast('Emprunt créé');
+    toast('Emprunt crÃƒÂ©ÃƒÂ©');
   }catch(e){toast(e.message,'error');}
 }
 
@@ -2700,7 +2700,7 @@ async function showTableauEmprunt(id){
   try{
     const r=await api(`/api/emprunts/tableau?id=${id}`);
     let h='<div class="card" style="margin-top:16px"><div class="card-header"><h3>Tableau d\'amortissement</h3><button class="btn-ghost" onclick="this.closest(\'.card\').remove()">&times;</button></div>';
-    h+='<table style="font-size:12px"><thead><tr><th>N°</th><th>Date</th><th>Capital avant</th><th>Mensualité</th><th>Intérêts</th><th>Capital remb.</th><th>Capital après</th></tr></thead><tbody>';
+    h+='<table style="font-size:12px"><thead><tr><th>NÃ‚Â°</th><th>Date</th><th>Capital avant</th><th>MensualitÃƒÂ©</th><th>IntÃƒÂ©rÃƒÂªts</th><th>Capital remb.</th><th>Capital aprÃƒÂ¨s</th></tr></thead><tbody>';
     if(Array.isArray(r.lignes)&&r.lignes.length>0){
       r.lignes.forEach(l=>{h+=`<tr><td>${l.num||''}</td><td>${l.date||''}</td><td class="num">${(l.capital_avant||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.mensualite||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.interets||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.capital_rembourse||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.capital_apres||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td></tr>`;});
     }else{h+='<tr><td colspan="7" class="empty">Aucune ligne</td></tr>';}
@@ -2712,28 +2712,28 @@ async function showTableauEmprunt(id){
 async function genererTableauEmprunt(id){
   try{
     await api('/api/emprunts/generer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
-    toast('Tableau généré');
+    toast('Tableau gÃƒÂ©nÃƒÂ©rÃƒÂ©');
     showTableauEmprunt(id);
   }catch(e){toast(e.message,'error');}
 }
 
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 //  CATEGORIES
-// ═══════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 async function loadCategories(){
   if(!exerciceId)return;
   const el=document.getElementById('categories-content');
   el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
   try{
-    let h='<div class="card"><div class="card-header"><h2>🏷️ Classification des écritures</h2>';
-    h+='<div><button class="btn btn-sm btn-outline" onclick="loadCategoriesPredefinies()">Charger règles prédéfinies</button> ';
-    h+='<button class="btn btn-sm btn-outline" onclick="suggererRegles()">Suggérer règles</button></div></div>';
+    let h='<div class="card"><div class="card-header"><h2>Ã°Å¸ÂÂ·Ã¯Â¸Â Classification des ÃƒÂ©critures</h2>';
+    h+='<div><button class="btn btn-sm btn-outline" onclick="loadCategoriesPredefinies()">Charger rÃƒÂ¨gles prÃƒÂ©dÃƒÂ©finies</button> ';
+    h+='<button class="btn btn-sm btn-outline" onclick="suggererRegles()">SuggÃƒÂ©rer rÃƒÂ¨gles</button></div></div>';
     h+='<div id="cat-predefinies"></div>';
     h+='<div id="cat-suggestions"></div>';
-    h+='<div class="card"><div class="card-header"><h3>Règles actives</h3></div>';
-    h+='<table id="cat-regles-table"><thead><tr><th>Compte</th><th>Mot-clé</th><th>Priorité</th><th></th></tr></thead><tbody></tbody></table>';
-    h+='<div class="flex-between mt-sm"><div class="form-row" style="flex:1"><input id="cat-regle-compte" placeholder="N° compte" style="width:100px"><input id="cat-regle-mot" placeholder="Mot-clé"><input id="cat-regle-prio" type="number" value="0" style="width:80px"></div>';
-    h+='<button class="btn btn-sm" onclick="addRegle()">+ Ajouter règle</button></div></div>';
+    h+='<div class="card"><div class="card-header"><h3>RÃƒÂ¨gles actives</h3></div>';
+    h+='<table id="cat-regles-table"><thead><tr><th>Compte</th><th>Mot-clÃƒÂ©</th><th>PrioritÃƒÂ©</th><th></th></tr></thead><tbody></tbody></table>';
+    h+='<div class="flex-between mt-sm"><div class="form-row" style="flex:1"><input id="cat-regle-compte" placeholder="NÃ‚Â° compte" style="width:100px"><input id="cat-regle-mot" placeholder="Mot-clÃƒÂ©"><input id="cat-regle-prio" type="number" value="0" style="width:80px"></div>';
+    h+='<button class="btn btn-sm" onclick="addRegle()">+ Ajouter rÃƒÂ¨gle</button></div></div>';
     el.innerHTML=h;
     loadRegles();
   }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`;}
@@ -2745,8 +2745,8 @@ async function loadRegles(){
     const tbody=document.getElementById('cat-regles-table')?.querySelector('tbody');
     if(!tbody)return;
     if(Array.isArray(r)&&r.length>0){
-      tbody.innerHTML=r.map(rg=>`<tr><td>${esc(rg.compte||'')}</td><td>${esc(rg.mot_cle||'')}</td><td>${rg.priorite||0}</td><td><button class="btn btn-sm btn-ghost" onclick="deleteRegle(${rg.id})">🗑️</button></td></tr>`).join('');
-    }else{tbody.innerHTML='<tr><td colspan="4" class="empty">Aucune règle</td></tr>';}
+      tbody.innerHTML=r.map(rg=>`<tr><td>${esc(rg.compte||'')}</td><td>${esc(rg.mot_cle||'')}</td><td>${rg.priorite||0}</td><td><button class="btn btn-sm btn-ghost" onclick="deleteRegle(${rg.id})">Ã°Å¸â€”â€˜Ã¯Â¸Â</button></td></tr>`).join('');
+    }else{tbody.innerHTML='<tr><td colspan="4" class="empty">Aucune rÃƒÂ¨gle</td></tr>';}
   }catch(e){toast(e.message,'error');}
 }
 
@@ -2754,39 +2754,39 @@ async function addRegle(){
   const compte=document.getElementById('cat-regle-compte').value.trim();
   const mot=document.getElementById('cat-regle-mot').value.trim();
   const priorite=parseInt(document.getElementById('cat-regle-prio').value)||0;
-  if(!compte||!mot){toast('Compte et mot-clé requis','error');return;}
+  if(!compte||!mot){toast('Compte et mot-clÃƒÂ© requis','error');return;}
   try{
     await api('/api/categories/regles',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({compte,mot_cle:mot,priorite})});
     document.getElementById('cat-regle-compte').value='';
     document.getElementById('cat-regle-mot').value='';
     document.getElementById('cat-regle-prio').value='0';
     loadRegles();
-    toast('Règle ajoutée');
+    toast('RÃƒÂ¨gle ajoutÃƒÂ©e');
   }catch(e){toast(e.message,'error');}
 }
 
 async function deleteRegle(id){
-  if(!confirm('Supprimer cette règle ?'))return;
+  if(!confirm('Supprimer cette rÃƒÂ¨gle ?'))return;
   try{await api(`/api/categories/regles/${id}`,{method:'DELETE'});loadRegles();}catch(e){toast(e.message,'error');}
 }
 
 async function loadCategoriesPredefinies(){
   try{
     const r=await api('/api/categories/predefinies');
-    let h='<div class="card"><div class="card-header"><h3>Règles prédéfinies</h3><button class="btn btn-sm" onclick="applyPredefinies()">Appliquer</button></div>';
+    let h='<div class="card"><div class="card-header"><h3>RÃƒÂ¨gles prÃƒÂ©dÃƒÂ©finies</h3><button class="btn btn-sm" onclick="applyPredefinies()">Appliquer</button></div>';
     if(Array.isArray(r)&&r.length>0){
-      h+='<table><thead><tr><th>Compte</th><th>Mot-clé</th><th>Priorité</th></tr></thead><tbody>';
+      h+='<table><thead><tr><th>Compte</th><th>Mot-clÃƒÂ©</th><th>PrioritÃƒÂ©</th></tr></thead><tbody>';
       h+=r.map(rg=>`<tr><td>${esc(rg.compte||'')}</td><td>${esc(rg.mot_cle||'')}</td><td>${rg.priorite||0}</td></tr>`).join('');
       h+='</tbody></table>';
-    }else{h+='<div class="empty">Aucune règle prédéfinie</div>';}
+    }else{h+='<div class="empty">Aucune rÃƒÂ¨gle prÃƒÂ©dÃƒÂ©finie</div>';}
     h+='</div>';
     document.getElementById('cat-predefinies').innerHTML=h;
   }catch(e){toast(e.message,'error');}
 }
 
 async function applyPredefinies(){
-  if(!confirm('Appliquer toutes les règles prédéfinies ?'))return;
-  try{await api('/api/categories/predefinies/appliquer',{method:'POST'});loadRegles();toast('Règles appliquées');}catch(e){toast(e.message,'error');}
+  if(!confirm('Appliquer toutes les rÃƒÂ¨gles prÃƒÂ©dÃƒÂ©finies ?'))return;
+  try{await api('/api/categories/predefinies/appliquer',{method:'POST'});loadRegles();toast('RÃƒÂ¨gles appliquÃƒÂ©es');}catch(e){toast(e.message,'error');}
 }
 
 async function suggererRegles(){
@@ -2796,7 +2796,7 @@ async function suggererRegles(){
     const r=await api(`/api/categories/suggerer?exercice_id=${exerciceId}`);
     let h='<div class="card"><div class="card-header"><h3>Suggestions</h3><button class="btn btn-sm" onclick="applySuggestions()">Appliquer</button></div>';
     if(Array.isArray(r)&&r.length>0){
-      h+='<table><thead><tr><th>Compte</th><th>Mot-clé</th><th>Occurrences</th></tr></thead><tbody>';
+      h+='<table><thead><tr><th>Compte</th><th>Mot-clÃƒÂ©</th><th>Occurrences</th></tr></thead><tbody>';
       h+=r.map(s=>`<tr><td>${esc(s.compte||'')}</td><td>${esc(s.mot_cle||'')}</td><td>${s.occurrences||0}</td></tr>`).join('');
       h+='</tbody></table>';
     }else{h+='<div class="empty">Aucune suggestion</div>';}
@@ -2807,10 +2807,10 @@ async function suggererRegles(){
 
 async function applySuggestions(){
   if(!confirm('Appliquer les suggestions ?'))return;
-  try{await api('/api/categories/suggerer/appliquer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});loadRegles();toast('Suggestions appliquées');}catch(e){toast(e.message,'error');}
+  try{await api('/api/categories/suggerer/appliquer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});loadRegles();toast('Suggestions appliquÃƒÂ©es');}catch(e){toast(e.message,'error');}
 }
 
-// ═══════════════ DARK MODE ═══════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â DARK MODE Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 function toggleDarkMode(){
   const t=document.documentElement.getAttribute('data-theme')==='dark'?'':'dark';
   document.documentElement.setAttribute('data-theme',t);
@@ -2819,7 +2819,7 @@ function toggleDarkMode(){
 }
 function updateThemeIcon(t){
   const buttons=document.querySelectorAll('#topbar .btn-ghost');
-  for(const b of buttons){if(b.onclick&&b.onclick.toString().includes('toggleDarkMode')){b.textContent=t==='dark'?'☀️':'🌙';break;}}
+  for(const b of buttons){if(b.onclick&&b.onclick.toString().includes('toggleDarkMode')){b.textContent=t==='dark'?'Ã¢Ëœâ‚¬Ã¯Â¸Â':'Ã°Å¸Å’â„¢';break;}}
 }
 (function(){
   const saved=localStorage.getItem('comptapro-theme');
@@ -2829,11 +2829,11 @@ function updateThemeIcon(t){
   }
 })();
 
-// ═══════════════ SHORTCUTS ═══════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â SHORTCUTS Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 const SHORTCUTS=[
-  {keys:['Ctrl','D'],desc:'Thème sombre/clair'},
+  {keys:['Ctrl','D'],desc:'ThÃƒÂ¨me sombre/clair'},
   {keys:['Ctrl','K'],desc:'Recherche globale'},
-  {keys:['Ctrl','N'],desc:'Nouvelle écriture'},
+  {keys:['Ctrl','N'],desc:'Nouvelle ÃƒÂ©criture'},
   {keys:['Ctrl','Enter'],desc:'Sauvegarder (formulaire ouvert)'},
   {keys:['Ctrl','F'],desc:'Nouvelle facture'},
   {keys:['Esc'],desc:'Fermer modale / annuler'},
@@ -2841,9 +2841,9 @@ const SHORTCUTS=[
   {keys:['1'],desc:'Dashboard'},
   {keys:['2'],desc:'Factures'},
   {keys:['3'],desc:'Banque'},
-  {keys:['4'],desc:'Écritures'},
+  {keys:['4'],desc:'Ãƒâ€°critures'},
   {keys:['5'],desc:'Balance'},
-  {keys:['6'],desc:'Résultat'},
+  {keys:['6'],desc:'RÃƒÂ©sultat'},
   {keys:['7'],desc:'Bilan'},
   {keys:['8'],desc:'Export'}
 ];
@@ -2867,7 +2867,7 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.show').forEach(m=>m.classList.remove('show'));return;}
 });
 
-// ═══════════════ DASHBOARD WIDGET DRAG ═══════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â DASHBOARD WIDGET DRAG Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 let dragFrom=null;
 function initWidgetDrag(){
   const g=document.querySelector('.dash-grid');
@@ -2886,7 +2886,7 @@ function initWidgetDrag(){
   g.addEventListener('dragover',e=>{e.preventDefault();const c=e.target.closest('.dash-card');if(c&&c!==dragFrom){document.querySelectorAll('.dash-card.drag-over').forEach(x=>x.classList.remove('drag-over'));c.classList.add('drag-over');}});
   g.addEventListener('drop',e=>{e.preventDefault();const t=e.target.closest('.dash-card');if(t&&t!==dragFrom){const after=t.getBoundingClientRect().top+t.offsetHeight/2<e.clientY;if(after){t.after(dragFrom)}else{t.before(dragFrom)}document.querySelectorAll('.dash-card.drag-over').forEach(c=>c.classList.remove('drag-over'));}});
   // Add grips and draggable
-  document.querySelectorAll('.dash-card').forEach(c=>{c.setAttribute('draggable','true');if(!c.querySelector('.grip'))c.insertAdjacentHTML('afterbegin','<span class="grip" title="Déplacer">⋮⋮</span>');});
+  document.querySelectorAll('.dash-card').forEach(c=>{c.setAttribute('draggable','true');if(!c.querySelector('.grip'))c.insertAdjacentHTML('afterbegin','<span class="grip" title="DÃƒÂ©placer">Ã¢â€¹Â®Ã¢â€¹Â®</span>');});
 }
 function saveDashboardOrder(){
   const ids=[...document.querySelectorAll('.dash-grid .dash-card')].map((c,i)=>c.dataset.widget||`widget-${i}`);
@@ -2894,12 +2894,12 @@ function saveDashboardOrder(){
 }
 setTimeout(initWidgetDrag,2000);
 
-// ═══════════════ MULTI-SOCIETE ═══════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â MULTI-SOCIETE Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 function showSocietes(){
   const el=document.getElementById('societes-list');
   api('/api/societes').then(r=>{
     const dbs=r.available||[];
-    if(dbs.length<=1){el.innerHTML='<div class="empty">Une seule base de données. Créez un nouvel exercice ou un nouveau fichier DB pour gérer plusieurs sociétés.</div><button class="btn btn-sm mt-sm" onclick="newSociete()">+ Nouvelle société</button>';}
+    if(dbs.length<=1){el.innerHTML='<div class="empty">Une seule base de donnÃƒÂ©es. CrÃƒÂ©ez un nouvel exercice ou un nouveau fichier DB pour gÃƒÂ©rer plusieurs sociÃƒÂ©tÃƒÂ©s.</div><button class="btn btn-sm mt-sm" onclick="newSociete()">+ Nouvelle sociÃƒÂ©tÃƒÂ©</button>';}
     else{el.innerHTML=dbs.map(db=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span>${esc(db)}${db===r.current?' <span class="badge badge-success">active</span>':''}</span><div><button class="btn btn-sm btn-outline" onclick="switchSociete('${esc(db)}')">Basculer</button></div></div>`).join('')+'<button class="btn btn-sm mt-sm" onclick="newSociete()">+ Nouvelle base</button>';}
     document.getElementById('societes-modal').classList.add('show');
   }).catch(e=>{el.innerHTML='<div class="empty">Erreur: '+e.message+'</div>';document.getElementById('societes-modal').classList.add('show');});
@@ -2908,7 +2908,7 @@ function newSociete(){
   const nom=prompt('Nom du fichier de base :', 'ma_societe.db');
   if(!nom)return;
   api('/api/societes/switch?db='+encodeURIComponent(nom)).then(r=>{
-    toast('Base créée : '+nom);
+    toast('Base crÃƒÂ©ÃƒÂ©e : '+nom);
     closeModal('societes-modal');
     setTimeout(()=>location.reload(),500);
   }).catch(e=>toast(e.message,'error'));
@@ -2921,8 +2921,7 @@ function switchSociete(db){
   }).catch(e=>toast(e.message,'error'));
 }
 
-// START
-document.getElementById('ecr-date-saisie').value = new Date().toISOString().split('T')[0];
+//\ â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\ AUTH\ â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\nasync\ function\ doLogout\(\)\{\n\ \ await\ fetch\('/api/auth/logout',\{headers:\{'Authorization':'Bearer\ '\+localStorage\.getItem\('comptapro_token'\)}}\);\n\ \ localStorage\.removeItem\('comptapro_token'\);\n\ \ localStorage\.removeItem\('comptapro_user'\);\n\ \ window\.location\.href='/login';\n}\nasync\ function\ checkAuth\(\)\{\n\ \ const\ token=localStorage\.getItem\('comptapro_token'\);\n\ \ if\(!token\)\{window\.location\.href='/login';return;}\n\ \ try\{\n\ \ \ \ const\ r=await\ fetch\('/api/auth/me',\{headers:\{'Authorization':'Bearer\ '\+token}}\);\n\ \ \ \ if\(!r\.ok\)\{localStorage\.removeItem\('comptapro_token'\);window\.location\.href='/login';return;}\n\ \ \ \ const\ d=await\ r\.json\(\);\n\ \ \ \ document\.getElementById\('user-info'\)\.textContent=d\.username\|\|'';\n\ \ }catch\(e\)\{/\*\ offline\ \*/}\n}\n\ndocument\.getElementById\('ecr-date-saisie'\)\.value\ =\ new\ Date\(\)\.toISOString\(\)\.split\('T'\)\[0];
 addEcrLigne(); addEcrLigne();
 loadExercices().then(() => { loadJournaux(); if(currentPage==='dashboard')navigate('dashboard'); });
 

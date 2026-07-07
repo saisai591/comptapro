@@ -102,6 +102,10 @@ from comptable.categories import (
     importer_regles_csv, categoriser_ligne, categoriser_releve,
     suggerer_regles, regles_predefinies,
 )
+from comptable.auth import (
+    authenticate, logout as auth_logout, get_session,
+    list_users, change_password, create_user as auth_create_user,
+)
 from comptable.recherche import (
     rechercher_global, rechercher_ecritures, rechercher_factures,
     indexer,
@@ -120,12 +124,65 @@ class ComptaHandler(SimpleHTTPRequestHandler):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=STATIC_DIR, **kwargs)
+        self._current_user = None
+
+    def _require_auth(self) -> bool:
+        """Check auth header. Returns True if authenticated."""
+        token = self.headers.get("Authorization", "").replace("Bearer ", "")
+        if not token:
+            # Check cookie fallback
+            cookie = self.headers.get("Cookie", "")
+            for c in cookie.split(";"):
+                c = c.strip()
+                if c.startswith("comptapro_token="):
+                    token = c.split("=", 1)[1].strip('" ')
+                    break
+        if not token:
+            return False
+        conn = get_db()
+        sess = get_session(conn, token)
+        if sess:
+            self._current_user = sess["username"]
+            conn.close()
+            return True
+        conn.close()
+        return False
 
     # ── GET ─────────────────────────────────────────────────────────
     def do_GET(self):
         parsed = urlparse(self.path)
         path = parsed.path
         qs = parse_qs(parsed.query)
+
+        # ── Auth ──
+        if path == "/api/auth/me":
+            if self._require_auth():
+                return self._json({"username": self._current_user, "authenticated": True})
+            return self._json({"authenticated": False}, 401)
+        if path == "/api/auth/logout":
+            token = self.headers.get("Authorization", "").replace("Bearer ", "")
+            if token:
+                conn = get_db()
+                auth_logout(conn, token)
+                conn.close()
+            return self._json({"success": True})
+        if path == "/api/users":
+            if self._require_auth():
+                conn = get_db()
+                users = list_users(conn)
+                conn.close()
+                return self._json(users)
+            return self._json({"error": "Auth required"}, 401)
+
+        # ── Static / login page ──
+        if path == "/login":
+            self.path = "/login.html"
+            return super().do_GET()
+
+        # ── Auth middleware for all /api/* routes ──
+        if path.startswith("/api/") and path not in ("/api/auth/me", "/api/auth/logout"):
+            if not self._require_auth():
+                return self._json({"error": "Authentification requise"}, 401)
 
         # Exercices
         if path == "/api/exercices":
@@ -756,6 +813,39 @@ class ComptaHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
         path = parsed.path
+
+        # ── Auth login ──
+        if path == "/api/auth/login":
+            body = self._read_body()
+            try:
+                data = json.loads(body)
+                conn = get_db()
+                token = authenticate(conn, data.get("username", ""), data.get("password", ""))
+                conn.close()
+                if token:
+                    return self._json({"token": token, "username": data["username"]})
+                return self._json({"error": "Identifiants invalides"}, 401)
+            except json.JSONDecodeError:
+                return self._json({"error": "JSON invalide"}, 400)
+
+        # Auth changepassword
+        if path == "/api/auth/changepassword":
+            body = self._read_body()
+            try:
+                data = json.loads(body)
+                conn = get_db()
+                ok, msg = change_password(conn, data.get("username", ""), data.get("old_password", ""), data.get("new_password", ""))
+                conn.close()
+                if ok:
+                    return self._json({"success": True, "message": msg})
+                return self._json({"error": msg}, 400)
+            except json.JSONDecodeError:
+                return self._json({"error": "JSON invalide"}, 400)
+
+        # ── Auth middleware for POST /api/* routes ──
+        if path.startswith("/api/"):
+            if not self._require_auth():
+                return self._json({"error": "Authentification requise"}, 401)
 
         # Multipart (upload CSV)
         content_type = self.headers.get("Content-Type", "")
@@ -1429,6 +1519,11 @@ class ComptaHandler(SimpleHTTPRequestHandler):
             return self._json({"ok": True, "nb_lignes": nb})
         except Exception as e:
             return self._json({"error": str(e)}, 400)
+
+    def _read_body(self) -> str:
+        content_len = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(content_len) if content_len else b"{}"
+        return body.decode("utf-8")
 
     def _json(self, data, status=200):
         body = json.dumps(data, ensure_ascii=False, default=str).encode("utf-8")
