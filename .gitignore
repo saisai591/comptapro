@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# SQLite databases (ne pas commiter les données)
+*.db
+*.db-wal
+*.db-shm
+
+# Workspace dev
+.openclaw/
+.openclaw-attachments/
+.openclaw/tmp/
+.opencode/
+config/
+demo.py
+seed_data.py
+start_server.bat
+test_*.py
+add_print.py
+fix_js_final.py
+patch_frontend.py
+patch_frontend2.py
+*.tmp
+_verify.ps1
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker (le docker-compose.prod est optionnel)

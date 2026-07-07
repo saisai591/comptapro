@@ -1,0 +1,2772 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComptaPro</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+/* ── RESET & BASE ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f0f2f5;--card:#fff;--dark:#1a1a2e;--accent:#e94560;--green:#0a8f32;--warn:#f39c12;--text:#1a1a2e;--muted:#6b7280;--border:#e5e7eb;--shadow:0 1px 3px rgba(0,0,0,.08)}
+body{font:13px/1.5 system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+
+/* ── SIDEBAR ── */
+#sidebar{width:220px;min-width:220px;background:var(--dark);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+#sidebar .logo{padding:20px 16px;font-size:16px;font-weight:700;letter-spacing:.5px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:8px}
+#sidebar nav{flex:1;padding:8px 0;overflow-y:auto}
+#sidebar nav a{display:flex;align-items:center;gap:10px;padding:10px 16px;color:rgba(255,255,255,.65);font-size:13px;transition:all .15s;border-left:3px solid transparent;cursor:pointer}
+#sidebar nav a:hover{color:#fff;background:rgba(255,255,255,.05)}
+#sidebar nav a.active{color:#fff;background:rgba(255,255,255,.08);border-left-color:var(--accent)}
+#sidebar nav a .icon{font-size:16px;width:22px;text-align:center}
+
+/* Sidebar collapsible sections */
+.s-group{margin:2px 0}
+.s-head{padding:6px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.35);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:color .15s}
+.s-head:hover{color:rgba(255,255,255,.6)}
+.s-head .s-arrow{font-size:10px;transition:transform .2s}
+.s-head.open .s-arrow{transform:rotate(180deg)}
+.s-body{padding:2px 0;overflow:hidden;transition:max-height .3s ease;max-height:500px}
+.s-body.collapsed{max-height:0}
+.s-body a{padding:6px 16px 6px 28px!important;font-size:12px!important}
+#sidebar .footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,.1);font-size:11px;color:rgba(255,255,255,.35)}
+
+/* ── MAIN AREA ── */
+#main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+#topbar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50}
+#topbar .ex-title{font-size:16px;font-weight:600;color:var(--dark)}
+#topbar select{padding:6px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;background:var(--bg);cursor:pointer;min-width:200px}
+#topbar .spacer{flex:1}
+#content{padding:24px;flex:1}
+
+/* ── CARDS ── */
+.card{background:var(--card);border-radius:8px;box-shadow:var(--shadow);padding:20px;margin-bottom:20px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.card-header h2{font-size:17px;font-weight:600;color:var(--dark)}
+.card-header h3{font-size:14px;font-weight:600;color:var(--dark)}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;transition:background .15s}
+.btn:hover{background:#d63850}
+.btn-sm{padding:5px 12px;font-size:12px}
+.btn-outline{background:var(--card);color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:hover{background:#fef2f2}
+.btn-ghost{background:transparent;color:var(--muted);border:none;padding:4px 8px;cursor:pointer}
+.btn-ghost:hover{color:var(--text)}
+.btn-green{background:var(--green)}
+.btn-green:hover{background:#087a2a}
+.btn-warn{background:var(--warn)}
+.btn-warn:hover{background:#e08e0b}
+
+/* ── TABLES ── */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{padding:10px 12px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.3px;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--border)}
+tr:hover td{background:#f9fafb}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.total-row td{font-weight:700;border-top:2px solid var(--dark);background:#f9fafb}
+
+/* ── STATUS BADGES ── */
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-success{background:#d4edda;color:var(--green)}
+.badge-warning{background:#fff3cd;color:var(--warn)}
+.badge-danger{background:#fdecea;color:var(--accent)}
+.badge-info{background:#dbeafe;color:#1d4ed8}
+.badge-neutral{background:#e5e7eb;color:#4b5563}
+
+/* ── FORMS ── */
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;transition:border .15s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(233,69,96,.1)}
+.form-row{display:flex;gap:12px}
+.form-row>*{flex:1}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.2);width:90%;max-width:700px;max-height:85vh;overflow-y:auto;padding:0}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--card);z-index:1}
+.modal-header h3{font-size:16px;font-weight:600}
+.modal-body{padding:20px}
+.modal-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 20px;border-top:1px solid var(--border)}
+
+/* ── DASHBOARD GRID ── */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px}
+.dash-grid.wide{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.dash-card{background:var(--card);border-radius:8px;box-shadow:var(--shadow);padding:20px}
+.dash-card .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px}
+.dash-card .big-num{font-size:28px;font-weight:700;color:var(--dark)}
+.dash-card .big-num.green{color:var(--green)}
+.dash-card .big-num.red{color:var(--accent)}
+.kpi-row{display:flex;gap:16px;margin-top:12px}
+.kpi{flex:1;text-align:center}
+.kpi .kpi-val{font-size:16px;font-weight:600}
+.kpi .kpi-lbl{font-size:11px;color:var(--muted)}
+.mini-table th,.mini-table td{padding:6px 10px;font-size:12px}
+.alert-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.alert-item:last-child{border-bottom:none}
+.alert-item .alert-count{font-size:18px;font-weight:700}
+
+/* ── FACTURES FILTERS ── */
+.filter-bar{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.filter-bar select,.filter-bar input{padding:7px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px}
+.pagination{display:flex;gap:4px;justify-content:center;margin-top:16px}
+.pagination button{padding:6px 12px;border:1px solid var(--border);border-radius:4px;background:var(--card);cursor:pointer;font-size:12px}
+.pagination button.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+.pagination button:disabled{opacity:.4;cursor:default}
+
+/* ── BANK ── */
+.releve-row{cursor:pointer;transition:background .1s}
+.releve-row:hover td{background:#f3f4f6}
+.rapproche-panel{display:flex;gap:16px}
+.rapproche-panel>div{flex:1}
+
+/* ── UTILS ── */
+.panel{display:none}
+.panel.active{display:block}
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:14px}
+.toast{position:fixed;bottom:20px;right:20px;padding:12px 20px;border-radius:8px;color:#fff;font-size:13px;font-weight:500;z-index:300;animation:slideUp .3s ease;max-width:400px}
+.toast-error{background:#dc2626}
+.toast-success{background:var(--green)}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid #ddd;border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flex-between{display:flex;align-items:center;justify-content:space-between}
+.gap-xs{gap:6px}
+.mt-sm{margin-top:12px}
+.mb-sm{margin-bottom:12px}
+.text-muted{color:var(--muted);font-size:12px}
+.search-box{position:relative}
+.search-results{position:absolute;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:6px;max-height:200px;overflow-y:auto;z-index:10;display:none}
+.search-results.show{display:block}
+.search-results div{padding:7px 12px;cursor:pointer;font-size:12px}
+.search-results div:hover{background:#f3f4f6}
+@media(max-width:768px){#sidebar{width:60px;min-width:60px}#sidebar .logo span,#sidebar nav a span,#sidebar .footer{display:none}#main{margin-left:60px}.form-row{flex-direction:column}.dash-grid{grid-template-columns:1fr}}
+
+/* PRINT & PDF */
+@page{size:A4;margin:12mm}
+@media print{
+  #sidebar,#topbar,.btn,.btn-ghost,.btn-outline,.btn-green,.btn-sm,.btn-short,.modal-overlay,nav,.filter-bar,.search-dropdown,.notif-panel,#notif-count,.spacer,#search-input{display:none!important}
+  #main{margin:0!important}
+  #content{padding:10mm!important}
+  .panel{display:none!important}
+  .panel.active{display:block!important}
+  .card{box-shadow:none!important;border:1px solid #ccc!important;page-break-inside:avoid}
+  table{font-size:10px}
+  th,td{padding:4px 8px}
+  h2{font-size:14px;margin-bottom:8px}
+  body{background:#fff!important}
+}
+/* SEARCH */
+.search-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #ddd;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.15);max-height:350px;overflow-y:auto;z-index:300;display:none}
+.search-dropdown.show{display:block}
+.search-dropdown .item{padding:8px 14px;cursor:pointer;font-size:13px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:8px}
+.search-dropdown .item:hover{background:#f5f5f5}
+.search-dropdown .item .tag{font-size:10px;padding:2px 6px;border-radius:8px;background:#e5e7eb;color:#666}
+/* NOTIFICATIONS */
+.notif-badge{position:relative;cursor:pointer}
+.notif-badge .cnt{position:absolute;top:-6px;right:-8px;background:var(--accent);color:#fff;font-size:10px;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.notif-panel{position:absolute;top:40px;right:0;width:320px;background:#fff;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.2);z-index:250;display:none}
+.notif-panel.show{display:block}
+.notif-panel .item{padding:10px 14px;border-bottom:1px solid #eee;cursor:pointer;font-size:13px}
+.notif-panel .item:hover{background:#f9f9f9}
+/* CHARTS */
+.chart-box{position:relative;height:220px}
+.chart-box canvas{width:100%!important;height:100%!important}
+
+/* ── NEW PANELS ── */
+.progress-bar{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:4px}
+.progress-fill{height:100%;border-radius:3px;transition:width .3s}
+.progress-green{background:#0a8f32}.progress-orange{background:#f39c12}.progress-red{background:#e94560}
+.modal-body textarea{width:100%;min-height:80px;padding:8px;border:1px solid #d1d5db;border-radius:4px;font:12px monospace}
+/* ── LETTRAGE ── */
+.lettrage-comptes tr{cursor:pointer}
+.lettrage-paires{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.lettrage-paire{border:1px solid var(--border);border-radius:8px;padding:12px;background:#f9fafb}
+.lettrage-paire .debit{color:var(--green);font-weight:600}
+.lettrage-paire .credit{color:var(--accent);font-weight:600}
+/* ── SMTP ── */
+.smtp-form{max-width:500px}
+.smtp-result{padding:10px;border-radius:6px;margin-top:8px;font-size:13px}
+.smtp-success{background:#d4edda;color:var(--green)}
+.smtp-error{background:#fdecea;color:var(--accent)}
+
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside id="sidebar">
+  <div class="logo"><span style="font-size:20px">🧮</span><span>ComptaPro</span></div>
+  <nav>
+    <a class="active" data-page="dashboard" onclick="navigate('dashboard')"><span class="icon">📊</span><span>Dashboard</span></a>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>💰 Ventes</span><span class="s-arrow">▾</span></div><div class="s-body">
+      <a data-page="factures" onclick="navigate('factures')"><span>📄 Factures</span></a>
+      <a data-page="abonnements" onclick="navigate('abonnements')"><span>🔄 Abonnements</span></a>
+      <a data-page="relances" onclick="navigate('relances')"><span>📨 Relances</span></a>
+      <a data-page="bons" onclick="navigate('bons')"><span>📦 Bons</span></a>
+    </div></div>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>🛒 Achats</span><span class="s-arrow">▾</span></div><div class="s-body">
+      <a data-page="achats" onclick="navigate('achats')"><span>🛒 Validation</span></a>
+      <a data-page="notes-frais" onclick="navigate('notes-frais')"><span>🧾 Notes de frais</span></a>
+    </div></div>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>🏦 Banque</span><span class="s-arrow">▾</span></div><div class="s-body">
+      <a data-page="banque" onclick="navigate('banque')"><span>🏦 Import & rapprochement</span></a>
+      <a data-page="lettrage" onclick="navigate('lettrage')"><span>🔗 Lettrage</span></a>
+      <a data-page="categories" onclick="navigate('categories')"><span>🏷️ Classification</span></a>
+    </div></div>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>📒 Comptabilité</span><span class="s-arrow">▾</span></div><div class="s-body">
+      <a data-page="ecritures" onclick="navigate('ecritures')"><span>📒 Écritures</span></a>
+      <a data-page="balance" onclick="navigate('balance')"><span>📊 Balance</span></a>
+      <a data-page="resultat" onclick="navigate('resultat')"><span>📈 Résultat</span></a>
+      <a data-page="bilan" onclick="navigate('bilan')"><span>📋 Bilan</span></a>
+      <a data-page="grand-livre" onclick="navigate('grand-livre')"><span>📖 Grand-Livre</span></a>
+      <a data-page="paie" onclick="navigate('paie')"><span>💰 OD Paie</span></a>
+      <a data-page="cloture" onclick="navigate('cloture')"><span>🔒 Clôture</span></a>
+      <a data-page="immo" onclick="navigate('immo')"><span>🏢 Immobilisations</span></a>
+      <a data-page="emprunts" onclick="navigate('emprunts')"><span>🏦 Emprunts</span></a>
+      <a data-page="export" onclick="navigate('export')"><span>📥 Export</span></a>
+    </div></div>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>📈 Pilotage</span><span class="s-arrow">▾</span></div><div class="s-body">
+      <a data-page="budget" onclick="navigate('budget')"><span>💰 Budget</span></a>
+      <a data-page="previsionnel" onclick="navigate('previsionnel')"><span>📈 Prévisions</span></a>
+      <a data-page="tva" onclick="navigate('tva')"><span>💰 TVA</span></a>
+    </div></div>
+    <div class="s-group"><div class="s-head" onclick="toggleSection(this)"><span>⚙️ Admin</span><span class="s-arrow">▾</span></div><div class="s-body">
+      <a data-page="parametres" onclick="navigate('parametres')"><span>⚙️ Paramètres</span></a>
+      <a data-page="email" onclick="navigate('email')"><span>📧 Email SMTP</span></a>
+      <a data-page="audit" onclick="navigate('audit')"><span>🔍 Audit</span></a>
+      <a data-page="recherche" onclick="navigate('recherche')"><span>🔎 Recherche</span></a>
+    </div></div>
+  </nav>
+  <div class="footer">ComptaPro v1.0</div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div id="main">
+  <header id="topbar">
+    <div class="ex-title" id="topbar-title">ComptaPro</div>
+    <select id="exercice-select" onchange="onExerciceChange()"></select>
+    <div style="position:relative;flex:1;max-width:400px">
+    <input id="search-input" placeholder="Rechercher..." style="width:100%;padding:7px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px" oninput="onSearch(this.value)" onfocus="onSearch(this.value)">
+    <div class="search-dropdown" id="search-results"></div>
+  </div>
+  <div class="notif-badge" onclick="toggleNotifs()">
+    <span style="font-size:18px">🔔</span><span class="cnt" id="notif-count" style="display:none">0</span>
+    <div class="notif-panel" id="notif-panel"></div>
+  </div>
+    <div class="spacer"></div>
+    <button class="btn btn-outline btn-sm" onclick="printPage()" title="Imprimer">🖨️</button>
+    <button class="btn btn-outline btn-sm" onclick="exportCSV()" title="Export CSV">📥</button>
+    <button class="btn btn-outline btn-sm" onclick="showNewExercice()">+ Exercice</button>
+  </header>
+
+  <div id="content">
+    <!-- DASHBOARD -->
+    <div id="panel-dashboard" class="panel active">
+      <div id="dashboard-content"><div class="empty"><div class="spinner"></div> Chargement...</div></div>
+    </div>
+
+    <!-- FACTURES -->
+    <div id="panel-factures" class="panel">
+      <div id="factures-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- BANQUE -->
+    <div id="panel-banque" class="panel">
+      <div id="banque-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- ECRITURES -->
+    <div id="panel-ecritures" class="panel">
+      <div id="ecritures-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- BALANCE -->
+    <div id="panel-balance" class="panel">
+      <div id="balance-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- RESULTAT -->
+    <div id="panel-resultat" class="panel">
+      <div id="resultat-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- BILAN -->
+    <div id="panel-bilan" class="panel">
+      <div id="bilan-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- GRAND-LIVRE -->
+    <div id="panel-grand-livre" class="panel">
+      <div id="grand-livre-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- PARAMETRES -->
+    <div id="panel-parametres" class="panel">
+      <div id="parametres-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- RELANCES -->
+    <div id="panel-relances" class="panel">
+      <div id="relances-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- BUDGET -->
+    <div id="panel-budget" class="panel">
+      <div id="budget-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- NOTES DE FRAIS -->
+    <div id="panel-notes-frais" class="panel">
+      <div id="notes-frais-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- LETTRAGE -->
+    <div id="panel-lettrage" class="panel">
+      <div id="lettrage-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- EMAIL -->
+    <div id="panel-email" class="panel">
+      <div id="email-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- AUDIT -->
+    <div id="panel-audit" class="panel">
+      <div id="audit-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- TVA -->
+    <div id="panel-tva" class="panel">
+      <div id="tva-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- ACHATS -->
+    <div id="panel-achats" class="panel">
+      <div id="achats-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- PREVISIONNEL -->
+    <div id="panel-previsionnel" class="panel">
+      <div id="previsionnel-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- ABONNEMENTS -->
+    <div id="panel-abonnements" class="panel">
+      <div id="abonnements-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- RECHERCHE -->
+    <div id="panel-recherche" class="panel">
+      <div id="recherche-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- EXPORT -->
+    <div id="panel-export" class="panel">
+      <div id="export-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- PAIE -->
+    <div id="panel-paie" class="panel">
+      <div id="paie-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- BONS -->
+    <div id="panel-bons" class="panel">
+      <div id="bons-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- CLOTURE -->
+    <div id="panel-cloture" class="panel">
+      <div id="cloture-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- IMMOBILISATIONS -->
+    <div id="panel-immo" class="panel">
+      <div id="immo-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- EMPRUNTS -->
+    <div id="panel-emprunts" class="panel">
+      <div id="emprunts-content"><div class="empty">Chargement...</div></div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div id="panel-categories" class="panel">
+      <div id="categories-content"><div class="empty">Chargement...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL FACTURE ── -->
+<div class="modal-overlay" id="modal-facture">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-facture-title">Nouvelle facture</h3><button class="btn-ghost" onclick="closeModal('modal-facture')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Type</label><select id="fact-type"><option value="FACTURE">Facture</option><option value="DEVIS">Devis</option><option value="AVOIR">Avoir</option></select></div>
+        <div class="form-group"><label>Date</label><input type="date" id="fact-date"></div>
+        <div class="form-group"><label>Échéance</label><input type="date" id="fact-echeance"></div>
+      </div>
+      <div class="form-group"><label>Client</label><input id="fact-client" placeholder="Nom du client" list="clients-list"><datalist id="clients-list"></datalist></div>
+      <div class="form-group"><label>Objet</label><input id="fact-objet" placeholder="Objet de la facture"></div>
+      <div class="card-header"><h3>Lignes</h3></div>
+      <div id="fact-lignes"></div>
+      <button class="btn btn-outline btn-sm mt-sm" onclick="addFactLigne()">+ Ligne</button>
+      <div class="flex-between mt-sm" style="font-size:14px">
+        <span class="text-muted">Total HT: <strong id="fact-total-ht">0.00</strong> €</span>
+        <span style="font-weight:600">Total TTC: <strong id="fact-total-ttc">0.00</strong> €</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-facture')">Annuler</button>
+      <button class="btn" onclick="saveFacture()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL RAPPROCHEMENT ── -->
+<div class="modal-overlay" id="modal-rapproche">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header"><h3>Rapprocher</h3><button class="btn-ghost" onclick="closeModal('modal-rapproche')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Rechercher une écriture</label><input id="rapproche-search" placeholder="Libellé, compte..." oninput="searchEcritures()"></div>
+      <div id="rapproche-results" style="max-height:300px;overflow-y:auto"></div>
+      <input type="hidden" id="rapproche-ligne-id">
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-rapproche')">Annuler</button></div>
+  </div>
+</div>
+
+<!-- ── MODAL SCENARIO ── -->
+<div class="modal-overlay" id="modal-scenario">
+  <div class="modal">
+    <div class="modal-header"><h3>Nouveau scénario de relance</h3><button class="btn-ghost" onclick="closeModal('modal-scenario')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Nom du scénario</label><input id="scenario-nom" placeholder="Ex: Relance J+7"></div>
+      <div class="form-group"><label>Délai (jours après échéance)</label><input type="number" id="scenario-delai" value="7" min="1"></div>
+      <div class="form-group"><label>Modèle d'email</label><textarea id="scenario-modele" placeholder="Bonjour {{client}},
+Votre facture {{facture_num}} d'un montant de {{montant}} arrivée à échéance le {{date_echeance}}..."></textarea></div>
+      <div class="form-group"><label>Conditions (JSON)</label><textarea id="scenario-conditions">{"statut":"en_retard","age_min_jours":7}</textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-scenario')">Annuler</button>
+      <button class="btn" onclick="createScenario()">Créer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL BUDGET ── -->
+<div class="modal-overlay" id="modal-budget">
+  <div class="modal">
+    <div class="modal-header"><h3>Définir un budget</h3><button class="btn-ghost" onclick="closeModal('modal-budget')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Compte</label><input id="budget-compte" placeholder="N° de compte"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Mois (1-12 ou 0=Année)</label><input type="number" id="budget-mois" value="1" min="0" max="12"></div>
+        <div class="form-group"><label>Montant</label><input type="number" id="budget-montant" step="0.01" min="0"></div>
+      </div>
+      <div class="form-group"><label>Notes</label><input id="budget-notes" placeholder="Optionnel"></div>
+      <div class="form-group">
+        <label>Ou importer un CSV</label>
+        <input type="file" id="budget-csv-input" accept=".csv" onchange="importBudgetCSV(event)">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-budget')">Annuler</button>
+      <button class="btn" onclick="saveBudget()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL NOTE DE FRAIS ── -->
+<div class="modal-overlay" id="modal-note-frais">
+  <div class="modal">
+    <div class="modal-header"><h3>Nouvelle note de frais</h3><button class="btn-ghost" onclick="closeModal('modal-note-frais')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Date</label><input type="date" id="nf-date"></div>
+        <div class="form-group"><label>Catégorie</label><select id="nf-categorie"><option value="deplacement">Déplacement</option><option value="repas">Repas</option><option value="hebergement">Hébergement</option><option value="fournitures">Fournitures</option><option value="divers">Divers</option></select></div>
+      </div>
+      <div class="form-group"><label>Description</label><input id="nf-description" placeholder="Description de la dépense"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Montant HT</label><input type="number" id="nf-montant-ht" step="0.01" min="0" oninput="calcNFTotal()"></div>
+        <div class="form-group"><label>TVA</label><select id="nf-tva" onchange="calcNFTotal()"><option value="20">20%</option><option value="10">10%</option><option value="5.5">5.5%</option><option value="0">0%</option></select></div>
+        <div class="form-group"><label>Montant TTC</label><input type="number" id="nf-montant-ttc" step="0.01" readonly style="background:#f3f4f6"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Employé</label><input id="nf-employe" value="Moi"></div>
+        <div class="form-group"><label>Justificatif</label><input id="nf-justificatif" placeholder="Nom du fichier"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-note-frais')">Annuler</button>
+      <button class="btn" onclick="saveNote()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL CATALOGUE ── -->
+<div class="modal-overlay" id="modal-catalogue">
+  <div class="modal" style="max-width:800px">
+    <div class="modal-header"><h3>📦 Catalogue Produits / Clients</h3><button class="btn-ghost" onclick="closeModal('modal-catalogue')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="filter-bar">
+        <select id="cat-filter-type" onchange="loadCatalogue()">
+          <option value="">Tous</option><option value="client">Clients</option><option value="fournisseur">Fournisseurs</option>
+        </select>
+        <input id="cat-search" placeholder="Rechercher..." oninput="loadCatalogue()">
+      </div>
+      <table id="cat-table"><thead><tr><th>Code</th><th>Type</th><th>Nom</th><th>Email</th><th></th></tr></thead><tbody></tbody></table>
+      <div class="card-header mt-sm"><h3>Ajouter</h3></div>
+      <div class="form-row">
+        <div class="form-group"><label>Code</label><input id="cat-code"></div>
+        <div class="form-group"><label>Type</label><select id="cat-type"><option value="client">Client</option><option value="fournisseur">Fournisseur</option></select></div>
+      </div>
+      <div class="form-group"><label>Nom</label><input id="cat-nom"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Adresse</label><input id="cat-adresse"></div>
+        <div class="form-group"><label>SIRET</label><input id="cat-siret"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Email</label><input type="email" id="cat-email"></div>
+        <div class="form-group"><label>Téléphone</label><input id="cat-tel"></div>
+      </div>
+      <button class="btn btn-sm" onclick="saveCatalogue()">Ajouter</button>
+      <span id="cat-msg" style="margin-left:10px;font-size:13px"></span>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-catalogue')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ACHAT -->
+<div class="modal-overlay" id="modal-achat">
+  <div class="modal">
+    <div class="modal-header"><h3>Nouvel achat a valider</h3><button class="btn-ghost" onclick="closeModal('modal-achat')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-row"><div class="form-group"><label>Fournisseur</label><input id="achat-fournisseur" placeholder="Nom du fournisseur"></div><div class="form-group"><label>Date facture</label><input type="date" id="achat-date"></div></div>
+      <div class="form-group"><label>Description</label><input id="achat-desc" placeholder="Objet de l'achat"></div>
+      <div class="form-row"><div class="form-group"><label>Compte charge</label><input id="achat-compte" value="607" style="width:80px"></div><div class="form-group"><label>TVA</label><select id="achat-tva"><option value="20">20%</option><option value="10">10%</option><option value="0">0%</option></select></div><div class="form-group"><label>Montant TTC</label><input type="number" id="achat-montant" step="0.01" min="0"></div></div>
+      <button class="btn btn-sm" onclick="saveAchat()">Ajouter</button>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-achat')">Fermer</button></div>
+  </div>
+</div>
+
+<!-- MODAL PREVISION -->
+<div class="modal-overlay" id="modal-prevision">
+  <div class="modal">
+    <div class="modal-header"><h3>Nouvelle prevision</h3><button class="btn-ghost" onclick="closeModal('modal-prevision')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-row"><div class="form-group"><label>Mois (1-12)</label><select id="prev-mois"><option value="1">Janvier</option><option value="2">Fevrier</option><option value="3">Mars</option><option value="4">Avril</option><option value="5">Mai</option><option value="6">Juin</option><option value="7">Juillet</option><option value="8">Aout</option><option value="9">Septembre</option><option value="10">Octobre</option><option value="11">Novembre</option><option value="12">Decembre</option></select></div><div class="form-group"><label>Categorie</label><select id="prev-categorie"><option value="encaissement">Encaissement</option><option value="decaissement">Decaissement</option></select></div></div>
+      <div class="form-group"><label>Libelle</label><input id="prev-libelle" placeholder="Ex: Loyer, Salaire, Client X..."></div>
+      <div class="form-row"><div class="form-group"><label>Compte</label><input id="prev-compte" value="512" style="width:80px"></div><div class="form-group"><label>Montant</label><input type="number" id="prev-montant" step="0.01" min="0"></div><div class="form-group"><label>Probabilite</label><select id="prev-proba"><option value="1">Certain</option><option value="0.8">Probable (80%)</option><option value="0.5">Possible (50%)</option></select></div></div>
+      <button class="btn btn-sm" onclick="savePrevision()">Ajouter</button>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-prevision')">Fermer</button></div>
+  </div>
+</div>
+
+<!-- MODAL ABONNEMENT -->
+<div class="modal-overlay" id="modal-abonnement">
+  <div class="modal">
+    <div class="modal-header"><h3>Nouvel abonnement</h3><button class="btn-ghost" onclick="closeModal('modal-abonnement')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Client</label><input id="abo-client" placeholder="Nom du client"></div>
+      <div class="form-group"><label>Description</label><input id="abo-desc" placeholder="Ex: Maintenance mensuelle"></div>
+      <div class="form-row"><div class="form-group"><label>Montant HT</label><input type="number" id="abo-montant" step="0.01" min="0"></div><div class="form-group"><label>TVA</label><select id="abo-tva"><option value="20">20%</option><option value="10">10%</option><option value="0">0%</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label>Periodicite</label><select id="abo-periode"><option value="mensuel">Mensuel</option><option value="trimestriel">Trimestriel</option><option value="annuel">Annuel</option></select></div><div class="form-group"><label>Jour facturation</label><select id="abo-jour"><option value="1">1</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="28">28</option></select></div></div>
+      <div class="form-group"><label>Date debut</label><input type="date" id="abo-debut"></div>
+      <button class="btn btn-sm" onclick="saveAbonnement()">Creer</button>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-abonnement')">Fermer</button></div>
+  </div>
+</div>
+
+<!-- MODAL BON -->
+<div class="modal-overlay" id="modal-bon">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-bon-title">Nouveau bon</h3><button class="btn-ghost" onclick="closeModal('modal-bon')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Date</label><input type="date" id="bon-date"></div>
+        <div class="form-group"><label>Type</label><select id="bon-sous-type"><option value="bon_commande">Bon de commande</option><option value="pro_forma">Pro-Forma</option></select></div>
+      </div>
+      <div class="form-group"><label>Client</label><input id="bon-client" placeholder="Nom du client"></div>
+      <div class="form-group"><label>Objet</label><input id="bon-objet" placeholder="Objet du bon"></div>
+      <div class="card-header"><h3>Lignes</h3></div>
+      <div id="bon-lignes"></div>
+      <button class="btn btn-outline btn-sm mt-sm" onclick="addBonLigne()">+ Ligne</button>
+      <div class="flex-between mt-sm" style="font-size:14px">
+        <span class="text-muted">Total HT: <strong id="bon-total-ht">0.00</strong> €</span>
+        <span style="font-weight:600">Total TTC: <strong id="bon-total-ttc">0.00</strong> €</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-bon')">Annuler</button>
+      <button class="btn" onclick="saveBon()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL IMMOBILISATION ── -->
+<div class="modal-overlay" id="modal-immo">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-immo-title">Nouvelle immobilisation</h3><button class="btn-ghost" onclick="closeModal('modal-immo')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Compte immo</label><input id="immo-compte" value="218" placeholder="218"></div>
+        <div class="form-group"><label>Compte amort</label><input id="immo-compte-amort" value="2818" placeholder="2818"></div>
+      </div>
+      <div class="form-group"><label>Désignation</label><input id="immo-designation" placeholder="Désignation du bien"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Date acquisition</label><input type="date" id="immo-date"></div>
+        <div class="form-group"><label>Valeur</label><input type="number" id="immo-valeur" step="0.01" min="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Durée (années)</label><input type="number" id="immo-duree" value="5" min="1"></div>
+        <div class="form-group"><label>Mode</label><select id="immo-mode"><option value="lineaire">Linéaire</option><option value="degressif">Dégressif</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Coeff dégressif</label><input type="number" id="immo-coeff" value="1.75" step="0.25" min="1"></div>
+        <div class="form-group"><label>V. résiduelle</label><input type="number" id="immo-vres" value="0" step="0.01" min="0"></div>
+      </div>
+      <div class="form-group"><label>Compte dotation</label><input id="immo-compte-dotation" value="6811" placeholder="6811"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-immo')">Annuler</button>
+      <button class="btn" onclick="saveImmo()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL EMPRUNT ── -->
+<div class="modal-overlay" id="modal-emprunt">
+  <div class="modal">
+    <div class="modal-header"><h3>Nouvel emprunt</h3><button class="btn-ghost" onclick="closeModal('modal-emprunt')" style="font-size:18px">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Désignation</label><input id="emprunt-designation" placeholder="Ex: Emprunt bancaire 50k"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Date début</label><input type="date" id="emprunt-date"></div>
+        <div class="form-group"><label>Montant</label><input type="number" id="emprunt-montant" step="0.01" min="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Taux (%)</label><input type="number" id="emprunt-taux" step="0.01" min="0" value="2"></div>
+        <div class="form-group"><label>Durée (mois)</label><input type="number" id="emprunt-duree" min="1" value="120"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Périodicité</label><select id="emprunt-periodicite"><option value="mensuelle">Mensuelle</option><option value="trimestrielle">Trimestrielle</option></select></div>
+        <div class="form-group"><label>Type</label><select id="emprunt-type"><option value="constant">Mensualité constante</option><option value="annuite">Annuité constante</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Frais dossier</label><input type="number" id="emprunt-frais" value="0" step="0.01" min="0"></div>
+        <div class="form-group"><label>Assurance mensuelle</label><input type="number" id="emprunt-assurance" value="0" step="0.01" min="0"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-emprunt')">Annuler</button>
+      <button class="btn" onclick="saveEmprunt()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  CORE
+// ═══════════════════════════════════════════════
+const API='';
+let exercices=[],exerciceId=null,currentPage='dashboard';
+
+// Sidebar collapsible sections
+function toggleSection(head){
+  const body=head.nextElementSibling;
+  const open=!body.classList.contains('collapsed');
+  // Ferme toutes les sections d'abord
+  document.querySelectorAll('.s-body').forEach(b=>b.classList.add('collapsed'));
+  document.querySelectorAll('.s-head').forEach(h=>h.classList.remove('open'));
+  // Ouvre celle-ci si elle etait fermee
+  if(!open){body.classList.remove('collapsed');head.classList.add('open')}
+}
+// Auto-expand parent section on navigate
+function expandParent(page){
+  const link=document.querySelector(`#sidebar nav a[data-page="${page}"]`);
+  if(!link)return;
+  const group=link.closest('.s-group');
+  if(!group)return;
+  const body=group.querySelector('.s-body');
+  const head=group.querySelector('.s-head');
+  if(body&&head){body.classList.remove('collapsed');head.classList.add('open')}
+}
+
+async function api(url,opts={}){
+  const r=await fetch(API+url,opts);
+  const data=await r.json();
+  if(!r.ok)throw new Error(data.error||r.statusText);
+  return data;
+}
+
+function toast(msg,type='success'){
+  const t=document.createElement('div');
+  t.className='toast toast-'+type;t.textContent=msg;document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3500);
+}
+
+function openModal(id){document.getElementById(id).classList.add('show')}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+
+async function loadExercices(){
+  exercices=await api('/api/exercices');
+  const sel=document.getElementById('exercice-select');
+  sel.innerHTML=exercices.map(e=>`<option value="${e.id}">${e.libelle} (${e.date_debut} → ${e.date_fin}) ${e.cloture?'🔒':''}</option>`).join('');
+  if(exercices.length&&!exerciceId)exerciceId=exercices[0].id;
+  sel.value=exerciceId||'';
+  document.getElementById('topbar-title').textContent=exercices.length?exercices.find(e=>e.id===exerciceId)?.libelle||'ComptaPro':'ComptaPro';
+}
+
+function onExerciceChange(){
+  exerciceId=+document.getElementById('exercice-select').value;
+  document.getElementById('topbar-title').textContent=exercices.find(e=>e.id===exerciceId)?.libelle||'ComptaPro';
+  navigate(currentPage);
+}
+
+// ═══════════════════════════════════════════════
+//  RELANCES
+// ═══════════════════════════════════════════════
+async function loadRelances(){
+  if(!exerciceId)return;
+  const el=document.getElementById('relances-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const[scenarios,resume]=await Promise.all([
+      api(`/api/relances/scenarios`),
+      api(`/api/relances/resume?exercice_id=${exerciceId}`)
+    ]);
+    let ht=`<div class="card">
+      <div class="card-header"><h2>📨 Relances</h2><button class="btn btn-sm" onclick="execRelances()">📧 Exécuter les relances</button></div>
+      <div class="dash-grid" style="margin-bottom:12px">
+        <div class="dash-card"><div class="label">Factures en retard</div><div class="big-num red">${resume.nb_retard||0}</div></div>
+        <div class="dash-card"><div class="label">Relances J7</div><div class="big-num">${resume.relances_j7||0}</div></div>
+        <div class="dash-card"><div class="label">Relances J15</div><div class="big-num">${resume.relances_j15||0}</div></div>
+        <div class="dash-card"><div class="label">Relances J30</div><div class="big-num">${resume.relances_j30||0}</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Scénarios</h2><button class="btn btn-sm" onclick="openScenarioModal()">+ Nouveau scénario</button></div>
+      <table><thead><tr><th>Nom</th><th>Délai (j)</th><th>Conditions</th><th></th></tr></thead><tbody>`;
+    for(const s of(scenarios||[])){
+      ht+=`<tr>
+        <td><strong>${s.nom||''}</strong></td><td>${s.delai||0} jours</td>
+        <td><span class="text-muted">${(s.conditions||'').substring(0,60)}</span></td>
+        <td><button class="btn btn-outline btn-sm" onclick="deleteScenario(${s.id})">🗑️</button></td>
+      </tr>`;
+    }
+    if(!(scenarios||[]).length)ht+=`<tr><td colspan="4" class="empty">Aucun scénario</td></tr>`;
+    ht+=`</tbody></table></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+function openScenarioModal(){
+  document.getElementById('scenario-nom').value='';
+  document.getElementById('scenario-delai').value=7;
+  document.getElementById('scenario-modele').value='';
+  document.getElementById('scenario-conditions').value='{"statut":"en_retard","age_min_jours":7}';
+  openModal('modal-scenario');
+}
+
+async function createScenario(){
+  try{
+    await api('/api/relances/scenarios',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      nom:document.getElementById('scenario-nom').value,
+      delai:parseInt(document.getElementById('scenario-delai').value)||7,
+      modele:document.getElementById('scenario-modele').value,
+      conditions:JSON.parse(document.getElementById('scenario-conditions').value)
+    })});
+    closeModal('modal-scenario');loadRelances();toast('Scénario créé');
+  }catch(e){toast(e.message,'error')}
+}
+
+async function deleteScenario(id){
+  if(!confirm('Supprimer ce scénario ?'))return;
+  try{await api(`/api/relances/scenarios/${id}`,{method:'DELETE'});loadRelances();toast('Scénario supprimé')}catch(e){toast(e.message,'error')}
+}
+
+async function execRelances(){
+  if(!confirm('Exécuter les relances pour les factures en retard ?'))return;
+  try{const r=await api(`/api/relances/executer?exercice_id=${exerciceId}`,{method:'POST'});toast(`${r.nb_relances||0} relance(s) générée(s)`);loadRelances()}catch(e){toast(e.message,'error')}
+}
+
+// ═══════════════════════════════════════════════
+//  BUDGET
+// ═══════════════════════════════════════════════
+async function loadBudget(){
+  if(!exerciceId)return;
+  const el=document.getElementById('budget-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  const mois=document.getElementById('budget-mois-filter')?.value||'';
+  try{
+    const[comparaison,resume]=await Promise.all([
+      api(`/api/budget/comparaison?exercice_id=${exerciceId}${mois?`&mois=${mois}`:''}`),
+      api(`/api/budget/resume?exercice_id=${exerciceId}`)
+    ]);
+    const moisLabels=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+    let ht=`<div class="card">
+      <div class="card-header"><h2>💰 Suivi budgétaire</h2>
+        <div style="display:flex;gap:8px">
+          <select id="budget-mois-filter" onchange="loadBudget()" style="padding:6px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px">
+            <option value="">Année</option>`;
+    for(let i=0;i<12;i++)ht+=`<option value="${i+1}" ${mois===String(i+1)?'selected':''}>${moisLabels[i]}</option>`;
+    ht+=`</select>
+          <button class="btn btn-sm" onclick="openBudgetModal()">+ Définir budget</button>
+        </div>
+      </div>
+      <table><thead><tr><th>Compte</th><th class="num">Budget</th><th class="num">Réel</th><th class="num">Écart</th><th style="width:120px">% Conso</th></tr></thead><tbody>`;
+    let totalBudget=0,totalReel=0;
+    for(const l of(comparaison||[])){
+      const pct=l.budget>0?((l.reel||0)/l.budget*100):0;
+      const cls=pct>100?'progress-red':pct>=80?'progress-orange':'progress-green';
+      totalBudget+=l.budget||0;totalReel+=l.reel||0;
+      ht+=`<tr>
+        <td><strong>${l.compte||''}</strong>${l.libelle?' — '+l.libelle:''}</td>
+        <td class="num">${(l.budget||0).toFixed(2)}</td>
+        <td class="num">${(l.reel||0).toFixed(2)}</td>
+        <td class="num" style="color:${(l.ecart||0)<0?'var(--accent)':'var(--green)'}">${(l.ecart||0).toFixed(2)}</td>
+        <td><div class="progress-bar"><div class="progress-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div><span style="font-size:10px;color:var(--muted)">${pct.toFixed(0)}%</span></td>
+      </tr>`;
+    }
+    const totalPct=totalBudget>0?totalReel/totalBudget*100:0;
+    const totalCls=totalPct>100?'progress-red':totalPct>=80?'progress-orange':'progress-green';
+    ht+=`<tr class="total-row">
+      <td>TOTAL</td><td class="num">${totalBudget.toFixed(2)}</td><td class="num">${totalReel.toFixed(2)}</td>
+      <td class="num" style="color:${(totalReel-totalBudget)<0?'var(--accent)':'var(--green)'}">${(totalReel-totalBudget).toFixed(2)}</td>
+      <td><div class="progress-bar"><div class="progress-fill ${totalCls}" style="width:${Math.min(totalPct,100)}%"></div></div><span style="font-size:10px;color:var(--muted)">${totalPct.toFixed(0)}%</span></td>
+    </tr>`;
+    if(!(comparaison||[]).length)ht+=`<tr><td colspan="5" class="empty">Aucune donnée budgétaire</td></tr>`;
+    ht+=`</tbody></table></div>`;
+    if(resume&&resume.top_depassements&&resume.top_depassements.length){
+      ht+=`<div class="card mt-sm"><div class="card-header"><h3>⚠️ Top dépassements</h3></div><table><thead><tr><th>Compte</th><th class="num">Budget</th><th class="num">Réel</th><th class="num">Écart</th></tr></thead><tbody>`;
+      for(const d of resume.top_depassements){
+        ht+=`<tr><td><strong>${d.compte||''}</strong></td><td class="num">${(d.budget||0).toFixed(2)}</td><td class="num">${(d.reel||0).toFixed(2)}</td><td class="num" style="color:var(--accent)">${(d.ecart||0).toFixed(2)}</td></tr>`;
+      }
+      ht+=`</tbody></table></div>`;
+    }
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+function openBudgetModal(){
+  document.getElementById('budget-compte').value='';
+  document.getElementById('budget-mois').value=1;
+  document.getElementById('budget-montant').value='';
+  document.getElementById('budget-notes').value='';
+  openModal('modal-budget');
+}
+
+async function saveBudget(){
+  try{
+    await api('/api/budget/definir',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      exercice_id:exerciceId,
+      compte:document.getElementById('budget-compte').value,
+      mois:parseInt(document.getElementById('budget-mois').value)||0,
+      montant:parseFloat(document.getElementById('budget-montant').value)||0,
+      notes:document.getElementById('budget-notes').value
+    })});
+    closeModal('modal-budget');loadBudget();toast('Budget enregistré');
+  }catch(e){toast(e.message,'error')}
+}
+
+async function importBudgetCSV(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const text=await file.text();
+  try{
+    await api('/api/budget/importer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,csv:text,filename:file.name})});
+    loadBudget();toast('Budgets importés');
+  }catch(e){toast(e.message,'error')}
+  e.target.value='';
+}
+
+// ═══════════════════════════════════════════════
+//  NOTES DE FRAIS
+// ═══════════════════════════════════════════════
+let nfFilter={statut:'',categorie:''};
+
+async function loadNotesFrais(){
+  if(!exerciceId)return;
+  const el=document.getElementById('notes-frais-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    let url=`/api/notes-frais?exercice_id=${exerciceId}`;
+    if(nfFilter.statut)url+=`&statut=${nfFilter.statut}`;
+    if(nfFilter.categorie)url+=`&categorie=${nfFilter.categorie}`;
+    const[notes,stats]=await Promise.all([api(url),api(`/api/notes-frais/stats?exercice_id=${exerciceId}`)]);
+    let ht=`<div class="card">
+      <div class="card-header"><h2>🧾 Notes de frais</h2><button class="btn btn-sm" onclick="openNoteModal()">+ Nouvelle note</button></div>
+      <div class="filter-bar">
+        <select onchange="nfFilter.statut=this.value;loadNotesFrais()">
+          <option value="">Tous statuts</option>
+          <option value="brouillon">Brouillon</option><option value="soumis">Soumis</option><option value="valide">Validé</option><option value="rembourse">Remboursé</option>
+        </select>
+        <select onchange="nfFilter.categorie=this.value;loadNotesFrais()">
+          <option value="">Toutes catégories</option>
+          <option value="deplacement">Déplacement</option><option value="repas">Repas</option><option value="hebergement">Hébergement</option><option value="fournitures">Fournitures</option><option value="divers">Divers</option>
+        </select>
+      </div>
+      <table><thead><tr><th>Date</th><th>Description</th><th>Catégorie</th><th class="num">Montant TTC</th><th>Statut</th><th></th></tr></thead><tbody>`;
+    for(const n of(notes||[])){
+      const statClass={brouillon:'badge-neutral',soumis:'badge-info',valide:'badge-success',rembourse:'badge-warning'};
+      ht+=`<tr>
+        <td>${n.date||''}</td><td>${n.description||''}</td><td>${n.categorie||''}</td>
+        <td class="num">${(n.montant_ttc||0).toFixed(2)} €</td>
+        <td><span class="badge ${statClass[n.statut]||'badge-neutral'}">${n.statut||'?'}</span></td>
+        <td style="white-space:nowrap">
+          ${n.statut==='soumis'?`<button class="btn btn-green btn-sm" onclick="validerNote(${n.id})">Valider</button>`:''}
+          ${n.statut==='valide'?`<button class="btn btn-outline btn-sm" onclick="genererEcritureNote(${n.id})">Générer écriture</button>`:''}
+        </td>
+      </tr>`;
+    }
+    if(!(notes||[]).length)ht+=`<tr><td colspan="6" class="empty">Aucune note de frais</td></tr>`;
+    ht+=`</tbody></table></div>`;
+    // Stats
+    ht+=`<div class="dash-grid" style="margin-top:16px">
+      <div class="dash-card"><div class="label">Total</div><div class="big-num">${(stats.total||0).toFixed(2)} €</div></div>`;
+    if(stats.par_categorie)for(const[c,m]of Object.entries(stats.par_categorie||{})){
+      ht+=`<div class="dash-card"><div class="label">${c}</div><div class="big-num" style="font-size:20px">${(m||0).toFixed(2)} €</div></div>`;
+    }
+    if(stats.par_mois)for(const[m,v]of Object.entries(stats.par_mois||{})){
+      ht+=`<div class="dash-card"><div class="label">Mois ${m}</div><div class="big-num" style="font-size:18px">${(v||0).toFixed(2)} €</div></div>`;
+    }
+    ht+=`</div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+function openNoteModal(){
+  document.getElementById('nf-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('nf-categorie').value='deplacement';
+  document.getElementById('nf-description').value='';
+  document.getElementById('nf-montant-ht').value='';
+  document.getElementById('nf-tva').value='20';
+  document.getElementById('nf-montant-ttc').value='';
+  document.getElementById('nf-employe').value='Moi';
+  document.getElementById('nf-justificatif').value='';
+  openModal('modal-note-frais');
+}
+
+function calcNFTotal(){
+  const ht=parseFloat(document.getElementById('nf-montant-ht').value)||0;
+  const tva=parseFloat(document.getElementById('nf-tva').value)/100;
+  document.getElementById('nf-montant-ttc').value=(ht*(1+tva)).toFixed(2);
+}
+
+async function saveNote(){
+  try{
+    await api('/api/notes-frais',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      exercice_id:exerciceId,
+      date:document.getElementById('nf-date').value,
+      description:document.getElementById('nf-description').value,
+      categorie:document.getElementById('nf-categorie').value,
+      montant_ht:parseFloat(document.getElementById('nf-montant-ht').value)||0,
+      tva:parseFloat(document.getElementById('nf-tva').value),
+      employe:document.getElementById('nf-employe').value,
+      justificatif:document.getElementById('nf-justificatif').value
+    })});
+    closeModal('modal-note-frais');loadNotesFrais();toast('Note de frais enregistrée');
+  }catch(e){toast(e.message,'error')}
+}
+
+async function validerNote(id){
+  try{await api(`/api/notes-frais/${id}/valider`,{method:'POST'});loadNotesFrais();toast('Note validée')}catch(e){toast(e.message,'error')}
+}
+
+async function genererEcritureNote(id){
+  try{await api(`/api/notes-frais/${id}/ecriture`,{method:'POST'});loadNotesFrais();toast('Écriture générée')}catch(e){toast(e.message,'error')}
+}
+
+// ═══════════════════════════════════════════════
+//  LETTRAGE
+// ═══════════════════════════════════════════════
+let lettrageCompte=null;
+
+async function loadLettrage(){
+  if(!exerciceId)return;
+  const el=document.getElementById('lettrage-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const[comptes,lettrages]=await Promise.all([
+      api(`/api/lettrage/comptes?exercice_id=${exerciceId}`),
+      api(`/api/lettrage?exercice_id=${exerciceId}`)
+    ]);
+    let ht=`<div class="card">
+      <div class="card-header"><h2>🔗 Lettrage comptable</h2><button class="btn btn-sm" onclick="nouveauLettrage()">+ Nouveau lettrage</button></div>
+      <h3 style="margin-bottom:8px;font-size:14px">Comptes lettrables</h3>
+      <table class="lettrage-comptes"><thead><tr><th>Compte</th><th class="num">Solde</th><th class="num">Nb non-lettrées</th><th></th></tr></thead><tbody>`;
+    for(const c of(comptes||[])){
+      ht+=`<tr onclick="chargerSuggestion('${c.compte}')">
+        <td><strong>${c.compte||''}</strong>${c.libelle?' — '+c.libelle:''}</td>
+        <td class="num" style="color:${(c.solde||0)>=0?'var(--green)':'var(--accent)'}">${(c.solde||0).toFixed(2)}</td>
+        <td class="num">${c.nb_non_lettrees||0}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();lettrageAuto('${c.compte}')">Lettrage auto</button></td>
+      </tr>`;
+    }
+    if(!(comptes||[]).length)ht+=`<tr><td colspan="4" class="empty">Aucun compte lettrable</td></tr>`;
+    ht+=`</tbody></table>
+    <div id="lettrage-suggestions"></div></div>`;
+    // Lettrages existants
+    ht+=`<div class="card"><div class="card-header"><h3>Lettrages existants</h3></div>
+      <table><thead><tr><th>Code</th><th class="num">Nb lignes</th><th>Équilibré</th><th></th></tr></thead><tbody>`;
+    for(const l of(lettrages||[])){
+      ht+=`<tr onclick="detailLettrage(${l.id})" style="cursor:pointer">
+        <td><strong>${l.code||'LTR-'+l.id}</strong></td>
+        <td class="num">${l.nb_lignes||0}</td>
+        <td>${l.equilibre?'<span class="badge badge-success">✅ Oui</span>':'<span class="badge badge-danger">❌ Non</span>'}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();detailLettrage(${l.id})">Détail</button></td>
+      </tr>`;
+    }
+    if(!(lettrages||[]).length)ht+=`<tr><td colspan="4" class="empty">Aucun lettrage</td></tr>`;
+    ht+=`</tbody></table></div><div id="lettrage-detail"></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+async function nouveauLettrage(){
+  try{
+    const r=await api('/api/lettrage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});
+    loadLettrage();toast('Lettrage créé: '+(r.code||'#'+r.id));
+  }catch(e){toast(e.message,'error')}
+}
+
+async function chargerSuggestion(compte){
+  lettrageCompte=compte;
+  const el=document.getElementById('lettrage-suggestions');
+  el.innerHTML='<div class="text-muted mt-sm">Chargement des suggestions pour '+compte+'...</div>';
+  try{
+    const paires=await api(`/api/lettrage/suggerer?compte=${encodeURIComponent(compte)}`);
+    if(!(paires||[]).length){el.innerHTML='<div class="text-muted mt-sm">Aucune suggestion de lettrage pour ce compte.</div>';return}
+    let ht=`<div class="card mt-sm"><div class="card-header"><h3>Suggestions pour ${compte}</h3></div><div class="lettrage-paires">`;
+    for(const p of paires){
+      ht+=`<div class="lettrage-paire">
+        <div style="margin-bottom:4px"><span class="debit">Débit: ${(p.debit||0).toFixed(2)}</span> — ${p.libelle_debit||''}</div>
+        <div style="margin-bottom:8px"><span class="credit">Crédit: ${(p.credit||0).toFixed(2)}</span> — ${p.libelle_credit||''}</div>
+        <button class="btn btn-sm btn-green" onclick="creerLettrageAuto('${compte}',${p.debit_id||0},${p.credit_id||0})">Créer lettrage</button>
+      </div>`;
+    }
+    ht+=`</div></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="text-muted mt-sm">Erreur: ${e.message}</div>`}
+}
+
+async function creerLettrageAuto(compte,debitId,creditId){
+  try{
+    await api('/api/lettrage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,compte,lignes:[debitId,creditId]})});
+    loadLettrage();toast('Lettrage créé avec succès');
+  }catch(e){toast(e.message,'error')}
+}
+
+async function lettrageAuto(compte){
+  try{
+    const r=await api('/api/lettrage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,compte,auto:true})});
+    loadLettrage();toast(r.code?`Lettrage ${r.code} créé`:('Lettrage créé avec '+((r.nb_lignes||0)+' ligne(s)')));
+  }catch(e){toast(e.message,'error')}
+}
+
+async function detailLettrage(id){
+  const el=document.getElementById('lettrage-detail');
+  el.innerHTML='<div class="text-muted mt-sm">Chargement...</div>';
+  try{
+    const l=await api(`/api/lettrage?id=${id}`);
+    let sumD=0,sumC=0;
+    let ht=`<div class="card mt-sm"><div class="card-header"><h3>Lettrage ${l.code||'#'+l.id}</h3></div>
+      <table class="lettrage-detail"><thead><tr><th>Date</th><th>Compte</th><th>Libellé</th><th class="num">Débit</th><th class="num">Crédit</th></tr></thead><tbody>`;
+    for(const ln of(l.lignes||[])){
+      sumD+=ln.debit||0;sumC+=ln.credit||0;
+      ht+=`<tr><td>${ln.date||''}</td><td>${ln.compte||''}</td><td>${ln.libelle||''}</td><td class="num">${(ln.debit||0).toFixed(2)}</td><td class="num">${(ln.credit||0).toFixed(2)}</td></tr>`;
+    }
+    if(!(l.lignes||[]).length)ht+=`<tr><td colspan="5" class="empty">Aucune ligne</td></tr>`;
+    ht+=`<tr class="total-row"><td colspan="3">Totaux</td><td class="num">${sumD.toFixed(2)}</td><td class="num">${sumC.toFixed(2)}</td></tr></tbody></table>
+      <div class="mt-sm">${l.equilibre?'<span class="badge badge-success">✅ Équilibré</span>':'<span class="badge badge-danger">❌ Écart: '+(Math.abs(sumD-sumC)).toFixed(2)+'</span>'}</div></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="text-muted mt-sm">Erreur: ${e.message}</div>`}
+}
+
+// ═══════════════════════════════════════════════
+//  EMAIL / SMTP
+// ═══════════════════════════════════════════════
+async function loadEmailConfig(){
+  const el=document.getElementById('email-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const[config,historique]=await Promise.all([
+      api('/api/email/config'),
+      api('/api/audit/recent?limite=50')
+    ]);
+    const cfg=config||{};
+    let ht=`<div class="card">
+      <div class="card-header"><h2>📧 Configuration Email</h2></div>
+      <div class="smtp-form">
+        <div class="form-row">
+          <div class="form-group"><label>Serveur SMTP</label><input id="smtp-host" value="${cfg.host||''}" placeholder="smtp.example.com"></div>
+          <div class="form-group"><label>Port</label><input type="number" id="smtp-port" value="${cfg.port||587}"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Utilisateur</label><input id="smtp-user" value="${cfg.user||''}" placeholder="user@example.com"></div>
+          <div class="form-group"><label>Mot de passe</label><input type="password" id="smtp-pass" value="${cfg.pass||''}"></div>
+        </div>
+        <div class="form-group"><label>Expéditeur (From)</label><input id="smtp-from" value="${cfg.from||''}" placeholder="comptabilite@example.com"></div>
+        <div class="form-group"><label>Signature</label><textarea id="smtp-signature" rows="3" placeholder="Cordialement,
+L'équipe ComptaPro">${cfg.signature||''}</textarea></div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="btn btn-sm" onclick="saveEmailConfig()">Enregistrer</button>
+          <button class="btn btn-sm btn-outline" onclick="testSmtp()">Tester la connexion</button>
+        </div>
+        <div id="smtp-result"></div>
+      </div>
+    </div>`;
+    // Historique
+    const envois=(historique||[]).filter(h=>h.action==='envoi_email');
+    ht+=`<div class="card mt-sm"><div class="card-header"><h3>Historique des envois</h3></div>
+      <table><thead><tr><th>Date</th><th>Action</th><th>Détails</th></tr></thead><tbody>`;
+    for(const e of envois.slice(0,20)){
+      ht+=`<tr><td>${e.date||''}</td><td>${e.action||''}</td><td style="font-size:12px;max-width:400px;overflow:hidden;text-overflow:ellipsis">${(e.details||'').substring(0,100)}</td></tr>`;
+    }
+    if(!envois.length)ht+=`<tr><td colspan="3" class="empty">Aucun envoi récent</td></tr>`;
+    ht+=`</tbody></table></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+async function saveEmailConfig(){
+  try{
+    await api('/api/email/config',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      host:document.getElementById('smtp-host').value,
+      port:parseInt(document.getElementById('smtp-port').value)||587,
+      user:document.getElementById('smtp-user').value,
+      pass:document.getElementById('smtp-pass').value,
+      from:document.getElementById('smtp-from').value,
+      signature:document.getElementById('smtp-signature').value
+    })});
+    toast('Configuration email enregistrée');
+  }catch(e){toast(e.message,'error')}
+}
+
+async function testSmtp(){
+  const result=document.getElementById('smtp-result');
+  result.innerHTML='<div class="smtp-result" style="background:#e5e7eb"><div class="spinner"></div> Test en cours...</div>';
+  try{
+    await api('/api/email/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});
+    result.innerHTML='<div class="smtp-result smtp-success">✅ Connexion SMTP réussie</div>';
+  }catch(e){
+    result.innerHTML=`<div class="smtp-result smtp-error">❌ Échec: ${e.message}</div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  AUDIT
+// ═══════════════════════════════════════════════
+let auditFilter={type:'',dateDebut:'',dateFin:''};
+
+async function loadAudit(){
+  const el=document.getElementById('audit-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const rows=await api('/api/audit/recent?limite=50');
+    let data=rows||[];
+    // Filtres JS côté client
+    if(auditFilter.type)data=data.filter(r=>r.type===auditFilter.type);
+    if(auditFilter.dateDebut)data=data.filter(r=>r.date>=auditFilter.dateDebut);
+    if(auditFilter.dateFin)data=data.filter(r=>r.date<=auditFilter.dateFin);
+    let ht=`<div class="card">
+      <div class="card-header"><h2>🔍 Audit</h2></div>
+      <div class="filter-bar">
+        <select onchange="auditFilter.type=this.value;loadAudit()">
+          <option value="">Tous types</option>
+          <option value="facture">Facture</option><option value="ecriture">Écriture</option><option value="note_frais">Note de frais</option>
+        </select>
+        <input type="date" placeholder="Date début" onchange="auditFilter.dateDebut=this.value;loadAudit()">
+        <input type="date" placeholder="Date fin" onchange="auditFilter.dateFin=this.value;loadAudit()">
+      </div>
+      <table><thead><tr><th>Date</th><th>Type</th><th>ID</th><th>Action</th><th>Détails</th></tr></thead><tbody>`;
+    for(const r of data){
+      ht+=`<tr>
+        <td>${r.date||''}</td><td><span class="badge badge-info">${r.type||''}</span></td><td>${r.entity_id||''}</td>
+        <td>${r.action||''}</td><td style="font-size:12px;max-width:300px;overflow:hidden;text-overflow:ellipsis">${(r.details||'').substring(0,120)}</td>
+      </tr>`;
+    }
+    if(!data.length)ht+=`<tr><td colspan="5" class="empty">Aucune entrée d'audit</td></tr>`;
+    ht+=`</tbody></table></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+// ═══════════════════════════════════════════════
+//  CATALOGUE
+// ═══════════════════════════════════════════════
+function openCatalogue(){
+  document.getElementById('cat-code').value='';
+  document.getElementById('cat-type').value='client';
+  document.getElementById('cat-nom').value='';
+  document.getElementById('cat-adresse').value='';
+  document.getElementById('cat-siret').value='';
+  document.getElementById('cat-email').value='';
+  document.getElementById('cat-tel').value='';
+  document.getElementById('cat-msg').innerHTML='';
+  openModal('modal-catalogue');
+  loadCatalogue();
+}
+
+async function loadCatalogue(){
+  try{
+    const rows=await api('/api/comptes-aux');
+    let data=rows||[];
+    const type=document.getElementById('cat-filter-type')?.value||'';
+    const q=(document.getElementById('cat-search')?.value||'').toLowerCase();
+    if(type)data=data.filter(r=>r.type===type);
+    if(q)data=data.filter(r=>(r.nom||'').toLowerCase().includes(q)||(r.code||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q));
+    const tbody=document.getElementById('cat-table')?.querySelector('tbody');
+    if(!tbody)return;
+    tbody.innerHTML=data.map(r=>`<tr>
+      <td><strong>${r.code||''}</strong></td>
+      <td><span class="badge ${r.type==='client'?'badge-success':'badge-warning'}">${r.type||''}</span></td>
+      <td>${r.nom||''}</td><td>${r.email||''}</td>
+      <td><button class="btn btn-outline btn-sm" onclick="supprimerCatalogue('${r.code}')">🗑️</button></td>
+    </tr>`).join('')||'<tr><td colspan="5" class="empty">Aucun enregistrement</td></tr>';
+  }catch(e){}
+}
+
+async function saveCatalogue(){
+  const code=document.getElementById('cat-code').value.trim();
+  const nom=document.getElementById('cat-nom').value.trim();
+  if(!code||!nom){toast('Code et nom requis','error');return}
+  try{
+    await api('/api/comptes-aux',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      code,
+      type:document.getElementById('cat-type').value,
+      nom,
+      adresse:document.getElementById('cat-adresse').value,
+      siret:document.getElementById('cat-siret').value,
+      email:document.getElementById('cat-email').value,
+      tel:document.getElementById('cat-tel').value
+    })});
+    document.getElementById('cat-msg').innerHTML='<span style="color:var(--green)">✅ Ajouté</span>';
+    loadCatalogue();
+  }catch(e){document.getElementById('cat-msg').innerHTML=`<span style="color:var(--accent)">❌ ${e.message}</span>`}
+}
+
+async function supprimerCatalogue(code){
+  if(!confirm(`Supprimer ${code} ?`))return;
+  try{await api(`/api/comptes-aux/${encodeURIComponent(code)}`,{method:'DELETE'});loadCatalogue();toast('Supprimé')}catch(e){toast(e.message,'error')}
+}
+
+// TVA
+async function loadTVA(){
+  const el=document.getElementById('tva-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  const y=new Date().getFullYear();
+  try{
+    const h=await api(`/api/tva/historique?exercice_id=${exerciceId}`);
+    let ht=`<div class="card"><div class="card-header"><h2>Declarations TVA</h2><button class="btn btn-sm" onclick="calculerTVA()">Calculer periode</button>`;
+    ht+=` Periode: <input type="text" id="tva-debut" placeholder="2025-01-01" style="width:110px;padding:4px 8px"> a <input type="text" id="tva-fin" placeholder="2025-03-31" style="width:110px;padding:4px 8px"></div>`;
+    ht+=`<div id="tva-detail"><p class="text-muted">Selectionnez une periode pour calculer la TVA</p></div>`;
+    if(h&&h.length){ht+=`<h3 style="margin:16px 0 8px">Historique</h3><table><thead><tr><th>Periode</th><th class="num">Collectee</th><th class="num">Deductible</th><th class="num">Payee</th></tr></thead><tbody>`;
+      for(const r of h)ht+=`<tr><td>${r.periode||''}</td><td class="num">${(r.collectee||0).toFixed(2)}</td><td class="num">${(r.deductible||0).toFixed(2)}</td><td class="num">${(r.payee||0).toFixed(2)}</td></tr>`;
+      ht+=`</tbody></table>`;}
+    ht+=`</div>`; el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+async function calculerTVA(){
+  const debut=document.getElementById('tva-debut').value.trim()||'2025-01-01';
+  const fin=document.getElementById('tva-fin').value.trim()||'2025-03-31';
+  try{
+    const d=await api(`/api/tva/ca3?exercice_id=${exerciceId}&debut=${debut}&fin=${fin}`);
+    let ht='';
+    for(const t of d.taux||[])ht+=`<tr><td>${t.taux}%</td><td class="num">${t.base_ht.toFixed(2)}</td><td class="num">${t.tva_collectee.toFixed(2)}</td><td class="num">${t.tva_deductible.toFixed(2)}</td><td class="num" style="font-weight:700;color:${t.tva_nette>=0?'var(--green)':'var(--accent)'}">${t.tva_nette.toFixed(2)}</td></tr>`;
+    document.getElementById('tva-detail').innerHTML=`<table><thead><tr><th>Taux</th><th class="num">Base HT</th><th class="num">Collectee</th><th class="num">Deductible</th><th class="num">Net</th></tr></thead><tbody>${ht}</tbody></table><p style="margin-top:12px;font-size:16px;font-weight:700">TVA a payer: ${d.total_tva_due>=0?d.total_tva_due.toFixed(2):'0.00'} EUR</p>`;
+  }catch(e){toast(e.message,'error')}
+}
+
+// Achats
+async function loadAchats(){
+  const el=document.getElementById('achats-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const as=await api(`/api/achats?exercice_id=${exerciceId}`);
+    const st=await api(`/api/achats/stats?exercice_id=${exerciceId}`);
+    let ht=`<div class="card"><div class="card-header"><h2>Achats a valider</h2><button class="btn btn-sm" onclick="openAchatModal()">+ Nouvel achat</button></div>`;
+    ht+=`<div class="card-header" style="padding:8px 16px"><span class="badge badge-warning">${st.a_valider||0} a valider</span> <span class="badge badge-success">${st.valide||0} valides</span> <span class="badge badge-info">${st.paye||0} payes</span> Total: ${(st.total_ttc_a_valider||0).toFixed(2)} EUR</div>`;
+    ht+=`<table><thead><tr><th>Date</th><th>Fournisseur</th><th>Description</th><th class="num">TTC</th><th>Statut</th><th></th></tr></thead><tbody>`;
+    for(const a of(as||[])){
+      const actions=[];
+      if(a.statut==='a_valider')actions.push(`<button class="btn btn-green btn-sm" onclick="validerAchat(${a.id})">Valider</button>`,`<button class="btn btn-outline btn-sm" onclick="rejeterAchat(${a.id})">Rejeter</button>`);
+      if(a.statut==='valide')actions.push(`<button class="btn btn-sm" onclick="genererEcritureAchat(${a.id})">Generer ecriture</button>`);
+      ht+=`<tr><td>${a.date_facture||''}</td><td>${a.fournisseur||''}</td><td>${a.description||''}</td><td class="num">${(a.montant_ttc||0).toFixed(2)}</td><td><span class="badge ${a.statut==='paye'?'badge-success':a.statut==='valide'?'badge-info':a.statut==='rejete'?'badge-danger':'badge-warning'}">${a.statut}</span></td><td style="white-space:nowrap">${actions.join(' ')}</td></tr>`;
+    }
+    if(!as||!as.length)ht+=`<tr><td colspan="6" class="empty">Aucun achat</td></tr>`;
+    ht+=`</tbody></table></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+function openAchatModal(){document.getElementById('achat-fournisseur').value='';document.getElementById('achat-date').value=new Date().toISOString().split('T')[0];document.getElementById('achat-desc').value='';document.getElementById('achat-montant').value='';restoreAchatsFilter();loadAchats();openModal('modal-achat')}
+async function saveAchat(){try{await api('/api/achats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,fournisseur:document.getElementById('achat-fournisseur').value,date_facture:document.getElementById('achat-date').value,description:document.getElementById('achat-desc').value,montant_ttc:parseFloat(document.getElementById('achat-montant').value)||0,compte_charge:document.getElementById('achat-compte').value||'607',tva_taux:parseFloat(document.getElementById('achat-tva').value)||20})});closeModal('modal-achat');loadAchats();toast('Achat ajoute')}catch(e){toast(e.message,'error')}}
+async function validerAchat(id){try{await api(`/api/achats/${id}/valider`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({valide_par:'comptable'})});loadAchats();toast('Achat valide')}catch(e){toast(e.message,'error')}}
+async function rejeterAchat(id){const c=prompt('Commentaire de rejet:');if(!c)return;try{await api(`/api/achats/${id}/rejeter`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({commentaire:c})});loadAchats()}catch(e){toast(e.message,'error')}}
+async function genererEcritureAchat(id){try{const r=await api(`/api/achats/${id}/ecriture`,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});toast(`Ecriture #${r.ecriture_id} generee`);loadAchats()}catch(e){toast(e.message,'error')}}
+function restoreAchatsFilter(){}
+
+// Previsionnel
+async function loadPrevisionnel(){
+  const el=document.getElementById('previsionnel-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const proj=await api(`/api/previsionnel/projection?exercice_id=${exerciceId}`);
+    const run=await api(`/api/previsionnel/runway?exercice_id=${exerciceId}`);
+    let ht=`<div class="card"><div class="card-header"><h2>Projection de tresorerie</h2><button class="btn btn-sm" onclick="openPrevisionModal()">+ Prevision</button></div>`;
+    ht+=`<div class="card-header" style="padding:8px 16px;background:${run.mois_restants>6?'#e8f5e9':run.mois_restants>3?'#fff3e0':'#fdecea'}">Runway: <strong>${run.mois_restants||'?'}</strong> mois avant epuisement (pessimiste)</div>`;
+    ht+=`<table><thead><tr><th>Mois</th><th class="num">Solde debut</th><th class="num">Encaissements</th><th class="num">Decaissements</th><th class="num">Solde fin</th></tr></thead><tbody>`;
+    for(const p of proj||[]){
+      const col=p.solde_final<0?'var(--accent)':p.solde_final<1000?'var(--warning)':'var(--green)';
+      ht+=`<tr><td>Mois ${p.mois}</td><td class="num">${p.solde_initial.toFixed(0)}</td><td class="num">${p.encaissements.toFixed(0)}</td><td class="num">${p.decaissements.toFixed(0)}</td><td class="num" style="font-weight:700;color:${col}">${p.solde_final.toFixed(0)}</td></tr>`;
+    }
+    ht+=`</tbody></table>`;
+    const prevs=await api(`/api/previsionnel?exercice_id=${exerciceId}`);
+    if(prevs&&prevs.length){
+      ht+=`<h3 style="margin:16px 0 8px">Previsions saisies</h3><table><thead><tr><th>Mois</th><th>Categorie</th><th>Libelle</th><th class="num">Montant</th><th></th></tr></thead><tbody>`;
+      for(const p of prevs)ht+=`<tr><td>M${p.mois}</td><td><span class="badge ${p.categorie==='encaissement'?'badge-success':'badge-danger'}">${p.categorie}</span></td><td>${p.libelle}</td><td class="num">${p.montant.toFixed(2)}</td><td><button class="btn btn-outline btn-sm" onclick="supprimerPrevision(${p.id})">X</button></td></tr>`;
+      ht+=`</tbody></table>`;
+    }
+    ht+=`</div>`; el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+function openPrevisionModal(){document.getElementById('prev-libelle').value='';document.getElementById('prev-montant').value='';openModal('modal-prevision')}
+async function savePrevision(){try{await api('/api/previsionnel',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,mois:parseInt(document.getElementById('prev-mois').value)||1,categorie:document.getElementById('prev-categorie').value,compte:document.getElementById('prev-compte').value||'512',libelle:document.getElementById('prev-libelle').value,montant:parseFloat(document.getElementById('prev-montant').value)||0,probabilite:parseFloat(document.getElementById('prev-proba').value)||1})});closeModal('modal-prevision');loadPrevisionnel();toast('Prevision ajoutee')}catch(e){toast(e.message,'error')}}
+async function supprimerPrevision(id){if(!confirm('Supprimer ?'))return;try{await api(`/api/previsionnel/${id}`,{method:'DELETE'});loadPrevisionnel()}catch(e){toast(e.message,'error')}}
+
+// ABONNEMENTS
+async function loadAbonnements(){
+  const el=document.getElementById('abonnements-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const abos=await api(`/api/abonnements?exercice_id=${exerciceId}`);
+    const res=await api(`/api/abonnements/resume?exercice_id=${exerciceId}`);
+    let ht=`<div class="card"><div class="card-header"><h2>Abonnements / Factures recurrentes</h2><button class="btn btn-sm" onclick="openAboModal()">+ Nouvel abonnement</button><button class="btn btn-outline btn-sm" onclick="executerAbos()" style="margin-left:8px">Executer maintenant</button></div>`;
+    ht+=`<div class="card-header" style="padding:8px 16px">Actifs: <strong>${res.actifs||0}</strong> | Inactifs: ${res.inactifs||0} | Mensuel: ${(res.total_mensuel||0).toFixed(0)} EUR | Annuel: ${(res.total_annuel||0).toFixed(0)} EUR</div>`;
+    if(res.prochaines_echeances&&res.prochaines_echeances.length){
+      ht+=`<div class="card-header" style="padding:8px 16px"><strong>Prochaines echeances:</strong></div><table><thead><tr><th>Client</th><th>Montant</th><th>Date</th></tr></thead><tbody>`;
+      for(const e of res.prochaines_echeances)ht+=`<tr><td>${e.client_nom}</td><td class="num">${e.montant.toFixed(2)}</td><td>${e.prochaine_date}</td></tr>`;
+      ht+=`</tbody></table>`;
+    }
+    ht+=`<h3 style="margin:16px 0 8px">Tous les abonnements</h3><table><thead><tr><th>Client</th><th>Description</th><th class="num">Montant HT</th><th>Periodicite</th><th>Prochaine</th><th></th></tr></thead><tbody>`;
+    for(const a of abos||[]){
+      ht+=`<tr><td>${a.client_nom}</td><td>${a.description}</td><td class="num">${(a.montant_ht||0).toFixed(2)}</td><td><span class="badge badge-info">${a.periodicite}</span></td><td>${a.prochaine_date||''}</td>`;
+      ht+=`<td>${a.actif?`<button class="btn btn-outline btn-sm" onclick="desactiverAbo(${a.id})">Desactiver</button>`:'<span class="badge badge-neutral">Inactif</span>'}</td></tr>`;
+    }
+    if(!abos||!abos.length)ht+=`<tr><td colspan="6" class="empty">Aucun abonnement</td></tr>`;
+    ht+=`</tbody></table></div>`; el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+function openAboModal(){document.getElementById('abo-client').value='';document.getElementById('abo-desc').value='';document.getElementById('abo-montant').value='';openModal('modal-abonnement')}
+async function saveAbonnement(){try{await api('/api/abonnements',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,client_nom:document.getElementById('abo-client').value,description:document.getElementById('abo-desc').value,montant_ht:parseFloat(document.getElementById('abo-montant').value)||0,periodicite:document.getElementById('abo-periode').value,tva_taux:parseFloat(document.getElementById('abo-tva').value)||20,jour_facturation:parseInt(document.getElementById('abo-jour').value)||1,date_debut:document.getElementById('abo-debut').value})});closeModal('modal-abonnement');loadAbonnements();toast('Abonnement cree')}catch(e){toast(e.message,'error')}}
+async function desactiverAbo(id){if(!confirm('Desactiver ?'))return;try{await api(`/api/abonnements/${id}/desactiver`,{method:'DELETE'});loadAbonnements()}catch(e){toast(e.message,'error')}}
+async function executerAbos(){try{const r=await api(`/api/abonnements/executer?exercice_id=${exerciceId}`);toast(`${r.nb_factures_generees||0} factures generees`);loadAbonnements()}catch(e){toast(e.message,'error')}}
+
+// RECHERCHE
+async function loadRecherche(){
+  const el=document.getElementById('recherche-content');
+  el.innerHTML=`<div class="card"><div class="card-header"><h2>Recherche globale</h2></div><div class="search-box"><input placeholder="Rechercher (facture, ecriture, client, compte...)" id="rech-q" style="width:100%;padding:10px 16px;border:2px solid #d1d5db;border-radius:8px;font-size:14px" onkeyup="if(event.key==='Enter')rechercher()"><button class="btn" onclick="rechercher()" style="margin-top:8px">Rechercher</button></div><div id="rech-results" style="margin-top:16px"><p class="text-muted">Tapez votre recherche ci-dessus</p></div></div>`;
+}
+async function rechercher(){
+  const q=document.getElementById('rech-q').value.trim();
+  if(!q)return;
+  const el=document.getElementById('rech-results');
+  el.innerHTML='<div class="spinner"></div> Recherche...';
+  try{
+    const results=await api(`/api/recherche?exercice_id=${exerciceId}&q=${encodeURIComponent(q)}`);
+    if(!results.length){el.innerHTML='<div class="empty">Aucun resultat</div>';return}
+    const types={ecriture:'📒',facture:'📄',note_frais:'🧾',compte_aux:'👤',compte_pcg:'📊'};
+    el.innerHTML=results.map(r=>`<div class="card" style="margin-bottom:6px;cursor:pointer" onclick="if('${r.type}'==='facture')navigate('factures');else if('${r.type}'==='ecriture')navigate('ecritures');else navigate('${r.type}')"><strong>${types[r.type]||'?'} ${r.label}</strong><br><span style="font-size:11px;color:var(--muted)">${r.detail||''}</span></div>`).join('');
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+// EXPORT
+async function loadExport(){
+  const el=document.getElementById('export-content');
+  el.innerHTML=`<div class="card"><div class="card-header"><h2>Export de donnees</h2></div>
+    <p style="margin-bottom:16px">Les fichiers seront generes dans le dossier du logiciel.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <button class="btn" onclick="exporter('balance')">Balance (CSV)</button>
+      <button class="btn" onclick="exporter('ecritures')">Ecritures (CSV)</button>
+      <button class="btn" onclick="exporter('factures')">Factures (CSV)</button>
+      <button class="btn btn-outline" onclick="exporterFEC()">FEC (reglementaire)</button>
+    </div>
+    <div id="export-msg" style="margin-top:12px;font-size:12px;color:var(--muted)"></div>
+  </div>`;
+}
+async function exporter(type){
+  const msg=document.getElementById('export-msg');
+  msg.innerHTML='Export en cours...';
+  const f=`${type}_${new Date().toISOString().slice(0,10)}.csv`;
+  try{const r=await api(`/api/export/${type}?exercice_id=${exerciceId}&fichier=${f}`);msg.innerHTML=`<span style="color:var(--green)">Exporte: ${r.nb_lignes} lignes -> ${r.fichier}</span>`}catch(e){msg.innerHTML=`<span style="color:var(--accent)">Erreur: ${e.message}</span>`}
+}
+async function exporterFEC(){
+  const msg=document.getElementById('export-msg');
+  msg.innerHTML='Export FEC en cours...';
+  try{const r=await api(`/api/export/fec?exercice_id=${exerciceId}`);msg.innerHTML=`<span style="color:var(--green)">FEC exporte: ${r.nb_lignes} lignes</span>`}catch(e){msg.innerHTML=`<span style="color:var(--accent)">Erreur: ${e.message}</span>`}
+}
+
+function navigate(page){
+  currentPage=page;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#sidebar nav a').forEach(a=>a.classList.remove('active'));
+  const panel=document.getElementById('panel-'+page);
+  if(panel)panel.classList.add('active');
+  const link=document.querySelector(`#sidebar nav a[data-page="${page}"]`);
+  if(link)link.classList.add('active');
+  expandParent(page);
+  const loaders={
+    dashboard:loadDashboard,factures:loadFactures,banque:loadBanque,ecritures:loadEcritures,
+    balance:loadBalance,resultat:loadResultat,bilan:loadBilan,'grand-livre':loadGrandLivre,parametres:loadParametres,
+    relances:loadRelances,budget:loadBudget,'notes-frais':loadNotesFrais,
+    lettrage:loadLettrage,email:loadEmailConfig,audit:loadAudit,
+    tva:loadTVA,achats:loadAchats,previsionnel:loadPrevisionnel,
+    abonnements:loadAbonnements,recherche:loadRecherche,export:loadExport,
+    paie:loadPaie,bons:loadBons,cloture:loadCloture,
+    immo:loadImmo,emprunts:loadEmprunts,categories:loadCategories
+  };
+  if(loaders[page])loaders[page]();
+}
+
+async function showNewExercice(){
+  const libelle=prompt("Libellé de l'exercice :");
+  if(!libelle)return;
+  const debut=prompt('Date début (YYYY-MM-DD) :',new Date().getFullYear()+'-01-01');
+  const fin=prompt('Date fin (YYYY-MM-DD) :',new Date().getFullYear()+'-12-31');
+  try{
+    await api('/api/exercices',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({libelle,date_debut:debut,date_fin:fin})});
+    await loadExercices();
+    exerciceId=exercices[exercices.length-1].id;
+    document.getElementById('exercice-select').value=exerciceId;
+    navigate(currentPage);
+    toast('Exercice créé');
+  }catch(e){toast(e.message,'error')}
+}
+
+// ═══════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════
+async function loadDashboard(){
+  if(!exerciceId)return;
+  const el=document.getElementById('dashboard-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const treso=await api(`/api/dashboard/tresorerie?exercice_id=${exerciceId}`);
+    const evo=await api(`/api/dashboard/evolution?exercice_id=${exerciceId}`);
+    const tva=await api(`/api/dashboard/tva?exercice_id=${exerciceId}`);
+    const top=await api(`/api/dashboard/top?exercice_id=${exerciceId}`);
+    const nbFactRetard=treso.factures_retard||0;
+    const nbNonRapproche=treso.non_rapprochees||0;
+    let ht=`<div class="dash-grid">`;
+    ht+=`<div class="dash-card">
+      <div class="label">Trésorerie</div>
+      <div class="big-num ${(treso.solde_banque||0)>=0?'green':'red'}">${(treso.solde_banque||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-val">${(treso.creances_clients||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Créances clients</div></div>
+        <div class="kpi"><div class="kpi-val">${(treso.dettes_fournisseurs||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Dettes fournisseurs</div></div>
+        <div class="kpi"><div class="kpi-val" style="color:${(treso.treso_nette||0)>=0?'var(--green)':'var(--accent)'}">${(treso.treso_nette||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Trésorerie nette</div></div>
+      </div>
+    </div>`;
+    ht+=`<div class="dash-card">
+      <div class="label">CA Mensuel (6 derniers mois)</div>
+      <table class="mini-table"><thead><tr><th>Mois</th><th class="num">Charges</th><th class="num">Produits</th><th class="num">Résultat</th></tr></thead><tbody>`;
+    for(const m of(evo||[]))ht+=`<tr><td>${m.mois}</td><td class="num">${m.charges.toFixed(0)}</td><td class="num">${m.produits.toFixed(0)}</td><td class="num" style="color:${m.resultat>=0?'var(--green)':'var(--accent)'}">${m.resultat.toFixed(0)}</td></tr>`;
+    ht+=`</tbody></table></div>`;
+    ht+=`<div class="dash-card">
+      <div class="label">TVA</div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-val green">${(tva.collectee||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Collectée</div></div>
+        <div class="kpi"><div class="kpi-val">${(tva.deductible||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">Déductible</div></div>
+        <div class="kpi"><div class="kpi-val" style="color:${(tva.a_payer||0)>0?'var(--accent)':'var(--green)'}">${(tva.a_payer||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div><div class="kpi-lbl">À payer</div></div>
+      </div>
+    </div>`;
+    ht+=`</div><div class="dash-grid wide">`;
+    ht+=`<div class="dash-card">
+      <div class="label">Alertes</div>`;
+    if(nbFactRetard>0)ht+=`<div class="alert-item"><span class="alert-count" style="color:var(--accent)">${nbFactRetard}</span> Facture(s) en retard</div>`;
+    if(nbNonRapproche>0)ht+=`<div class="alert-item"><span class="alert-count" style="color:var(--warn)">${nbNonRapproche}</span> Ligne(s) bancaire(s) non rapprochée(s)</div>`;
+    if(!nbFactRetard&&!nbNonRapproche)ht+=`<div class="text-muted">Aucune alerte</div>`;
+    ht+=`</div>`;
+    ht+=`<div class="dash-card">
+      <div class="label">Top Clients</div>
+      <table class="mini-table"><thead><tr><th>Client</th><th class="num">CA</th></tr></thead><tbody>`;
+    for(const c of(top||[]))ht+=`<tr><td>${c.client}</td><td class="num">${(c.ca||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td></tr>`;
+    if(!(top||[]).length)ht+=`<tr><td colspan="2" class="text-muted">Aucune données</td></tr>`;
+    ht+=`</tbody></table></div></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+// ═══════════════════════════════════════════════
+//  FACTURES
+// ═══════════════════════════════════════════════
+let factures=[],factPage=1,factFilter={};
+
+async function loadFactures(){
+  if(!exerciceId)return;
+  const el=document.getElementById('factures-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    let url=`/api/factures?exercice_id=${exerciceId}`;
+    if(factFilter.statut)url+=`&statut=${factFilter.statut}`;
+    if(factFilter.type)url+=`&type=${factFilter.type}`;
+    factures=await api(url);
+    const pageSize=15,totalPages=Math.max(1,Math.ceil(factures.length/pageSize));
+    const page=factures.slice((factPage-1)*pageSize,factPage*pageSize);
+    let ht=`<div class="card">
+      <div class="card-header">
+        <h2>Factures</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-outline btn-sm" onclick="openFactureModal('DEVIS')">+ Devis</button>
+          <button class="btn btn-sm" onclick="openFactureModal('FACTURE')">+ Facture</button>
+          <button class="btn btn-outline btn-sm" onclick="openCatalogue()">📦 Catalogue</button>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select onchange="factFilter.statut=this.value||null;factPage=1;loadFactures()">
+          <option value="">Tous statuts</option>
+          <option value="BROUILLON">Brouillon</option><option value="ENVOYEE">Envoyée</option><option value="PAYEE">Payée</option><option value="RETARD">En retard</option>
+        </select>
+        <select onchange="factFilter.type=this.value||null;factPage=1;loadFactures()">
+          <option value="">Tous types</option>
+          <option value="FACTURE">Facture</option><option value="DEVIS">Devis</option><option value="AVOIR">Avoir</option>
+        </select>
+      </div>
+      <table><thead><tr><th>N°</th><th>Date</th><th>Client</th><th class="num">Total TTC</th><th>Statut</th><th></th></tr></thead><tbody>`;
+    for(const f of page){
+      const statClass={BROUILLON:'badge-neutral',ENVOYEE:'badge-info',PAYEE:'badge-success',RETARD:'badge-danger'};
+      ht+=`<tr>
+        <td><strong>${f.numero||f.id}</strong></td><td>${f.date}</td><td>${f.client||''}</td>
+        <td class="num">${(f.total_ttc||0).toFixed(2)} €</td>
+        <td><span class="badge ${statClass[f.statut]||'badge-neutral'}">${f.statut}</span></td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-outline btn-sm" onclick="printFacturePDF(${f.id})" title="Imprimer">🖨️</button>
+          ${f.statut!=='PAYEE'?`<button class="btn btn-green btn-sm" onclick="marquerPayee(${f.id})">Payée</button>`:''}
+          ${f.statut==='BROUILLON'||f.statut==='ENVOYEE'?`<button class="btn btn-outline btn-sm" onclick="genererEcriture(${f.id})">Générer écriture</button>`:''}
+        </td>
+      </tr>`;
+    }
+    if(!page.length)ht+=`<tr><td colspan="6" class="empty">Aucune facture</td></tr>`;
+    ht+=`</tbody></table>`;
+    if(totalPages>1){
+      ht+=`<div class="pagination">`;
+      for(let i=1;i<=totalPages;i++)ht+=`<button class="${i===factPage?'active':''}" onclick="factPage=${i};loadFactures()">${i}</button>`;
+      ht+=`</div>`;
+    }
+    ht+=`</div>`;
+    // Balance âgée
+    try{
+      const ba=await api(`/api/factures/balance-agee?exercice_id=${exerciceId}`);
+      ht+=`<div class="card"><div class="card-header"><h2>Balance âgée</h2></div><table><thead><tr><th>Client</th><th class="num">Total</th><th class="num">-30j</th><th class="num">30-60j</th><th class="num">+60j</th></tr></thead><tbody>`;
+      for(const b of(ba||[]))ht+=`<tr><td>${b.client}</td><td class="num">${(b.total||0).toFixed(2)}</td><td class="num">${(b['moins_30']||0).toFixed(2)}</td><td class="num">${(b['30_60']||0).toFixed(2)}</td><td class="num" style="color:var(--accent)">${(b['plus_60']||0).toFixed(2)}</td></tr>`;
+      ht+=`</tbody></table></div>`;
+    }catch(e){}
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+function openFactureModal(type){
+  document.getElementById('modal-facture-title').textContent=type==='DEVIS'?'Nouveau devis':'Nouvelle facture';
+  document.getElementById('fact-type').value=type;
+  document.getElementById('fact-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('fact-echeance').value='';
+  document.getElementById('fact-client').value='';
+  document.getElementById('fact-objet').value='';
+  document.getElementById('fact-lignes').innerHTML='';
+  addFactLigne();addFactLigne();
+  calculeFactTotal();
+  openModal('modal-facture');
+}
+
+function addFactLigne(){
+  const d=document.createElement('div');
+  d.className='form-row gap-xs mb-sm';
+  d.innerHTML=`<input placeholder="Description" style="flex:2"><input type="number" placeholder="Qté" value="1" min="1" style="flex:0 0 60px" oninput="calculeFactTotal()"><input type="number" placeholder="PU HT" step="0.01" min="0" style="flex:0 0 90px" oninput="calculeFactTotal()"><select style="flex:0 0 80px" onchange="calculeFactTotal()"><option value="20">TVA 20%</option><option value="10">TVA 10%</option><option value="5.5">TVA 5.5%</option><option value="0">Exonéré</option></select><button class="btn-ghost" onclick="this.parentElement.remove();calculeFactTotal()">✕</button>`;
+  document.getElementById('fact-lignes').appendChild(d);
+}
+
+function calculeFactTotal(){
+  let totalHT=0,totalTTC=0;
+  document.querySelectorAll('#fact-lignes .form-row').forEach(r=>{
+    const ins=r.querySelectorAll('input'),sel=r.querySelector('select');
+    const qte=parseFloat(ins[1].value)||0,pu=parseFloat(ins[2].value)||0,tva=parseFloat(sel.value)/100;
+    const ht=qte*pu;totalHT+=ht;totalTTC+=ht*(1+tva);
+  });
+  document.getElementById('fact-total-ht').textContent=totalHT.toFixed(2);
+  document.getElementById('fact-total-ttc').textContent=totalTTC.toFixed(2);
+}
+
+async function saveFacture(){
+  const lignes=[];
+  document.querySelectorAll('#fact-lignes .form-row').forEach(r=>{
+    const ins=r.querySelectorAll('input'),sel=r.querySelector('select');
+    lignes.push({description:ins[0].value,quantite:parseFloat(ins[1].value)||1,prix_unitaire:parseFloat(ins[2].value)||0,tva:parseFloat(sel.value)});
+  });
+  try{
+    await api('/api/factures',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      exercice_id:exerciceId,type:document.getElementById('fact-type').value,date:document.getElementById('fact-date').value,
+      echeance:document.getElementById('fact-echeance').value,client:document.getElementById('fact-client').value,
+      objet:document.getElementById('fact-objet').value,lignes
+    })});
+    closeModal('modal-facture');loadFactures();toast('Facture enregistrée');
+  }catch(e){toast(e.message,'error')}
+}
+
+async function marquerPayee(id){
+  if(!confirm('Marquer cette facture comme payée ?'))return;
+  try{await api(`/api/factures/${id}/statut`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:'PAYEE'})});loadFactures();toast('Facture marquée payée')}catch(e){toast(e.message,'error')}
+}
+
+async function genererEcriture(id){
+  try{await api(`/api/factures/${id}/ecriture`,{method:'POST'});loadFactures();toast('Écriture générée')}catch(e){toast(e.message,'error')}
+}
+
+// ═══════════════════════════════════════════════
+//  BANQUE
+// ═══════════════════════════════════════════════
+let banqueReleveId=null;
+
+async function loadBanque(){
+  if(!exerciceId)return;
+  const el=document.getElementById('banque-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const releves=await api(`/api/banque/releves?exercice_id=${exerciceId}`);
+    let ht=`<div class="card">
+      <div class="card-header"><h2>Relevés bancaires</h2>
+        <div style="display:flex;gap:8px">
+          <input type="file" id="banque-csv-input" accept=".csv" style="display:none" onchange="importerCSV(event)">
+        <button class="btn btn-sm btn-green mt-sm" onclick="autoRapprocherBanque()" title="Rapprochement automatique">🤖 Rapprochement auto</button>
+        <button class="btn btn-sm btn-outline mt-sm" onclick="autoEtatBanque()" title="État auto-match">📊 État</button>
+        <span id="auto-match-msg">
+          <button class="btn btn-sm" onclick="document.getElementById('banque-csv-input').click()">📥 Importer CSV</button>
+        </div>
+      </div>
+      <table><thead><tr><th>Relevé</th><th>Date</th><th>Banque</th><th class="num">Lignes</th><th class="num">Pointées</th><th></th></tr></thead><tbody>`;
+    for(const r of(releves||[])){
+      ht+=`<tr class="releve-row" onclick="loadBanqueDetail(${r.id})">
+        <td><strong>${r.libelle||'Relevé #'+r.id}</strong></td><td>${r.date||''}</td><td>${r.banque||''}</td>
+        <td class="num">${r.nb_lignes||0}</td><td class="num">${r.nb_rapprochees||0}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();loadBanqueDetail(${r.id})">Détail</button></td>
+      </tr>`;
+    }
+    if(!(releves||[]).length)ht+=`<tr><td colspan="6" class="empty">Aucun relevé importé</td></tr>`;
+    ht+=`</tbody></table></div><div id="banque-detail"></div>`;
+    el.innerHTML=ht;
+    if(banqueReleveId)loadBanqueDetail(banqueReleveId);
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+async function loadBanqueDetail(releveId){
+  banqueReleveId=releveId;
+  try{
+    const detail=await api(`/api/banque/releves/${releveId}`);
+    let ht=`<div class="card mt-sm"><div class="card-header"><h2>Détail du relevé</h2>
+      <span>Pointées: ${detail.nb_rapprochees||0} / ${detail.lignes?.length||0}</span></div>
+      <table><thead><tr><th>Date</th><th>Libellé</th><th class="num">Montant</th><th>Suggestion</th><th></th></tr></thead><tbody>`;
+    for(const l of(detail.lignes||[])){
+      const rapp=!!l.ecriture_id;
+      ht+=`<tr>
+        <td>${l.date||''}</td><td>${l.libelle||''}</td><td class="num" style="color:${(l.montant||0)>=0?'var(--green)':'var(--accent)'}">${(l.montant||0).toFixed(2)}</td>
+        <td><span class="text-muted">${l.compte_suggere||'?'}</span></td>
+        <td>${rapp?`<span class="badge badge-success">Rapproché</span>`:`<button class="btn btn-sm btn-outline" onclick="openRapproche(${l.id},${releveId})">Rapprocher</button>`}</td>
+      </tr>`;
+    }
+    ht+=`</tbody></table></div>`;
+    document.getElementById('banque-detail').innerHTML=ht;
+  }catch(e){toast(e.message,'error')}
+}
+
+function openRapproche(ligneId,releveId){
+  document.getElementById('rapproche-ligne-id').value=ligneId;
+  banqueReleveId=releveId;
+  document.getElementById('rapproche-search').value='';
+  document.getElementById('rapproche-results').innerHTML='';
+  openModal('modal-rapproche');
+}
+
+async function searchEcritures(){
+  const q=document.getElementById('rapproche-search').value;
+  if(q.length<2)return;
+  try{
+    const rows=await api(`/api/ecritures?exercice_id=${exerciceId}&q=${encodeURIComponent(q)}`);
+    const el=document.getElementById('rapproche-results');
+    el.innerHTML=(rows||[]).map(r=>`<div style="padding:8px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between" onclick="doRapproche(${r.id})">
+      <span>${r.date} ${r.journal} — ${r.libelle||''}</span><span class="text-muted">${r.piece||''}</span></div>`).join('');
+    if(!(rows||[]).length)el.innerHTML='<div class="text-muted" style="padding:8px">Aucune écriture trouvée</div>';
+  }catch(e){}
+}
+
+async function doRapproche(ecritureId){
+  const ligneId=+document.getElementById('rapproche-ligne-id').value;
+  try{
+    await api('/api/banque/rapprocher',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ligne_id:ligneId,ecriture_id:ecritureId})});
+    closeModal('modal-rapproche');loadBanqueDetail(banqueReleveId);toast('Rapprochement effectué');
+  }catch(e){toast(e.message,'error')}
+}
+
+async function importerCSV(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const text=await file.text();
+  try{
+    await api('/api/banque/import',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,csv:text,filename:file.name})});
+    loadBanque();toast('Relevé importé');
+  }catch(e){toast(e.message,'error')}
+  e.target.value='';
+}
+
+// ═══════════════════════════════════════════════
+//  ECRITURES
+// ═══════════════════════════════════════════════
+async function loadEcritures(){
+  if(!exerciceId)return;
+  const el=document.getElementById('ecritures-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const ecritures=await api(`/api/ecritures?exercice_id=${exerciceId}`);
+    let ht=`<div class="card">
+      <div class="card-header"><h2>Journal des écritures</h2><button class="btn btn-sm" onclick="showSaisieEcriture()">+ Nouvelle écriture</button></div>
+      <div class="filter-bar"><input placeholder="Rechercher par compte..." oninput="filterEcritures(this.value)" id="ecr-search"></div>
+      <table id="ecritures-table"><thead><tr><th>Date</th><th>Journal</th><th>Pièce</th><th>Réf.</th><th>Libellé</th><th class="num">Débit</th><th class="num">Crédit</th></tr></thead><tbody>`;
+    for(const e of(ecritures||[])){
+      ht+=`<tr data-search="${(e.comptes||'').toLowerCase()}">
+        <td>${e.date}</td><td>${e.journal||''}</td><td>${e.piece||''}</td><td>${e.reference||''}</td><td>${e.libelle||''}</td>
+        <td class="num">${(e.total_debit||0).toFixed(2)}</td><td class="num">${(e.total_credit||0).toFixed(2)}</td>
+      </tr>`;
+    }
+    if(!(ecritures||[]).length)ht+=`<tr><td colspan="7" class="empty">Aucune écriture</td></tr>`;
+    ht+=`</tbody></table></div>`;
+    // Formulaire de saisie
+    ht+=`<div class="card mt-sm" id="saisie-card" style="display:none">
+      <div class="card-header"><h2>Nouvelle écriture</h2><button class="btn btn-outline btn-sm" onclick="document.getElementById('saisie-card').style.display='none'">✕</button></div>
+      <div class="form-row"><div class="form-group"><label>Journal</label><select id="ecr-journal-saisie"></select></div><div class="form-group"><label>Date</label><input type="date" id="ecr-date-saisie"></div></div>
+      <div class="form-row"><div class="form-group"><label>Pièce</label><input id="ecr-piece-saisie"></div><div class="form-group"><label>Référence</label><input id="ecr-ref-saisie"></div></div>
+      <div class="form-group"><label>Libellé</label><input id="ecr-libelle-saisie"></div>
+      <div class="card-header"><h3>Lignes</h3></div>
+      <div id="ecr-lignes-saisie"></div>
+      <button class="btn btn-outline btn-sm mt-sm" onclick="addEcrLigne()">+ Ligne</button>
+      <div class="mt-sm text-muted">Total débit: <strong id="ecr-sum-debit">0.00</strong> | Total crédit: <strong id="ecr-sum-credit">0.00</strong> <span id="ecr-ecart"></span></div>
+      <button class="btn mt-sm" onclick="submitSaisieEcriture()">Enregistrer</button>
+      <span id="ecr-saisie-msg" style="margin-left:10px;font-size:13px"></span>
+    </div>`;
+    el.innerHTML=ht;
+    loadJournauxSaisie();
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+function filterEcritures(q){
+  document.querySelectorAll('#ecritures-table tbody tr').forEach(tr=>{
+    if(!tr.dataset.search)return;
+    tr.style.display=tr.dataset.search.includes(q.toLowerCase())?'':'none';
+  });
+}
+
+async function loadJournauxSaisie(){
+  try{
+    const jx=await api('/api/journaux');
+    document.getElementById('ecr-journal-saisie').innerHTML=jx.map(j=>`<option value="${j.code}">${j.code} — ${j.libelle}</option>`).join('');
+  }catch(e){}
+}
+
+function showSaisieEcriture(){
+  const card=document.getElementById('saisie-card');
+  card.style.display='block';
+  document.getElementById('ecr-date-saisie').value=new Date().toISOString().split('T')[0];
+  document.getElementById('ecr-lignes-saisie').innerHTML='';
+  document.getElementById('ecr-piece-saisie').value='';
+  document.getElementById('ecr-ref-saisie').value='';
+  document.getElementById('ecr-libelle-saisie').value='';
+  document.getElementById('ecr-saisie-msg').innerHTML='';
+  addEcrLigne();addEcrLigne();
+  updateEcrSums();
+}
+
+function addEcrLigne(){
+  const d=document.createElement('div');
+  d.className='form-row gap-xs mb-sm';
+  d.innerHTML=`<input placeholder="Compte" style="flex:0 0 80px" oninput="updateEcrSums()"><input type="number" placeholder="Débit" step="0.01" min="0" value="0" style="flex:1" oninput="updateEcrSums()"><input type="number" placeholder="Crédit" step="0.01" min="0" value="0" style="flex:1" oninput="updateEcrSums()"><input placeholder="Libellé" style="flex:2"><button class="btn-ghost" onclick="this.parentElement.remove();updateEcrSums()">✕</button>`;
+  document.getElementById('ecr-lignes-saisie').appendChild(d);
+}
+
+function updateEcrSums(){
+  let sd=0,sc=0;
+  document.querySelectorAll('#ecr-lignes-saisie .form-row').forEach(r=>{
+    const ins=r.querySelectorAll('input[type=number]');
+    sd+=parseFloat(ins[0].value)||0;sc+=parseFloat(ins[1].value)||0;
+  });
+  document.getElementById('ecr-sum-debit').textContent=sd.toFixed(2);
+  document.getElementById('ecr-sum-credit').textContent=sc.toFixed(2);
+  const ecart=Math.abs(sd-sc);
+  const m=document.getElementById('ecr-ecart');
+  m.textContent=ecart<0.005?'✅ Équilibré':`⚠️ Écart: ${ecart.toFixed(2)}`;
+  m.style.color=ecart<0.005?'var(--green)':'var(--accent)';
+}
+
+async function submitSaisieEcriture(){
+  const lignes=[];
+  document.querySelectorAll('#ecr-lignes-saisie .form-row').forEach(r=>{
+    const ins=r.querySelectorAll('input');
+    lignes.push({compte:ins[0].value.trim(),debit:parseFloat(ins[1].value)||0,credit:parseFloat(ins[2].value)||0,libelle:ins[3].value.trim()||null});
+  });
+  try{
+    await api('/api/ecritures',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      exercice_id:exerciceId,journal:document.getElementById('ecr-journal-saisie').value,
+      date:document.getElementById('ecr-date-saisie').value,libelle:document.getElementById('ecr-libelle-saisie').value,
+      piece:document.getElementById('ecr-piece-saisie').value||null,reference:document.getElementById('ecr-ref-saisie').value||null,lignes
+    })});
+    document.getElementById('ecr-saisie-msg').innerHTML='<span style="color:var(--green)">✅ Écriture enregistrée</span>';
+    loadEcritures();
+  }catch(e){document.getElementById('ecr-saisie-msg').innerHTML=`<span style="color:var(--accent)">❌ ${e.message}</span>`}
+}
+
+// ═══════════════════════════════════════════════
+//  BALANCE
+// ═══════════════════════════════════════════════
+async function loadBalance(){
+  if(!exerciceId)return;
+  const el=document.getElementById('balance-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const rows=await api(`/api/balance?exercice_id=${exerciceId}`);
+    let ht=`<div class="card"><div class="card-header"><h2>Balance Générale</h2></div>
+      <table><thead><tr><th>Compte</th><th class="num">Débit</th><th class="num">Crédit</th><th class="num">Solde Débit</th><th class="num">Solde Crédit</th></tr></thead><tbody>`;
+    let td=0,tc=0,sd=0,sc=0;
+    for(const r of rows){
+      ht+=`<tr><td><strong>${r.compte}</strong></td><td class="num">${r.total_debit.toFixed(2)}</td><td class="num">${r.total_credit.toFixed(2)}</td><td class="num">${r.solde_debit?r.solde_debit.toFixed(2):''}</td><td class="num">${r.solde_credit?r.solde_credit.toFixed(2):''}</td></tr>`;
+      td+=r.total_debit;tc+=r.total_credit;sd+=r.solde_debit;sc+=r.solde_credit;
+    }
+    ht+=`<tr class="total-row"><td>TOTAL</td><td class="num">${td.toFixed(2)}</td><td class="num">${tc.toFixed(2)}</td><td class="num">${sd.toFixed(2)}</td><td class="num">${sc.toFixed(2)}</td></tr></tbody></table>`;
+    if(!rows.length)ht='<div class="empty">Aucune écriture dans cet exercice.</div>';
+    ht+=`</div>`;el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+// ═══════════════════════════════════════════════
+//  RESULTAT
+// ═══════════════════════════════════════════════
+async function loadResultat(){
+  if(!exerciceId)return;
+  const el=document.getElementById('resultat-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const cr=await api(`/api/resultat?exercice_id=${exerciceId}`);
+    let ht=`<div class="card"><div class="card-header"><h2>Compte de Résultat</h2></div>
+      <div class="form-row"><div style="flex:1"><h3 style="margin-bottom:8px;font-size:14px;color:var(--accent)">CHARGES</h3><table><thead><tr><th>Compte</th><th class="num">Montant</th></tr></thead><tbody>`;
+    for(const c of cr.charges)ht+=`<tr><td>${c.compte}</td><td class="num">${c.solde_debit.toFixed(2)}</td></tr>`;
+    ht+=`<tr class="total-row"><td>Total</td><td class="num">${cr.total_charges.toFixed(2)}</td></tr></tbody></table></div>`;
+    ht+=`<div style="flex:1"><h3 style="margin-bottom:8px;font-size:14px;color:var(--green)">PRODUITS</h3><table><thead><tr><th>Compte</th><th class="num">Montant</th></tr></thead><tbody>`;
+    for(const p of cr.produits)ht+=`<tr><td>${p.compte}</td><td class="num">${p.solde_credit.toFixed(2)}</td></tr>`;
+    ht+=`<tr class="total-row"><td>Total</td><td class="num">${cr.total_produits.toFixed(2)}</td></tr></tbody></table></div></div>`;
+    const rn=cr.resultat_net;
+    ht+=`<div style="text-align:center;padding:20px"><div style="font-size:36px;font-weight:700;color:${rn>=0?'var(--green)':'var(--accent)'}">${rn>=0?'+':''}${rn.toFixed(2)} €</div>
+      <span class="badge ${rn>=0?'badge-success':'badge-danger'}">${rn>=0?'BÉNÉFICE':'PERTE'}</span></div></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+// ═══════════════════════════════════════════════
+//  BILAN
+// ═══════════════════════════════════════════════
+async function loadBilan(){
+  if(!exerciceId)return;
+  const el=document.getElementById('bilan-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const b=await api(`/api/bilan?exercice_id=${exerciceId}`);
+    let ht=`<div class="card"><div class="card-header"><h2>Bilan Synthétique</h2></div><div class="form-row">`;
+    ht+=`<div style="flex:1"><h3 style="margin-bottom:8px;font-size:14px">ACTIF</h3><table><thead><tr><th>Compte</th><th class="num">Montant</th></tr></thead><tbody>`;
+    for(const l of b.actif)ht+=`<tr><td>${l.compte} ${l.libelle||''}</td><td class="num">${(l.solde_debit||0).toFixed(2)}</td></tr>`;
+    ht+=`<tr class="total-row"><td>Total Actif</td><td class="num">${b.total_actif.toFixed(2)}</td></tr></tbody></table></div>`;
+    ht+=`<div style="flex:1"><h3 style="margin-bottom:8px;font-size:14px">PASSIF</h3><table><thead><tr><th>Compte</th><th class="num">Montant</th></tr></thead><tbody>`;
+    for(const l of b.passif)ht+=`<tr><td>${l.compte} ${l.libelle||''}</td><td class="num">${(l.solde_credit||0).toFixed(2)}</td></tr>`;
+    ht+=`<tr class="total-row"><td>Total Passif</td><td class="num">${b.total_passif.toFixed(2)}</td></tr></tbody></table></div></div>`;
+    ht+=`<p style="text-align:center;margin-top:12px;font-weight:600;font-size:15px;color:${b.equilibre?'var(--green)':'var(--accent)'}">${b.equilibre?'✅ Bilan équilibré':'⚠️ Déséquilibre — Actif ≠ Passif'}</p></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+// ═══════════════════════════════════════════════
+//  GRAND-LIVRE
+// ═══════════════════════════════════════════════
+async function loadGrandLivre(){
+  if(!exerciceId)return;
+  const el=document.getElementById('grand-livre-content');
+  el.innerHTML=`<div class="card">
+    <div class="card-header"><h2>Grand-Livre</h2></div>
+    <div class="search-box" style="max-width:300px;margin-bottom:16px">
+      <input placeholder="Rechercher un compte (n° ou libellé)..." id="gl-search" oninput="searchCompteGL()" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px">
+      <div class="search-results" id="gl-results"></div>
+    </div>
+    <div id="gl-detail"><div class="text-muted">Sélectionnez un compte ci-dessus</div></div>
+  </div>`;
+}
+
+let glSearchTimer;
+async function searchCompteGL(){
+  clearTimeout(glSearchTimer);
+  glSearchTimer=setTimeout(async()=>{
+    const q=document.getElementById('gl-search').value.trim();
+    if(q.length<2){document.getElementById('gl-results').classList.remove('show');return}
+    try{
+      const comptes=await api(`/api/plan-comptable?q=${encodeURIComponent(q)}`);
+      const el=document.getElementById('gl-results');
+      el.innerHTML=comptes.map(c=>`<div onclick="selectCompteGL('${c.numero}','${c.libelle}')"><strong>${c.numero}</strong> — ${c.libelle}</div>`).join('');
+      el.classList.add('show');
+    }catch(e){}
+  },250);
+}
+
+async function selectCompteGL(numero,libelle){
+  document.getElementById('gl-search').value=`${numero} — ${libelle}`;
+  document.getElementById('gl-results').classList.remove('show');
+  const el=document.getElementById('gl-detail');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const gl=await api(`/api/grand-livre?compte=${numero}&exercice_id=${exerciceId}`);
+    let ht=`<h3 style="margin-bottom:8px">Compte ${gl.compte}</h3>`;
+    if(gl.solde_ouverture)ht+=`<p class="text-muted">Solde ouverture: ${gl.solde_ouverture.toFixed(2)} €</p>`;
+    ht+=`<table><thead><tr><th>Date</th><th>Journal</th><th>Pièce</th><th>Libellé</th><th class="num">Débit</th><th class="num">Crédit</th><th class="num">Solde</th></tr></thead><tbody>`;
+    for(const m of gl.mouvements)ht+=`<tr><td>${m.date}</td><td>${m.journal}</td><td>${m.piece||''}</td><td>${m.libelle}</td><td class="num">${m.debit?m.debit.toFixed(2):''}</td><td class="num">${m.credit?m.credit.toFixed(2):''}</td><td class="num"><strong>${m.solde_cumul.toFixed(2)}</strong></td></tr>`;
+    ht+=`<tr class="total-row"><td colspan="4">Totaux / Solde final</td><td class="num">${gl.total_debit.toFixed(2)}</td><td class="num">${gl.total_credit.toFixed(2)}</td><td class="num">${gl.solde_final.toFixed(2)}</td></tr></tbody></table>`;
+    if(!gl.mouvements.length)ht='<div class="empty">Aucun mouvement sur ce compte.</div>';
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+// ═══════════════════════════════════════════════
+//  PARAMETRES
+// ═══════════════════════════════════════════════
+async function loadParametres(){
+  const el=document.getElementById('parametres-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const p=await api('/api/parametres');
+    const infos=p||{};
+    let ht=`<div class="card" style="max-width:600px">
+      <div class="card-header"><h2>Paramètres de l'entreprise</h2></div>
+      <div class="form-group"><label>Nom de l'entreprise</label><input id="param-nom" value="${infos.nom||''}"></div>
+      <div class="form-group"><label>Adresse</label><input id="param-adresse" value="${infos.adresse||''}"></div>
+      <div class="form-row">
+        <div class="form-group"><label>SIRET</label><input id="param-siret" value="${infos.siret||''}"></div>
+        <div class="form-group"><label>Email</label><input id="param-email" value="${infos.email||''}"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>IBAN</label><input id="param-iban" value="${infos.iban||''}"></div>
+        <div class="form-group"><label>Préfixe facture</label><input id="param-prefix" value="${infos.prefixe_facture||'FACT-'}"></div>
+      </div>
+      <div class="form-group"><label>Prochain numéro de facture</label><input type="number" id="param-prochain" value="${infos.prochain_numero||1}"></div>
+      <button class="btn" onclick="saveParametres()">Enregistrer</button>
+      <span id="param-msg" style="margin-left:10px;font-size:13px"></span>
+    </div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+async function saveParametres(){
+  try{
+    await api('/api/parametres',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      nom:document.getElementById('param-nom').value,adresse:document.getElementById('param-adresse').value,
+      siret:document.getElementById('param-siret').value,email:document.getElementById('param-email').value,
+      iban:document.getElementById('param-iban').value,prefixe_facture:document.getElementById('param-prefix').value,
+      prochain_numero:parseInt(document.getElementById('param-prochain').value)||1
+    })});
+    document.getElementById('param-msg').innerHTML='<span style="color:var(--green)">✅ Paramètres enregistrés</span>';
+  }catch(e){document.getElementById('param-msg').innerHTML=`<span style="color:var(--accent)">❌ ${e.message}</span>`}
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.search-box'))document.querySelectorAll('.search-results').forEach(r=>r.classList.remove('show'));
+  if(e.target.classList.contains('modal-overlay'))e.target.classList.remove('show');
+});
+
+loadExercices().then(()=>navigate('dashboard'));
+
+// ═══ SEARCH ═══
+let searchTimer=null;
+async function onSearch(q){
+  clearTimeout(searchTimer);
+  document.getElementById('search-results').classList.remove('show');
+  if(!q||q.length<2)return;
+  searchTimer=setTimeout(async()=>{
+    try{
+      const r=await api(`/api/search?q=${encodeURIComponent(q)}&exercice_id=${exerciceId}`);
+      const dd=document.getElementById('search-results');
+      dd.innerHTML=r.results.map(i=>`<div class="item" onclick="goTo('${i.type}',${i.id})"><span class="tag">${i.type}</span>${i.label}</div>`).join('');
+      dd.classList.add('show');
+    }catch(e){}
+  },250);
+}
+function goTo(type,id){
+  document.getElementById('search-results').classList.remove('show');
+  document.getElementById('search-input').value='';
+  if(type==='facture')navigate('factures');
+  else if(type==='ecriture')navigate('ecritures');
+  else if(type==='compte'){document.getElementById('gl-compte').value=id;navigate('grand-livre');setTimeout(loadGrandLivre,200);}
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.search-dropdown')&&!e.target.closest('#search-input'))document.getElementById('search-results').classList.remove('show');});
+
+// ═══ NOTIFICATIONS ═══
+async function loadNotifs(){
+  if(!exerciceId)return;
+  try{
+    const r=await api(`/api/notifications?exercice_id=${exerciceId}`);
+    const cnt=document.getElementById('notif-count');
+    if(r.count>0){cnt.style.display='flex';cnt.textContent=r.count}else cnt.style.display='none';
+    const panel=document.getElementById('notif-panel');
+    panel.innerHTML=r.notifications.map(n=>`<div class="item" onclick="navigate('${n.action}');toggleNotifs()">${n.msg}</div>`).join('');
+  }catch(e){}
+}
+function toggleNotifs(){
+  const p=document.getElementById('notif-panel');p.classList.toggle('show');
+  if(p.classList.contains('show')){document.getElementById('notif-count').style.display='none';loadNotifs();}
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.notif-badge'))document.getElementById('notif-panel').classList.remove('show');});
+
+// ═══ CHARTS DASHBOARD ═══
+let charts={};
+async function loadDashboard(){
+  if(!exerciceId){document.getElementById('dashboard-content').innerHTML='<div class="empty">Sélectionnez un exercice</div>';return;}
+  try{
+    const[kpi,evo]=await Promise.all([api('/api/dashboard/tresorerie?exercice_id='+exerciceId),api('/api/dashboard/evolution?exercice_id='+exerciceId)]);
+    let h='<div class="dash-grid">';
+    h+=`<div class="dash-card"><div class="label">Trésorerie</div><div class="big-num">${(kpi.treso_nette||0).toLocaleString()} €</div><div class="kpi-row"><div class="kpi"><div class="kpi-val">${(kpi.solde_banque||0).toLocaleString()}</div><div class="kpi-lbl">Banque</div></div><div class="kpi"><div class="kpi-val">${(kpi.creances_clients||0).toLocaleString()}</div><div class="kpi-lbl">Clients</div></div><div class="kpi"><div class="kpi-val">${(kpi.dettes_fournisseurs||0).toLocaleString()}</div><div class="kpi-lbl">Dettes</div></div></div></div>`;
+    h+=`<div class="dash-card"><div class="label">Factures</div><div class="big-num">${kpi.factures_retard||0}</div><div style="font-size:12px;color:var(--muted)">en retard</div></div>`;
+    h+=`<div class="dash-card"><div class="label">Rapprochement</div><div class="big-num">${kpi.non_rapprochees||0}</div><div style="font-size:12px;color:var(--muted)">non rapprochées</div></div>`;
+    h+='</div>';
+    h+='<div class="dash-grid wide"><div class="dash-card"><div class="card-header"><h3>Évolution CA</h3></div><div class="chart-box"><canvas id="chart-ca"></canvas></div></div></div>';
+    document.getElementById('dashboard-content').innerHTML=h;
+    // Chart
+    setTimeout(()=>{
+      const ctx=document.getElementById('chart-ca');
+      if(!ctx)return;
+      if(charts.ca)charts.ca.destroy();
+      charts.ca=new Chart(ctx,{type:'bar',data:{labels:evo.map(e=>e.mois||''),datasets:[{label:'Charges',data:evo.map(e=>e.charges||0),backgroundColor:'#e9456044',borderColor:'#e94560',borderWidth:1},{label:'Produits',data:evo.map(e=>e.produits||0),backgroundColor:'#0a8f3244',borderColor:'#0a8f32',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+    },100);
+  }catch(e){document.getElementById('dashboard-content').innerHTML='<div class="empty">Erreur chargement dashboard</div>';}
+}
+
+// ═══ EXPORT ═══
+function exportCSV(){window.open('/api/export/csv?exercice_id='+exerciceId+'&type=ecritures');}
+
+// ═══ HOOK DASHBOARD NAVIGATION ═══
+const origNavigate=navigate;
+navigate=function(page){
+  origNavigate(page);
+  setTimeout(()=>{if(page==='dashboard')loadDashboard();if(page==='ecritures')loadEcritures();loadNotifs();},50);
+};
+
+// ═══ INIT ═══
+const origInit=loadExercices;
+loadExercices=async function(){
+  await origInit();
+  loadNotifs();
+};
+
+// ═══════════════════════════════════════════════
+//  PAIE
+// ═══════════════════════════════════════════════
+async function loadPaie(){
+  if(!exerciceId)return;
+  const el=document.getElementById('paie-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const modele=await api(`/api/paie/modele?exercice_id=${exerciceId}`);
+    let ht=`<div class="card">
+      <div class="card-header"><h2>💰 OD Paie</h2></div>
+      <h3 style="margin-bottom:8px;font-size:14px">Modèle d'écritures de paie</h3>
+      <table><thead><tr><th>Compte</th><th>Libellé</th><th class="num">Débit</th><th class="num">Crédit</th></tr></thead><tbody>`;
+    if(modele&&modele.ecritures)for(const e of modele.ecritures){
+      ht+=`<tr><td>${e.compte||''}</td><td>${e.libelle||''}</td><td class="num">${(e.debit||0).toFixed(2)}</td><td class="num">${(e.credit||0).toFixed(2)}</td></tr>`;
+    }
+    if(!(modele&&modele.ecritures&&modele.ecritures.length))ht+=`<tr><td colspan="4" class="empty">Aucun modèle chargé</td></tr>`;
+    ht+=`</tbody></table></div>
+    <div class="card mt-sm">
+      <div class="card-header"><h3>Importer une OD de paie</h3></div>
+      <div class="form-group"><label>Coller le CSV de paie</label><textarea id="paie-csv-text" rows="6" placeholder="compte,libelle,debit,credit\n421,Salaires nets,0,50000.00\n641,Salaires bruts,65000.00,0\n..."></textarea></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="btn btn-sm" onclick="importerPaieTexte()">📋 Importer le texte</button>
+        <span class="text-muted">ou</span>
+        <label class="btn btn-sm btn-outline" style="cursor:pointer">📂 Charger fichier CSV<input type="file" accept=".csv" style="display:none" onchange="importerPaieFichier(event)"></label>
+      </div>
+      <div id="paie-resultat"></div>
+    </div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+async function importerPaieTexte(){
+  const csv=document.getElementById('paie-csv-text').value.trim();
+  if(!csv){toast('Veuillez coller un CSV','error');return}
+  await envoyerPaieCSV(csv,'collage');
+}
+
+async function importerPaieFichier(e){
+  const file=e.target.files[0];if(!file)return;
+  const csv=await file.text();
+  await envoyerPaieCSV(csv,file.name);
+  e.target.value='';
+}
+
+async function envoyerPaieCSV(csv,source){
+  const el=document.getElementById('paie-resultat');
+  el.innerHTML='<div class="text-muted mt-sm"><div class="spinner"></div> Import en cours...</div>';
+  try{
+    const r=await api('/api/paie/importer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId,csv,source})});
+    el.innerHTML=`<div class="smtp-success mt-sm">
+      <strong>✅ Import réussi</strong><br>
+      ${r.nb_ecritures||0} écriture(s) générée(s)<br>
+      Total débit: <strong>${(r.total_debit||0).toFixed(2)} €</strong> — Total crédit: <strong>${(r.total_credit||0).toFixed(2)} €</strong><br>
+      ${r.equilibre?'<span class="badge badge-success">✅ Équilibré</span>':'<span class="badge badge-danger">❌ Non équilibré</span>'}
+    </div>`;
+  }catch(e){el.innerHTML=`<div class="smtp-error mt-sm">Erreur: ${e.message}</div>`}
+}
+
+// ═══════════════════════════════════════════════
+//  BONS
+// ═══════════════════════════════════════════════
+let bonsFilter='bon_commande';
+
+async function loadBons(){
+  if(!exerciceId)return;
+  const el=document.getElementById('bons-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const bons=await api(`/api/bons?sous_type=${bonsFilter}&exercice_id=${exerciceId}`);
+    let ht=`<div class="card">
+      <div class="card-header"><h2>📦 Bons</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-sm" onclick="openBonModal('bon_commande')">+ Bon de commande</button>
+          <button class="btn btn-sm btn-outline" onclick="openBonModal('pro_forma')">+ Pro-forma</button>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select onchange="bonsFilter=this.value;loadBons()">
+          <option value="bon_commande" ${bonsFilter==='bon_commande'?'selected':''}>Bons de commande</option>
+          <option value="bon_livraison" ${bonsFilter==='bon_livraison'?'selected':''}>Bons de livraison</option>
+          <option value="pro_forma" ${bonsFilter==='pro_forma'?'selected':''}>Pro-Forma</option>
+        </select>
+      </div>
+      <table><thead><tr><th>Date</th><th>Client</th><th>Type</th><th>Sous-type</th><th class="num">Montant</th><th>Actions</th></tr></thead><tbody>`;
+    for(const b of(bons||[])){
+      const sousTypeLabel={bon_commande:'Bon de commande',bon_livraison:'Bon de livraison',pro_forma:'Pro-Forma'};
+      ht+=`<tr>
+        <td>${b.date||''}</td><td>${b.client_nom||b.client||''}</td><td>${b.type||'Bon'}</td>
+        <td><span class="badge badge-info">${sousTypeLabel[b.sous_type]||b.sous_type||''}</span></td>
+        <td class="num">${(b.montant_total||0).toFixed(2)} €</td>
+        <td style="white-space:nowrap">
+          ${b.sous_type==='bon_commande'?`<button class="btn btn-outline btn-sm" onclick="bonToLivraison(${b.id})">→ BL</button>`:''}
+          ${b.sous_type==='bon_commande'?`<button class="btn btn-green btn-sm" onclick="bonToFacture(${b.id})">→ Facture</button>`:''}
+          ${b.sous_type==='pro_forma'?`<button class="btn btn-green btn-sm" onclick="bonToFacture(${b.id})">→ Facture</button>`:''}
+        </td>
+      </tr>`;
+    }
+    if(!(bons||[]).length)ht+=`<tr><td colspan="6" class="empty">Aucun bon</td></tr>`;
+    ht+=`</tbody></table></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`}
+}
+
+function openBonModal(sousType){
+  document.getElementById('bon-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('bon-sous-type').value=sousType||'bon_commande';
+  document.getElementById('bon-client').value='';
+  document.getElementById('bon-objet').value='';
+  document.getElementById('bon-lignes').innerHTML='';
+  addBonLigne();
+  document.getElementById('modal-bon-title').textContent=sousType==='pro_forma'?'Nouveau Pro-Forma':'Nouveau Bon de commande';
+  openModal('modal-bon');
+}
+
+function addBonLigne(data){
+  const div=document.createElement('div');div.className='ligne-row';
+  div.style.cssText='display:flex;gap:8px;margin-bottom:6px;align-items:center';
+  const tvaTaux=data&&data.tva_taux!=null?data.tva_taux:20;
+  div.innerHTML=`<input placeholder="Description" value="${data?.description||''}" style="flex:2">
+    <input type="number" value="${data?.quantite||1}" min="1" style="width:60px" onchange="updateBonTotals()">
+    <input type="number" value="${data?.prix_unitaire||0}" step="0.01" min="0" style="width:90px" onchange="updateBonTotals()">
+    <select style="width:70px" onchange="updateBonTotals()"><option value="20" ${tvaTaux===20?'selected':''}>20%</option><option value="10" ${tvaTaux===10?'selected':''}>10%</option><option value="0" ${tvaTaux===0?'selected':''}>0%</option></select>
+    <button class="btn-ghost" onclick="this.parentElement.remove();updateBonTotals()" style="color:var(--accent)">✕</button>`;
+  document.getElementById('bon-lignes').appendChild(div);
+}
+
+function updateBonTotals(){
+  let ht=0;document.querySelectorAll('#bon-lignes .ligne-row').forEach(r=>{
+    const ins=r.querySelectorAll('input');
+    ht+=parseFloat(ins[1].value||0)*parseFloat(ins[2].value||0);
+  });
+  document.getElementById('bon-total-ht').textContent=ht.toFixed(2);
+  let ttc=0;document.querySelectorAll('#bon-lignes .ligne-row').forEach(r=>{
+    const ins=r.querySelectorAll('input');const sel=r.querySelector('select');
+    ttc+=parseFloat(ins[1].value||0)*parseFloat(ins[2].value||0)*(1+parseFloat(sel.value||0)/100);
+  });
+  document.getElementById('bon-total-ttc').textContent=ttc.toFixed(2);
+}
+
+async function saveBon(){
+  const lignes=[];document.querySelectorAll('#bon-lignes .ligne-row').forEach(r=>{
+    const ins=r.querySelectorAll('input');const sel=r.querySelector('select');
+    lignes.push({description:ins[0].value,quantite:parseFloat(ins[1].value)||1,prix_unitaire:parseFloat(ins[2].value)||0,tva_taux:parseFloat(sel.value)||20});
+  });
+  try{
+    await api('/api/bons',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      exercice_id:exerciceId,date:document.getElementById('bon-date').value,
+      client_nom:document.getElementById('bon-client').value,
+      objet:document.getElementById('bon-objet').value,
+      sous_type:document.getElementById('bon-sous-type').value,lignes
+    })});
+    closeModal('modal-bon');loadBons();toast('Bon créé');
+  }catch(e){toast(e.message,'error')}
+}
+
+async function bonToLivraison(id){
+  try{await api(`/api/bons/${id}/livraison`,{method:'PUT'});loadBons();toast('Bon de livraison créé')}catch(e){toast(e.message,'error')}
+}
+
+async function bonToFacture(id){
+  try{await api(`/api/bons/${id}/convertir`,{method:'POST'});loadBons();toast('Converti en facture')}catch(e){toast(e.message,'error')}
+}
+
+// ═══════════════════════════════════════════════
+//  CLOTURE
+// ═══════════════════════════════════════════════
+async function loadCloture(){
+  if(!exerciceId)return;
+  const el=document.getElementById('cloture-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  const ex=exercices.find(e=>e.id===exerciceId);
+  const estCloture=ex&&ex.cloture;
+  let ht=`<div class="card">
+    <div class="card-header"><h2>🔒 Clôture d'exercice</h2>
+      <span class="badge ${estCloture?'badge-success':'badge-warning'}">${estCloture?'Clôturé':'Ouvert'}</span>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+      <button class="btn btn-sm" onclick="verifierCloture()">🔍 Vérifications</button>
+      <button class="btn btn-sm btn-outline" onclick="simulerCloture()" ${estCloture?'disabled':''}>📊 Simuler la clôture</button>
+      <button class="btn btn-sm btn-green" onclick="executerCloture()" ${estCloture?'disabled':''}>✅ Exécuter la clôture</button>
+      ${estCloture?`<button class="btn btn-sm btn-warn" onclick="reouvrirCloture()">🔓 Rouvrir l'exercice</button>`:''}
+    </div>
+    <div id="cloture-resultat"></div>
+  </div>`;
+  el.innerHTML=ht;
+}
+
+async function verifierCloture(){
+  const el=document.getElementById('cloture-resultat');
+  el.innerHTML='<div class="text-muted"><div class="spinner"></div> Vérification en cours...</div>';
+  try{
+    const r=await api(`/api/cloture/verifications?exercice_id=${exerciceId}`);
+    let ht=`<div class="card mt-sm"><div class="card-header"><h3>✅ Résultat des vérifications</h3></div>
+      <table><thead><tr><th>Vérification</th><th>Statut</th><th>Détail</th></tr></thead><tbody>`;
+    ht+=verifLigne('Partie double',r.partie_double_ok);
+    ht+=verifLigne('Journaux équilibrés',r.journaux_equilibres);
+    ht+=verifLigne('Écritures non lettrées',r.nb_non_lettrees!=null?r.nb_non_lettrees===0:null,`${r.nb_non_lettrees||0} écriture(s)`);
+    ht+=verifLigne('Comptes tiers suspects',r.tiers_suspects_ok!=null?r.tiers_suspects_ok:null,r.tiers_suspects_detail||'');
+    ht+=`</tbody></table></div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="smtp-error mt-sm">Erreur: ${e.message}</div>`}
+}
+
+function verifLigne(nom,ok,detail){
+  if(ok===null||ok===undefined)return `<tr><td>${nom}</td><td><span class="badge badge-neutral">—</span></td><td>${detail||''}</td></tr>`;
+  const badge=ok?'<span class="badge badge-success">✅ OK</span>':'<span class="badge badge-danger">❌ Échec</span>';
+  return `<tr><td>${nom}</td><td>${badge}</td><td>${detail||''}</td></tr>`;
+}
+
+async function simulerCloture(){
+  const el=document.getElementById('cloture-resultat');
+  el.innerHTML='<div class="text-muted"><div class="spinner"></div> Simulation en cours...</div>';
+  try{
+    const r=await api(`/api/cloture/simuler?exercice_id=${exerciceId}`);
+    let ht=`<div class="card mt-sm"><div class="card-header"><h3>📊 Simulation de clôture</h3></div>
+      <div class="dash-grid" style="margin-bottom:12px">
+        <div class="dash-card"><div class="label">À-nouveaux</div><div class="big-num">${r.nb_a_nouveaux||0}</div></div>
+        <div class="dash-card"><div class="label">Comptes concernés</div><div class="big-num">${r.nb_comptes||0}</div></div>
+        <div class="dash-card"><div class="label">Résultat net</div><div class="big-num ${(r.resultat_net||0)>=0?'green':'red'}">${(r.resultat_net||0).toFixed(2)} €</div></div>
+      </div>`;
+    if(r.comptes&&r.comptes.length){
+      ht+=`<table><thead><tr><th>Compte</th><th class="num">Solde</th><th class="num">À-nouveau</th></tr></thead><tbody>`;
+      for(const c of r.comptes){ht+=`<tr><td>${c.compte||''}</td><td class="num">${(c.solde||0).toFixed(2)}</td><td class="num">${(c.a_nouveau||0).toFixed(2)}</td></tr>`}
+      ht+=`</tbody></table>`;
+    }
+    ht+=`</div>`;
+    el.innerHTML=ht;
+  }catch(e){el.innerHTML=`<div class="smtp-error mt-sm">Erreur: ${e.message}</div>`}
+}
+
+async function executerCloture(){
+  const ex=exercices.find(e=>e.id===exerciceId);
+  if(!confirm(`Confirmer la clôture définitive de l'exercice « ${ex?.libelle||''} » ?\n\nCette action est irréversible. Assurez-vous d'avoir fait une sauvegarde.`))return;
+  const el=document.getElementById('cloture-resultat');
+  el.innerHTML='<div class="text-muted"><div class="spinner"></div> Clôture en cours...</div>';
+  try{
+    const r=await api('/api/cloture/executer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});
+    let ht=`<div class="card mt-sm"><div class="card-header"><h3>✅ Clôture exécutée</h3></div>
+      <div class="dash-grid"><div class="dash-card"><div class="label">À-nouveaux créés</div><div class="big-num green">${r.nb_a_nouveaux||0}</div></div><div class="dash-card"><div class="label">Résultat transféré</div><div class="big-num">${(r.resultat_net||0).toFixed(2)} €</div></div></div></div>`;
+    el.innerHTML=ht;
+    await loadExercices();
+    toast('Exercice clôturé avec succès');
+  }catch(e){el.innerHTML=`<div class="smtp-error mt-sm">Erreur: ${e.message}</div>`}
+}
+
+async function reouvrirCloture(){
+  if(!confirm('Rouvrir cet exercice ?'))return;
+  try{
+    await api('/api/cloture/reouvrir',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});
+    await loadExercices();
+    loadCloture();
+    toast('Exercice rouvert');
+  }catch(e){toast(e.message,'error')}
+}
+
+// ═══ AUTO-MATCH RAPPROCHEMENT ═══
+async function autoMatch(){
+  const btn=event.target;btn.disabled=true;btn.textContent='...';
+  try{
+    const r=await api('/api/banque/auto-match',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});
+    if(r.nb_matches>0)toast(`${r.nb_matches} rapprochement(s) automatique(s) effectué(s)`);
+    else toast('Aucune correspondance trouvée','error');
+    loadReleves();
+  }catch(e){toast('Erreur: '+e.message,'error')}
+  btn.disabled=false;btn.textContent='🤖 Auto-match';
+}
+
+async function autoRapprocherBanque(){
+  if(!exerciceId)return;
+  const el=document.getElementById('banque-detail');
+  try{
+    const r=await api(`/api/banque/auto-match?exercice_id=${exerciceId}`,{method:'POST'});
+    let msg=`${r.nb_rapproches||0} rapproché(s) — ${r.nb_restants||0} restant(s)`;
+    if((r.nb_rapproches||0)>0)toast(msg);else toast('Aucune correspondance trouvée','error');
+    loadBanque();
+  }catch(e){toast('Erreur: '+e.message,'error')}
+}
+
+async function autoEtatBanque(){
+  if(!exerciceId)return;
+  try{
+    const r=await api(`/api/banque/etat-auto?exercice_id=${exerciceId}`);
+    let ht=`<div class="card mt-sm"><div class="card-header"><h3>📊 État du rapprochement automatique</h3></div>
+      <div class="dash-grid"><div class="dash-card"><div class="label">Taux de rapprochement</div><div class="big-num">${(r.pct_rapproche||0).toFixed(1)}%</div></div></div>`;
+    if(r.par_compte&&r.par_compte.length){
+      ht+=`<table><thead><tr><th>Compte</th><th class="num">Lignes</th><th class="num">Rapprochées</th><th class="num">%</th></tr></thead><tbody>`;
+      for(const c of r.par_compte){
+        const pct=c.lignes>0?(c.rapprochees/c.lignes*100):0;
+        ht+=`<tr><td>${c.compte||''}</td><td class="num">${c.lignes||0}</td><td class="num">${c.rapprochees||0}</td><td class="num">${pct.toFixed(1)}%</td></tr>`;
+      }
+      ht+=`</tbody></table>`;
+    }
+    ht+=`</div>`;
+    document.getElementById('banque-detail').innerHTML=ht;
+  }catch(e){toast('Erreur: '+e.message,'error')}
+}
+
+// ═══ TEMPLATES FACTURES ═══
+async function saveTemplate(){
+  const name=prompt('Nom du modèle :');
+  if(!name)return;
+  const lignes=[];
+  document.querySelectorAll('#fact-lignes .ligne-row').forEach(r=>{
+    const inputs=r.querySelectorAll('input');
+    lignes.push({description:inputs[0].value,quantite:parseFloat(inputs[1].value)||1,prix_unitaire:parseFloat(inputs[2].value)||0,tva_taux:parseFloat(inputs[3].value)||20});
+  });
+  await api('/api/factures/templates',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,lignes})});
+  toast('Modèle sauvegardé');
+}
+async function loadTemplate(){
+  const templates=await api('/api/factures/templates');
+  if(!templates.length){toast('Aucun modèle','error');return;}
+  const names=templates.map(t=>t.name).join('\n');
+  const name=prompt('Modèles disponibles :\n'+names+'\n\nNom du modèle à charger :');
+  if(!name)return;
+  const t=templates.find(t=>t.name===name);
+  if(!t){toast('Modèle introuvable','error');return;}
+  const lignes=JSON.parse(t.data);
+  document.getElementById('fact-lignes').innerHTML='';
+  lignes.forEach(l=>addFactLigne(l));
+  updateFactTotals();
+  toast('Modèle chargé');
+}
+
+// IMPRESSION
+function printPage(){
+  // Routes dediees pour chaque page
+  const routes={
+    factures:()=>printFacturePDF(null),balance:()=>window.open(`/api/balance/imprimer?exercice_id=${exerciceId}`,'_blank'),
+    resultat:()=>window.open(`/api/resultat/imprimer?exercice_id=${exerciceId}`,'_blank'),
+    bilan:()=>window.open(`/api/bilan/imprimer?exercice_id=${exerciceId}`,'_blank'),
+    'grand-livre':()=>{const c=document.getElementById('gl-search')?.value?.trim();if(c)window.open(`/api/grand-livre/imprimer?compte=${c}&exercice_id=${exerciceId}`,'_blank');else window.print();},
+    immo:()=>window.print(),emprunts:()=>window.print(),cloture:()=>window.print(),
+    budget:()=>window.open(`/api/budget/imprimer?exercice_id=${exerciceId}`,'_blank'),previsionnel:()=>window.print(),
+    ecritures:()=>window.print(),dashboard:()=>window.print(),
+  };
+  if(routes[currentPage]){routes[currentPage]();return;}
+  // Fallback: n'affiche que le panel actif
+  const panel=document.querySelector('.panel.active');
+  if(!panel){window.print();return;}
+  const others=document.querySelectorAll('.panel:not(.active)');
+  const origDisplay=[];
+  others.forEach(p=>{origDisplay.push(p.style.display);p.style.display='none';});
+  window.print();
+  others.forEach((p,i)=>{p.style.display=origDisplay[i]||'';});
+}
+
+function printFacturePDF(id){
+  window.open(`/api/factures/${id}/imprimer`,'_blank');
+}
+
+function printFacture(id){
+  navigate('factures');
+  setTimeout(()=>{const row=document.querySelector('[data-id="'+id+'"]');if(row)row.scrollIntoView();setTimeout(printPage,300);},300);
+}
+
+
+// ═══════════════════════════════════════════════
+//  IMMOBILISATIONS
+// ═══════════════════════════════════════════════
+async function loadImmo(){
+  if(!exerciceId)return;
+  const el=document.getElementById('immo-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const [resume,immo]=await Promise.all([
+      api(`/api/immobilisations/resume?exercice_id=${exerciceId}`).catch(()=>null),
+      api(`/api/immobilisations?exercice_id=${exerciceId}`).catch(()=>[])
+    ]);
+    let h='';
+    if(resume){
+      h+=`<div class="dash-grid" style="margin-bottom:16px">
+        <div class="dash-card"><div class="label">Total acquisitions</div><div class="big-num">${(resume.total_acquisitions||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div></div>
+        <div class="dash-card"><div class="label">Total amortis</div><div class="big-num">${(resume.total_amortissements||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div></div>
+        <div class="dash-card"><div class="label">VNC</div><div class="big-num">${(resume.vnc||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div></div>
+      </div>`;
+    }
+    h+=`<div class="card"><div class="card-header"><h2>🏢 Immobilisations</h2><button class="btn btn-sm" onclick="openImmoModal()">+ Immobilisation</button></div>
+    <table><thead><tr><th>Désignation</th><th>Date</th><th>Valeur</th><th>Durée</th><th>Mode</th><th>VNC</th><th></th></tr></thead><tbody>`;
+    if(Array.isArray(immo)&&immo.length>0){
+      immo.forEach(i=>{
+        h+=`<tr><td>${esc(i.designation||'')}</td><td>${i.date_acquisition||''}</td><td class="num">${(i.valeur||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td>${i.duree||''} ans</td><td>${i.mode||'linéaire'}</td><td class="num">${(i.vnc||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td>
+        <td><button class="btn btn-sm btn-outline" onclick="showPlanAmort(${i.id})">Plan amort.</button>
+        <button class="btn btn-sm btn-warn" onclick="openCederImmoModal(${i.id})">Céder</button></td></tr>`;
+      });
+    }else{h+='<tr><td colspan="7" class="empty">Aucune immobilisation</td></tr>';}
+    h+='</tbody></table></div>';
+    el.innerHTML=h;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`;}
+}
+
+let _immoModalFor=null;
+function openImmoModal(id){
+  _immoModalFor=null;
+  document.getElementById('modal-immo-title').textContent='Nouvelle immobilisation';
+  document.getElementById('immo-compte').value='218';
+  document.getElementById('immo-compte-amort').value='2818';
+  document.getElementById('immo-designation').value='';
+  document.getElementById('immo-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('immo-valeur').value='';
+  document.getElementById('immo-duree').value='5';
+  document.getElementById('immo-mode').value='lineaire';
+  document.getElementById('immo-coeff').value='1.75';
+  document.getElementById('immo-vres').value='0';
+  document.getElementById('immo-compte-dotation').value='6811';
+  openModal('modal-immo');
+}
+
+async function saveImmo(){
+  try{
+    const body={
+      exercice_id:exerciceId,
+      compte_immo:document.getElementById('immo-compte').value||'218',
+      compte_amort:document.getElementById('immo-compte-amort').value||'2818',
+      designation:document.getElementById('immo-designation').value,
+      date_acquisition:document.getElementById('immo-date').value,
+      valeur:parseFloat(document.getElementById('immo-valeur').value)||0,
+      duree:parseInt(document.getElementById('immo-duree').value)||5,
+      mode:document.getElementById('immo-mode').value,
+      coeff_degressif:parseFloat(document.getElementById('immo-coeff').value)||1.75,
+      valeur_residuelle:parseFloat(document.getElementById('immo-vres').value)||0,
+      compte_dotation:document.getElementById('immo-compte-dotation').value||'6811'
+    };
+    await api('/api/immobilisations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    closeModal('modal-immo');
+    loadImmo();
+    toast('Immobilisation créée');
+  }catch(e){toast(e.message,'error');}
+}
+
+async function showPlanAmort(id){
+  try{
+    const r=await api(`/api/immobilisations/plan?id=${id}`);
+    let h='<div class="card" style="margin-top:16px"><div class="card-header"><h3>Plan d\'amortissement</h3><button class="btn-ghost" onclick="this.closest(\'.card\').remove()">&times;</button></div>';
+    h+='<table><thead><tr><th>Année</th><th>Dotation</th><th>Cumul</th><th>VNC</th></tr></thead><tbody>';
+    if(Array.isArray(r.lignes)&&r.lignes.length>0){
+      r.lignes.forEach(l=>{h+=`<tr><td>${l.annee||''}</td><td class="num">${(l.dotation||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.cumul||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.vnc||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td></tr>`;});
+    }else{h+='<tr><td colspan="4" class="empty">Aucune ligne</td></tr>';}
+    h+='</tbody></table></div>';
+    document.getElementById('immo-content').insertAdjacentHTML('beforeend',h);
+  }catch(e){toast(e.message,'error');}
+}
+
+let _cederImmoId=null;
+function openCederImmoModal(id){
+  _cederImmoId=id;
+  document.getElementById('modal-immo-title').textContent='Céder une immobilisation';
+  document.getElementById('immo-compte').closest('.form-row').style.display='none';
+  document.getElementById('immo-designation').closest('.form-group').style.display='none';
+  document.getElementById('immo-date').closest('.form-row').style.display='none';
+  document.getElementById('immo-valeur').closest('.form-row').style.display='none';
+  document.getElementById('immo-duree').closest('.form-row').style.display='none';
+  document.getElementById('immo-mode').closest('.form-row').style.display='none';
+  document.getElementById('immo-coeff').closest('.form-row').style.display='none';
+  document.getElementById('immo-vres').closest('.form-row').style.display='none';
+  document.getElementById('immo-compte-dotation').closest('.form-group').style.display='none';
+  // Add cession fields
+  let cessionHtml='';
+  if(!document.getElementById('immo-cession-fields')){
+    cessionHtml='<div id="immo-cession-fields"><div class="form-group"><label>Date cession</label><input type="date" id="immo-date-cession"></div><div class="form-group"><label>Prix cession</label><input type="number" id="immo-prix-cession" step="0.01" min="0"></div></div>';
+    document.getElementById('modal-immo').querySelector('.modal-body').insertAdjacentHTML('beforeend',cessionHtml);
+  }
+  document.getElementById('immo-cession-fields').style.display='';
+  document.getElementById('modal-immo').querySelector('.modal-footer .btn').onclick=saveCederImmo;
+  document.getElementById('modal-immo').querySelector('.modal-footer .btn').textContent='Céder';
+  openModal('modal-immo');
+}
+
+async function saveCederImmo(){
+  try{
+    const body={
+      id:_cederImmoId,
+      date_cession:document.getElementById('immo-date-cession').value,
+      prix_cession:parseFloat(document.getElementById('immo-prix-cession').value)||0
+    };
+    await api('/api/immobilisations/ceder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    closeModal('modal-immo');
+    resetImmoModal();
+    loadImmo();
+    toast('Immobilisation cédée');
+  }catch(e){toast(e.message,'error');}
+}
+
+function resetImmoModal(){
+  document.getElementById('immo-cession-fields')&&(document.getElementById('immo-cession-fields').style.display='none');
+  document.getElementById('immo-compte').closest('.form-row').style.display='';
+  document.getElementById('immo-designation').closest('.form-group').style.display='';
+  document.getElementById('immo-date').closest('.form-row').style.display='';
+  document.getElementById('immo-valeur').closest('.form-row').style.display='';
+  document.getElementById('immo-duree').closest('.form-row').style.display='';
+  document.getElementById('immo-mode').closest('.form-row').style.display='';
+  document.getElementById('immo-coeff').closest('.form-row').style.display='';
+  document.getElementById('immo-vres').closest('.form-row').style.display='';
+  document.getElementById('immo-compte-dotation').closest('.form-group').style.display='';
+  const btn=document.getElementById('modal-immo').querySelector('.modal-footer .btn');
+  btn.onclick=saveImmo;
+  btn.textContent='Enregistrer';
+}
+
+// ═══════════════════════════════════════════════
+//  EMPRUNTS
+// ═══════════════════════════════════════════════
+async function loadEmprunts(){
+  if(!exerciceId)return;
+  const el=document.getElementById('emprunts-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    const [resume,emprunts]=await Promise.all([
+      api(`/api/emprunts/resume?exercice_id=${exerciceId}`).catch(()=>null),
+      api(`/api/emprunts?exercice_id=${exerciceId}`).catch(()=>[])
+    ]);
+    let h='';
+    if(resume){
+      h+=`<div class="dash-grid" style="margin-bottom:16px">
+        <div class="dash-card"><div class="label">Capital dû</div><div class="big-num">${(resume.capital_du||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div></div>
+        <div class="dash-card"><div class="label">Intérêts restants</div><div class="big-num">${(resume.interets_restants||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</div></div>
+        <div class="dash-card"><div class="label">Prochaine échéance</div><div class="big-num" style="font-size:20px">${resume.prochaine_echeance||'-'}</div></div>
+      </div>`;
+    }
+    h+=`<div class="card"><div class="card-header"><h2>🏦 Emprunts</h2><button class="btn btn-sm" onclick="openEmpruntModal()">+ Emprunt</button></div>
+    <table><thead><tr><th>Désignation</th><th>Date</th><th>Montant</th><th>Taux</th><th>Durée</th><th>Capital dû</th><th></th></tr></thead><tbody>`;
+    if(Array.isArray(emprunts)&&emprunts.length>0){
+      emprunts.forEach(e=>{
+        h+=`<tr><td>${esc(e.designation||'')}</td><td>${e.date_debut||''}</td><td class="num">${(e.montant||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td>${e.taux||0}%</td><td>${e.duree||''} mois</td><td class="num">${(e.capital_du||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td>
+        <td><button class="btn btn-sm btn-outline" onclick="showTableauEmprunt(${e.id})">Tableau</button>
+        <button class="btn btn-sm btn-outline" onclick="genererTableauEmprunt(${e.id})">Générer tableau</button></td></tr>`;
+      });
+    }else{h+='<tr><td colspan="7" class="empty">Aucun emprunt</td></tr>';}
+    h+='</tbody></table></div>';
+    el.innerHTML=h;
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`;}
+}
+
+function openEmpruntModal(){
+  document.getElementById('emprunt-designation').value='';
+  document.getElementById('emprunt-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('emprunt-montant').value='';
+  document.getElementById('emprunt-taux').value='2';
+  document.getElementById('emprunt-duree').value='120';
+  document.getElementById('emprunt-periodicite').value='mensuelle';
+  document.getElementById('emprunt-type').value='constant';
+  document.getElementById('emprunt-frais').value='0';
+  document.getElementById('emprunt-assurance').value='0';
+  openModal('modal-emprunt');
+}
+
+async function saveEmprunt(){
+  try{
+    const body={
+      exercice_id:exerciceId,
+      designation:document.getElementById('emprunt-designation').value,
+      date_debut:document.getElementById('emprunt-date').value,
+      montant:parseFloat(document.getElementById('emprunt-montant').value)||0,
+      taux:parseFloat(document.getElementById('emprunt-taux').value)||0,
+      duree:parseInt(document.getElementById('emprunt-duree').value)||120,
+      periodicite:document.getElementById('emprunt-periodicite').value,
+      type:document.getElementById('emprunt-type').value,
+      frais_dossier:parseFloat(document.getElementById('emprunt-frais').value)||0,
+      assurance_mensuelle:parseFloat(document.getElementById('emprunt-assurance').value)||0
+    };
+    await api('/api/emprunts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    closeModal('modal-emprunt');
+    loadEmprunts();
+    toast('Emprunt créé');
+  }catch(e){toast(e.message,'error');}
+}
+
+async function showTableauEmprunt(id){
+  try{
+    const r=await api(`/api/emprunts/tableau?id=${id}`);
+    let h='<div class="card" style="margin-top:16px"><div class="card-header"><h3>Tableau d\'amortissement</h3><button class="btn-ghost" onclick="this.closest(\'.card\').remove()">&times;</button></div>';
+    h+='<table style="font-size:12px"><thead><tr><th>N°</th><th>Date</th><th>Capital avant</th><th>Mensualité</th><th>Intérêts</th><th>Capital remb.</th><th>Capital après</th></tr></thead><tbody>';
+    if(Array.isArray(r.lignes)&&r.lignes.length>0){
+      r.lignes.forEach(l=>{h+=`<tr><td>${l.num||''}</td><td>${l.date||''}</td><td class="num">${(l.capital_avant||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.mensualite||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.interets||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.capital_rembourse||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.capital_apres||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td></tr>`;});
+    }else{h+='<tr><td colspan="7" class="empty">Aucune ligne</td></tr>';}
+    h+='</tbody></table></div>';
+    document.getElementById('emprunts-content').insertAdjacentHTML('beforeend',h);
+  }catch(e){toast(e.message,'error');}
+}
+
+async function genererTableauEmprunt(id){
+  try{
+    await api('/api/emprunts/generer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
+    toast('Tableau généré');
+    showTableauEmprunt(id);
+  }catch(e){toast(e.message,'error');}
+}
+
+// ═══════════════════════════════════════════════
+//  CATEGORIES
+// ═══════════════════════════════════════════════
+async function loadCategories(){
+  if(!exerciceId)return;
+  const el=document.getElementById('categories-content');
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  try{
+    let h='<div class="card"><div class="card-header"><h2>🏷️ Classification des écritures</h2>';
+    h+='<div><button class="btn btn-sm btn-outline" onclick="loadCategoriesPredefinies()">Charger règles prédéfinies</button> ';
+    h+='<button class="btn btn-sm btn-outline" onclick="suggererRegles()">Suggérer règles</button></div></div>';
+    h+='<div id="cat-predefinies"></div>';
+    h+='<div id="cat-suggestions"></div>';
+    h+='<div class="card"><div class="card-header"><h3>Règles actives</h3></div>';
+    h+='<table id="cat-regles-table"><thead><tr><th>Compte</th><th>Mot-clé</th><th>Priorité</th><th></th></tr></thead><tbody></tbody></table>';
+    h+='<div class="flex-between mt-sm"><div class="form-row" style="flex:1"><input id="cat-regle-compte" placeholder="N° compte" style="width:100px"><input id="cat-regle-mot" placeholder="Mot-clé"><input id="cat-regle-prio" type="number" value="0" style="width:80px"></div>';
+    h+='<button class="btn btn-sm" onclick="addRegle()">+ Ajouter règle</button></div></div>';
+    el.innerHTML=h;
+    loadRegles();
+  }catch(e){el.innerHTML=`<div class="empty">Erreur: ${e.message}</div>`;}
+}
+
+async function loadRegles(){
+  try{
+    const r=await api('/api/categories/regles');
+    const tbody=document.getElementById('cat-regles-table')?.querySelector('tbody');
+    if(!tbody)return;
+    if(Array.isArray(r)&&r.length>0){
+      tbody.innerHTML=r.map(rg=>`<tr><td>${esc(rg.compte||'')}</td><td>${esc(rg.mot_cle||'')}</td><td>${rg.priorite||0}</td><td><button class="btn btn-sm btn-ghost" onclick="deleteRegle(${rg.id})">🗑️</button></td></tr>`).join('');
+    }else{tbody.innerHTML='<tr><td colspan="4" class="empty">Aucune règle</td></tr>';}
+  }catch(e){toast(e.message,'error');}
+}
+
+async function addRegle(){
+  const compte=document.getElementById('cat-regle-compte').value.trim();
+  const mot=document.getElementById('cat-regle-mot').value.trim();
+  const priorite=parseInt(document.getElementById('cat-regle-prio').value)||0;
+  if(!compte||!mot){toast('Compte et mot-clé requis','error');return;}
+  try{
+    await api('/api/categories/regles',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({compte,mot_cle:mot,priorite})});
+    document.getElementById('cat-regle-compte').value='';
+    document.getElementById('cat-regle-mot').value='';
+    document.getElementById('cat-regle-prio').value='0';
+    loadRegles();
+    toast('Règle ajoutée');
+  }catch(e){toast(e.message,'error');}
+}
+
+async function deleteRegle(id){
+  if(!confirm('Supprimer cette règle ?'))return;
+  try{await api(`/api/categories/regles/${id}`,{method:'DELETE'});loadRegles();}catch(e){toast(e.message,'error');}
+}
+
+async function loadCategoriesPredefinies(){
+  try{
+    const r=await api('/api/categories/predefinies');
+    let h='<div class="card"><div class="card-header"><h3>Règles prédéfinies</h3><button class="btn btn-sm" onclick="applyPredefinies()">Appliquer</button></div>';
+    if(Array.isArray(r)&&r.length>0){
+      h+='<table><thead><tr><th>Compte</th><th>Mot-clé</th><th>Priorité</th></tr></thead><tbody>';
+      h+=r.map(rg=>`<tr><td>${esc(rg.compte||'')}</td><td>${esc(rg.mot_cle||'')}</td><td>${rg.priorite||0}</td></tr>`).join('');
+      h+='</tbody></table>';
+    }else{h+='<div class="empty">Aucune règle prédéfinie</div>';}
+    h+='</div>';
+    document.getElementById('cat-predefinies').innerHTML=h;
+  }catch(e){toast(e.message,'error');}
+}
+
+async function applyPredefinies(){
+  if(!confirm('Appliquer toutes les règles prédéfinies ?'))return;
+  try{await api('/api/categories/predefinies/appliquer',{method:'POST'});loadRegles();toast('Règles appliquées');}catch(e){toast(e.message,'error');}
+}
+
+async function suggererRegles(){
+  const el=document.getElementById('cat-suggestions');
+  el.innerHTML='<div class="card"><div class="spinner"></div> Analyse en cours...</div>';
+  try{
+    const r=await api(`/api/categories/suggerer?exercice_id=${exerciceId}`);
+    let h='<div class="card"><div class="card-header"><h3>Suggestions</h3><button class="btn btn-sm" onclick="applySuggestions()">Appliquer</button></div>';
+    if(Array.isArray(r)&&r.length>0){
+      h+='<table><thead><tr><th>Compte</th><th>Mot-clé</th><th>Occurrences</th></tr></thead><tbody>';
+      h+=r.map(s=>`<tr><td>${esc(s.compte||'')}</td><td>${esc(s.mot_cle||'')}</td><td>${s.occurrences||0}</td></tr>`).join('');
+      h+='</tbody></table>';
+    }else{h+='<div class="empty">Aucune suggestion</div>';}
+    h+='</div>';
+    el.innerHTML=h;
+  }catch(e){el.innerHTML=`<div class="card">Erreur: ${e.message}</div>`;}
+}
+
+async function applySuggestions(){
+  if(!confirm('Appliquer les suggestions ?'))return;
+  try{await api('/api/categories/suggerer/appliquer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({exercice_id:exerciceId})});loadRegles();toast('Suggestions appliquées');}catch(e){toast(e.message,'error');}
+}
+
+// START
+document.getElementById('ecr-date-saisie').value = new Date().toISOString().split('T')[0];
+addEcrLigne(); addEcrLigne();
+loadExercices().then(() => { loadJournaux(); if(currentPage==='dashboard')navigate('dashboard'); });
+
+</script>
+</body>
+</html>
+
+
+

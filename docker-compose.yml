@@ -1,0 +1,24 @@
+# Services
+services:
+  comptapro:
+    build: .
+    container_name: comptapro
+    ports:
+      - "8080:8080"
+    volumes:
+      - comptapro_data:/data
+    environment:
+      - COMPTAPRO_DB_PATH=/data/comptabilite.db
+      - COMPTAPRO_PORT=8080
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/exercices"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+# Volumes
+volumes:
+  comptapro_data:
+    driver: local

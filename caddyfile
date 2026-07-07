@@ -1,0 +1,27 @@
+# Reverse proxy Caddy — HTTPS automatique
+# Installe Caddy sur le VPS : https://caddyserver.com/docs/install
+# Puis : sudo caddy start --config /opt/comptapro/Caddyfile
+
+# Remplace ton.domaine.fr par ton vrai domaine
+# Ou supprime cette ligne si tu n'as pas de domaine (port 8080 direct)
+
+ton.domaine.fr {
+    reverse_proxy localhost:8080
+    encode gzip
+
+    # Securite de base
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy strict-origin-when-cross-origin
+    }
+
+    # Limiter les requetes
+    rate_limit {
+        zone dynamic {
+            key {remote_host}
+            events 100
+            window 10s
+        }
+    }
+}

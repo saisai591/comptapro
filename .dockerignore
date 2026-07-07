@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.pytest_cache
+.mypy_cache
+
+# Dev files
+demo.py
+seed_data.py
+start_server.bat
+test_*.py
+*.tmp
+
+# DB files (use volume instead)
+*.db
+*.db-wal
+*.db-shm
+
+# Workspace clutter
+.openclaw
+.openclaw-attachments
+
+# Documentation
+*.md
+!README.md
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

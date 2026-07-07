@@ -1,0 +1,19 @@
+# Production override — Traefik/Caddy reverse proxy + HTTPS
+services:
+  comptapro:
+    restart: always
+    environment:
+      - COMPTAPRO_DB_PATH=/data/comptabilite.db
+      - COMPTAPRO_PORT=8080
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # Expose seulement en interne si proxy inverse
+    # ports: []  # decommence si tu utilises Traefik/Caddy
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
