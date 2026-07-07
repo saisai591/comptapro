@@ -163,6 +163,43 @@ tr:hover td{background:#f9fafb}
 .dash-card:hover .grip{opacity:1}
 .dash-card{position:relative}
 
+/* ── DARK MODE ── */
+[data-theme="dark"] body{--bg:#0f1117;--card:#1a1d27;--dark:#e5e7eb;--text:#e5e7eb;--muted:#9ca3af;--border:#2d3143;--shadow:0 1px 3px rgba(0,0,0,.3);background:var(--bg)}
+[data-theme="dark"] #sidebar{background:#0c0e14}
+[data-theme="dark"] #sidebar nav a{color:rgba(255,255,255,.5)}
+[data-theme="dark"] #sidebar nav a:hover,[data-theme="dark"] #sidebar nav a.active{color:#fff;background:rgba(255,255,255,.08)}
+[data-theme="dark"] #topbar{background:var(--card);border-color:var(--border)}
+[data-theme="dark"] table tr:hover td{background:rgba(255,255,255,.03)}
+[data-theme="dark"] .total-row td{background:rgba(255,255,255,.05)}
+[data-theme="dark"] input,[data-theme="dark"] select,[data-theme="dark"] textarea{background:#1a1d27;color:#e5e7eb;border-color:#2d3143}
+[data-theme="dark"] input:focus,[data-theme="dark"] select:focus,[data-theme="dark"] textarea:focus{border-color:var(--accent)}
+[data-theme="dark"] .modal{background:var(--card)}
+[data-theme="dark"] .search-dropdown{background:#1a1d27;border-color:var(--border)}
+[data-theme="dark"] .search-dropdown .item:hover{background:rgba(255,255,255,.05)}
+[data-theme="dark"] .notif-panel{background:#1a1d27}
+[data-theme="dark"] .notif-panel .item:hover{background:rgba(255,255,255,.05)}
+[data-theme="dark"] .btn-outline{background:transparent}
+[data-theme="dark"] .dash-card{background:var(--card)}
+[data-theme="dark"] .badge-neutral{background:#2d3143;color:#9ca3af}
+[data-theme="dark"] .badge-info{background:rgba(59,130,246,.2);color:#93c5fd}
+[data-theme="dark"] .badge-warning{background:rgba(245,158,11,.2);color:#fbbf24}
+[data-theme="dark"] .badge-success{background:rgba(16,185,129,.2);color:#6ee7b7}
+[data-theme="dark"] .pagination button{background:var(--card);border-color:var(--border);color:var(--text)}
+[data-theme="dark"] .pagination button.active{background:var(--accent);color:#fff}
+[data-theme="dark"] .progress-bar{background:#2d3143}
+/* ── KBD SHORTCUTS ── */
+.kbd{display:inline-block;padding:2px 8px;border-radius:4px;background:#e5e7eb;font-family:monospace;font-size:11px;font-weight:600;color:#1a1a2e;border:1px solid #d1d5db;box-shadow:0 1px 0 rgba(0,0,0,.15)}
+[data-theme="dark"] .kbd{background:#2d3143;border-color:#4b5563;color:#e5e7eb}
+.shortcut-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+.shortcut-row:last-child{border-bottom:none}
+.shortcut-row .sc-desc{font-size:13px}
+.shortcut-row .sc-keys{display:flex;gap:4px}
+/* ── WIDGET DRAG ── */
+.dash-card.dragging{opacity:.3;transform:scale(.98)}
+.dash-card.drag-over{border:2px dashed var(--accent)}
+.dash-card .grip{cursor:grab;position:absolute;top:8px;right:8px;color:var(--muted);font-size:12px;opacity:0;transition:opacity .15s}
+.dash-card:hover .grip{opacity:1}
+.dash-card{position:relative}
 /* ── UTILS ── */
 .panel{display:none}
 .panel.active{display:block}
@@ -299,6 +336,9 @@ tr:hover td{background:#f9fafb}
   </div>
     <div class="spacer"></div>
     <button class="btn btn-ghost btn-sm" onclick="toggleDarkMode()" title="ThÃƒÂ¨me sombre (Ctrl+D)" style="font-size:16px">Ã°Å¸Å’â„¢</button>
+    <div id="user-info" style="font-size:13px;color:var(--muted)"></div>
+    <button class="btn btn-ghost btn-sm" onclick="toggleDarkMode()" title="Theme sombre (Ctrl+D)" style="font-size:16px">🌙</button>
+    <button class="btn btn-outline btn-sm" onclick="doLogout()" title="Deconnexion">🚪</button>
     <button class="btn btn-outline btn-sm" onclick="printPage()" title="Imprimer">Ã°Å¸â€“Â¨Ã¯Â¸Â</button>
     <button class="btn btn-outline btn-sm" onclick="exportCSV()" title="Export CSV">Ã°Å¸â€œÂ¥</button>
     <button class="btn btn-outline btn-sm" onclick="showShortcuts()" title="Raccourcis (?)">âÅ’Â¨Ã¯Â¸Â</button>
@@ -451,6 +491,16 @@ tr:hover td{background:#f9fafb}
 
 <!-- MULTI-SOCIETE SWITCHER (sidebar footer) -->
 
+<!-- SHORTCUTS MODAL -->
+<div class="modal-overlay" id="shortcuts-modal"><div class="modal" style="max-width:500px">
+<div class="modal-header"><h3>⌨️ Raccourcis clavier</h3><button class="btn-ghost" onclick="closeModal('shortcuts-modal')" style="font-size:18px">&times;</button></div>
+<div class="modal-body" id="shortcuts-body"></div>
+</div></div>
+<!-- MULTI-SOCIETE MODAL -->
+<div class="modal-overlay" id="societes-modal"><div class="modal" style="max-width:500px">
+<div class="modal-header"><h3>🏢 Sociétés</h3><button class="btn-ghost" onclick="closeModal('societes-modal')" style="font-size:18px">&times;</button></div>
+<div class="modal-body"><div id="societes-list"></div><button class="btn btn-sm mt-sm" onclick="newSociete()">+ Nouvelle société</button></div>
+</div></div>
 <!-- ── MODAL FACTURE ── -->
 <div class="modal-overlay" id="modal-facture">
   <div class="modal">
@@ -754,7 +804,11 @@ function expandParent(page){
 }
 
 async function api(url,opts={}){
+  const token=localStorage.getItem('comptapro_token');
+  opts.headers=opts.headers||{};
+  if(token)opts.headers['Authorization']='Bearer '+token;
   const r=await fetch(API+url,opts);
+  if(r.status===401){localStorage.removeItem('comptapro_token');window.location.href='/login';throw new Error('Session expiree');}
   const data=await r.json();
   if(!r.ok)throw new Error(data.error||r.statusText);
   return data;
@@ -2148,7 +2202,7 @@ async function loadPaie(){
     ht+=`</tbody></table></div>
     <div class="card mt-sm">
       <div class="card-header"><h3>Importer une OD de paie</h3></div>
-      <div class="form-group"><label>Coller le CSV de paie</label><textarea id="paie-csv-text" rows="6" placeholder="compte,libelle,debit,credit\n421,Salaires nets,0,50000.00\n641,Salaires bruts,65000.00,0\n..."></textarea></div>
+      <div class="form-group"><label>Coller le CSV de paie</label><textarea id="paie-csv-text" rows="6" placeholder="compte,libelle,debit,creditn421,Salaires nets,0,50000.00n641,Salaires bruts,65000.00,0n..."></textarea></div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <button class="btn btn-sm" onclick="importerPaieTexte()">Ã°Å¸â€œâ€¹ Importer le texte</button>
         <span class="text-muted">ou</span>
@@ -2361,7 +2415,7 @@ async function simulerCloture(){
 
 async function executerCloture(){
   const ex=exercices.find(e=>e.id===exerciceId);
-  if(!confirm(`Confirmer la clÃƒÂ´ture dÃƒÂ©finitive de l'exercice Ã‚Â« ${ex?.libelle||''} Ã‚Â» ?\n\nCette action est irrÃƒÂ©versible. Assurez-vous d'avoir fait une sauvegarde.`))return;
+  if(!confirm(`Confirmer la clÃƒÂ´ture dÃƒÂ©finitive de l'exercice Ã‚Â« ${ex?.libelle||''} Ã‚Â» ?nnCette action est irrÃƒÂ©versible. Assurez-vous d'avoir fait une sauvegarde.`))return;
   const el=document.getElementById('cloture-resultat');
   el.innerHTML='<div class="text-muted"><div class="spinner"></div> ClÃƒÂ´ture en cours...</div>';
   try{
@@ -2441,8 +2495,8 @@ async function saveTemplate(){
 async function loadTemplate(){
   const templates=await api('/api/factures/templates');
   if(!templates.length){toast('Aucun modÃƒÂ¨le','error');return;}
-  const names=templates.map(t=>t.name).join('\n');
-  const name=prompt('ModÃƒÂ¨les disponibles :\n'+names+'\n\nNom du modÃƒÂ¨le ÃƒÂ  charger :');
+  const names=templates.map(t=>t.name).join('n');
+  const name=prompt('ModÃƒÂ¨les disponibles :n'+names+'nnNom du modÃƒÂ¨le ÃƒÂ  charger :');
   if(!name)return;
   const t=templates.find(t=>t.name===name);
   if(!t){toast('ModÃƒÂ¨le introuvable','error');return;}
@@ -2562,7 +2616,7 @@ async function saveImmo(){
 async function showPlanAmort(id){
   try{
     const r=await api(`/api/immobilisations/plan?id=${id}`);
-    let h='<div class="card" style="margin-top:16px"><div class="card-header"><h3>Plan d\'amortissement</h3><button class="btn-ghost" onclick="this.closest(\'.card\').remove()">&times;</button></div>';
+    let h='<div class="card" style="margin-top:16px"><div class="card-header"><h3>Plan d'amortissement</h3><button class="btn-ghost" onclick="this.closest('.card').remove()">&times;</button></div>';
     h+='<table><thead><tr><th>AnnÃƒÂ©e</th><th>Dotation</th><th>Cumul</th><th>VNC</th></tr></thead><tbody>';
     if(Array.isArray(r.lignes)&&r.lignes.length>0){
       r.lignes.forEach(l=>{h+=`<tr><td>${l.annee||''}</td><td class="num">${(l.dotation||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.cumul||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.vnc||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td></tr>`;});
@@ -2699,7 +2753,7 @@ async function saveEmprunt(){
 async function showTableauEmprunt(id){
   try{
     const r=await api(`/api/emprunts/tableau?id=${id}`);
-    let h='<div class="card" style="margin-top:16px"><div class="card-header"><h3>Tableau d\'amortissement</h3><button class="btn-ghost" onclick="this.closest(\'.card\').remove()">&times;</button></div>';
+    let h='<div class="card" style="margin-top:16px"><div class="card-header"><h3>Tableau d'amortissement</h3><button class="btn-ghost" onclick="this.closest('.card').remove()">&times;</button></div>';
     h+='<table style="font-size:12px"><thead><tr><th>NÃ‚Â°</th><th>Date</th><th>Capital avant</th><th>MensualitÃƒÂ©</th><th>IntÃƒÂ©rÃƒÂªts</th><th>Capital remb.</th><th>Capital aprÃƒÂ¨s</th></tr></thead><tbody>';
     if(Array.isArray(r.lignes)&&r.lignes.length>0){
       r.lignes.forEach(l=>{h+=`<tr><td>${l.num||''}</td><td>${l.date||''}</td><td class="num">${(l.capital_avant||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.mensualite||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.interets||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.capital_rembourse||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td><td class="num">${(l.capital_apres||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</td></tr>`;});
@@ -2921,10 +2975,133 @@ function switchSociete(db){
   }).catch(e=>toast(e.message,'error'));
 }
 
-//\ â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\ AUTH\ â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\nasync\ function\ doLogout\(\)\{\n\ \ await\ fetch\('/api/auth/logout',\{headers:\{'Authorization':'Bearer\ '\+localStorage\.getItem\('comptapro_token'\)}}\);\n\ \ localStorage\.removeItem\('comptapro_token'\);\n\ \ localStorage\.removeItem\('comptapro_user'\);\n\ \ window\.location\.href='/login';\n}\nasync\ function\ checkAuth\(\)\{\n\ \ const\ token=localStorage\.getItem\('comptapro_token'\);\n\ \ if\(!token\)\{window\.location\.href='/login';return;}\n\ \ try\{\n\ \ \ \ const\ r=await\ fetch\('/api/auth/me',\{headers:\{'Authorization':'Bearer\ '\+token}}\);\n\ \ \ \ if\(!r\.ok\)\{localStorage\.removeItem\('comptapro_token'\);window\.location\.href='/login';return;}\n\ \ \ \ const\ d=await\ r\.json\(\);\n\ \ \ \ document\.getElementById\('user-info'\)\.textContent=d\.username\|\|'';\n\ \ }catch\(e\)\{/\*\ offline\ \*/}\n}\n\ndocument\.getElementById\('ecr-date-saisie'\)\.value\ =\ new\ Date\(\)\.toISOString\(\)\.split\('T'\)\[0];
+//\ â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\ AUTH\ â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•nasync function doLogout(){n\ \ await\ fetch('/api/auth/logout',{headers:{'Authorization':'Bearer\ '\+localStorage.getItem('comptapro_token')}});n\ \ localStorage.removeItem('comptapro_token');n\ \ localStorage.removeItem('comptapro_user');n\ \ window.location.href='/login';n}nasync function checkAuth(){n\ \ const\ token=localStorage.getItem('comptapro_token');n\ \ if(!token){window.location.href='/login';return;}n\ \ try{n\ \ \ \ const\ r=await\ fetch('/api/auth/me',{headers:{'Authorization':'Bearer\ '\+token}});n\ \ \ \ if(!r.ok){localStorage.removeItem('comptapro_token');window.location.href='/login';return;}n\ \ \ \ const\ d=await\ r.json();n\ \ \ \ document.getElementById('user-info').textContent=d.username\|\|'';n\ \ }catch(e){/\*\ offline\ \*/}n}nndocument.getElementById('ecr-date-saisie').value\ =\ new\ Date().toISOString().split('T')[0];
 addEcrLigne(); addEcrLigne();
-loadExercices().then(() => { loadJournaux(); if(currentPage==='dashboard')navigate('dashboard'); });
+checkAuth().then(()=>{loadExercices().then(() => { loadJournaux(); if(currentPage==='dashboard')navigate('dashboard'); });});
 
+
+// ═══════════════ DARK MODE ═══════════════
+function toggleDarkMode(){
+  const t=document.documentElement.getAttribute('data-theme')==='dark'?'':'dark';
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('comptapro-theme',t);
+  updateThemeIcon(t);
+}
+function updateThemeIcon(t){
+  const buttons=document.querySelectorAll('#topbar .btn-ghost');
+  for(const b of buttons){if(b.onclick&&b.onclick.toString().includes('toggleDarkMode')){b.textContent=t==='dark'?'☀️':'🌙';break;}}
+}
+(function(){
+  const saved=localStorage.getItem('comptapro-theme');
+  if(saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme:dark)').matches)){
+    document.documentElement.setAttribute('data-theme','dark');
+    updateThemeIcon('dark');
+  }
+})();
+
+// ═══════════════ SHORTCUTS ═══════════════
+const SHORTCUTS=[
+  {keys:['Ctrl','D'],desc:'Theme sombre/clair'},
+  {keys:['Ctrl','K'],desc:'Recherche globale'},
+  {keys:['Ctrl','N'],desc:'Nouvelle ecriture'},
+  {keys:['Ctrl','Enter'],desc:'Sauvegarder (formulaire ouvert)'},
+  {keys:['Ctrl','F'],desc:'Nouvelle facture'},
+  {keys:['Esc'],desc:'Fermer modale / annuler'},
+  {keys:['?'],desc:'Afficher cette liste'},
+  {keys:['1'],desc:'Dashboard'},{keys:['2'],desc:'Factures'},{keys:['3'],desc:'Banque'},
+  {keys:['4'],desc:'Ecritures'},{keys:['5'],desc:'Balance'},{keys:['6'],desc:'Resultat'},
+  {keys:['7'],desc:'Bilan'},{keys:['8'],desc:'Export'}
+];
+function showShortcuts(){
+  const el=document.getElementById('shortcuts-body');
+  el.innerHTML=SHORTCUTS.map(s=>'<div class="shortcut-row"><span class="sc-desc">'+s.desc+'</span><span class="sc-keys">'+s.keys.map(k=>'<span class="kbd">'+k+'</span>').join('')+'</span></div>').join('');
+  document.getElementById('shortcuts-modal').classList.add('show');
+}
+document.addEventListener('keydown',function(e){
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT'){
+    if(e.key==='Escape')e.target.blur();
+    if(e.key==='Enter'&&e.ctrlKey){const s=document.querySelector('.modal-overlay.show button.btn:not(.btn-ghost)');if(s)s.click();}
+    return;
+  }
+  if(e.key==='?'||(e.key==='/'&&!e.ctrlKey)){e.preventDefault();showShortcuts();return;}
+  if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleDarkMode();return;}
+  if(e.ctrlKey&&e.key==='k'){e.preventDefault();document.getElementById('search-input').focus();return;}
+  if(e.ctrlKey&&e.key==='n'){e.preventDefault();navigate('ecritures');return;}
+  if(e.ctrlKey&&e.key==='f'){e.preventDefault();navigate('factures');return;}
+  if(!isNaN(e.key)&&e.key!=='0'){e.preventDefault();const pages=['dashboard','factures','banque','ecritures','balance','resultat','bilan','export','parametres'];const i=parseInt(e.key)-1;if(pages[i])navigate(pages[i]);return;}
+  if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.show').forEach(m=>m.classList.remove('show'));return;}
+});
+
+// ═══════════════ WIDGET DRAG ═══════════════
+let dragFrom=null;
+function initWidgetDrag(){
+  const g=document.querySelector('.dash-grid');
+  if(!g)return setTimeout(initWidgetDrag,500);
+  g.addEventListener('dragstart',e=>{
+    if(!e.target.closest('.dash-card'))return;
+    e.target.closest('.dash-card').classList.add('dragging');
+    dragFrom=e.target.closest('.dash-card');
+  });
+  g.addEventListener('dragend',e=>{
+    if(dragFrom)dragFrom.classList.remove('dragging');
+    document.querySelectorAll('.dash-card.drag-over').forEach(c=>c.classList.remove('drag-over'));
+    dragFrom=null;
+    saveDashboardOrder();
+  });
+  g.addEventListener('dragover',e=>{e.preventDefault();const c=e.target.closest('.dash-card');if(c&&c!==dragFrom){document.querySelectorAll('.dash-card.drag-over').forEach(x=>x.classList.remove('drag-over'));c.classList.add('drag-over');}});
+  g.addEventListener('drop',e=>{e.preventDefault();const t=e.target.closest('.dash-card');if(t&&t!==dragFrom){const after=t.getBoundingClientRect().top+t.offsetHeight/2<e.clientY;if(after){t.after(dragFrom)}else{t.before(dragFrom)}document.querySelectorAll('.dash-card.drag-over').forEach(c=>c.classList.remove('drag-over'));}});
+  document.querySelectorAll('.dash-card').forEach(c=>{c.setAttribute('draggable','true');if(!c.querySelector('.grip'))c.insertAdjacentHTML('afterbegin','<span class="grip" title="Deplacer">⋮⋮</span>');});
+}
+function saveDashboardOrder(){
+  const ids=[...document.querySelectorAll('.dash-grid .dash-card')].map((c,i)=>c.dataset.widget||'widget-'+i);
+  localStorage.setItem('comptapro-dash-order',JSON.stringify(ids));
+}
+setTimeout(initWidgetDrag,2000);
+
+// ═══════════════ MULTI-SOCIETE ═══════════════
+function showSocietes(){
+  const el=document.getElementById('societes-list');
+  api('/api/societes').then(r=>{
+    const dbs=r.available||[];
+    if(dbs.length<=1){el.innerHTML='<div class="empty">Une seule base de donnees. Creez un nouvel exercice ou un nouveau fichier DB pour gerer plusieurs societes.</div><button class="btn btn-sm mt-sm" onclick="newSociete()">+ Nouvelle societe</button>';}
+    else{el.innerHTML=dbs.map(db=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span>'+esc(db)+(db===r.current?' <span class="badge badge-success">active</span>':'')+'</span><div><button class="btn btn-sm btn-outline" onclick="switchSociete(''+esc(db)+'')">Basculer</button></div></div>').join('')+'<button class="btn btn-sm mt-sm" onclick="newSociete()">+ Nouvelle base</button>';}
+    document.getElementById('societes-modal').classList.add('show');
+  }).catch(e=>{el.innerHTML='<div class="empty">Erreur: '+e.message+'</div>';document.getElementById('societes-modal').classList.add('show');});
+}
+function newSociete(){
+  const nom=prompt('Nom du fichier de base :', 'ma_societe.db');
+  if(!nom)return;
+  api('/api/societes/switch?db='+encodeURIComponent(nom)).then(r=>{
+    toast('Base creee : '+nom);
+    closeModal('societes-modal');
+    setTimeout(()=>location.reload(),500);
+  }).catch(e=>toast(e.message,'error'));
+}
+function switchSociete(db){
+  api('/api/societes/switch?db='+encodeURIComponent(db)).then(r=>{
+    toast('Basculement vers : '+db);
+    closeModal('societes-modal');
+    setTimeout(()=>location.reload(),500);
+  }).catch(e=>toast(e.message,'error'));
+}
+
+// ═══════════════ AUTH ═══════════════
+async function doLogout(){
+  await fetch('/api/auth/logout',{headers:{'Authorization':'Bearer '+localStorage.getItem('comptapro_token')}});
+  localStorage.removeItem('comptapro_token');
+  localStorage.removeItem('comptapro_user');
+  window.location.href='/login';
+}
+async function checkAuth(){
+  const token=localStorage.getItem('comptapro_token');
+  if(!token){window.location.href='/login';return;}
+  try{
+    const r=await fetch('/api/auth/me',{headers:{'Authorization':'Bearer '+token}});
+    if(!r.ok){localStorage.removeItem('comptapro_token');window.location.href='/login';return;}
+    const d=await r.json();
+    document.getElementById('user-info').textContent=d.username||'';
+  }catch(e){/* offline - api will handle auth errors */}
+}
 </script>
 </body>
 </html>
