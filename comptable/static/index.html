@@ -2837,21 +2837,30 @@ function toggleDarkMode(){
 
 // ═══ SHORTCUTS ═══
 function showShortcuts(){
-  const sc=[['Ctrl+D','Theme sombre/clair'],['Ctrl+K','Recherche globale'],['Ctrl+N','Nouvelle ecriture'],['Ctrl+F','Nouvelle facture'],['Esc','Fermer modale'],['?','Cette liste'],['1','Dashboard'],['2','Factures'],['3','Banque'],['4','Ecritures'],['5','Balance'],['6','Resultat'],['7','Bilan'],['8','Export']];
+  const sc=[['Alt+D','Theme sombre/clair'],['Alt+K','Recherche globale'],['Alt+N','Nouvelle ecriture'],['Alt+F','Nouvelle facture'],['Alt+S','Balance'],['Alt+B','Banque'],['Alt+E','Export'],['? ou H','Cette liste'],['Alt+1','Dashboard'],['Alt+2','Factures'],['Alt+3','Banque'],['Alt+4','Ecritures'],['Alt+5','Balance'],['Alt+6','Resultat'],['Alt+7','Bilan'],['Alt+8','Export'],['Esc','Fermer modale']];
   const el=document.getElementById('shortcuts-body');
   el.innerHTML=sc.map(s=>'<div class="shortcut-row"><span class="sc-desc">'+s[1]+'</span><span class="sc-keys">'+s[0].split('+').map(k=>'<span class="kbd">'+k+'</span>').join('')+'</span></div>').join('');
   openModal('shortcuts-modal');
 }
 document.addEventListener('keydown',function(e){
-  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT'){if(e.key==='Escape')e.target.blur();return;}
-  if(e.key==='?'){e.preventDefault();showShortcuts();return;}
-  if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleDarkMode();return;}
-  if(e.ctrlKey&&e.key==='k'){e.preventDefault();document.getElementById('search-input').focus();return;}
-  if(e.ctrlKey&&e.key==='n'){e.preventDefault();navigate('ecritures');return;}
-  if(e.ctrlKey&&e.key==='f'){e.preventDefault();navigate('factures');return;}
-  if(!isNaN(e.key)&&e.key!=='0'){e.preventDefault();var p=['dashboard','factures','banque','ecritures','balance','resultat','bilan','export','parametres'];var i=parseInt(e.key)-1;if(p[i])navigate(p[i]);return;}
-  if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.show').forEach(function(m){m.classList.remove('show')});}
-});
+  var tg=e.target.tagName;
+  if(tg==='INPUT'||tg==='TEXTAREA'||tg==='SELECT'){
+    if(e.key==='Escape')e.target.blur();
+    if(e.altKey)return;
+    return;
+  }
+  var k=e.key.toLowerCase();
+  if(k==='?'||k==='h'){e.preventDefault();showShortcuts();return;}
+  if(k==='d'&&e.altKey){e.preventDefault();e.stopPropagation();toggleDarkMode();return;}
+  if(k==='k'&&e.altKey){e.preventDefault();e.stopPropagation();var si=document.getElementById('search-input');if(si)si.focus();return;}
+  if(k==='n'&&e.altKey){e.preventDefault();navigate('ecritures');return;}
+  if(k==='f'&&e.altKey){e.preventDefault();navigate('factures');return;}
+  if(k==='s'&&e.altKey){e.preventDefault();navigate('balance');return;}
+  if(k==='b'&&e.altKey){e.preventDefault();navigate('banque');return;}
+  if(k==='e'&&e.altKey){e.preventDefault();navigate('export');return;}
+  if(e.altKey&&!isNaN(k)&&k!=='0'){e.preventDefault();var ps=['dashboard','factures','banque','ecritures','balance','resultat','bilan','export'];var i=parseInt(k)-1;if(ps[i])navigate(ps[i]);return;}
+  if(k==='escape'){e.preventDefault();var mods=document.querySelectorAll('.modal-overlay.show');if(mods.length)mods.forEach(function(m){m.classList.remove('show')});return;}
+});document.
 
 // ═══ WIDGET DRAG ═══
 var dragFrom=null;
