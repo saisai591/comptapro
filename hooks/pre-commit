@@ -1,0 +1,29 @@
+#!/bin/bash
+# ComptaPro — Pre-commit hook: run regression tests before every commit.
+# Installed by `./install-hooks.sh` or manually: cp hooks/pre-commit .git/hooks/
+set -e
+
+echo "=== ComptaPro Pre-commit: Regression Tests ==="
+
+cd "$(dirname "$0")/../.."
+
+# Only run quick tests (static analysis + syntax + DB structure)
+python3 regression_tests.py --quick 2>&1
+EXIT=$?
+
+if [ $EXIT -ne 0 ]; then
+    echo ""
+    echo "========================================="
+    echo "  REGRESSION DETECTED — commit blocked"
+    echo "========================================="
+    echo ""
+    echo "Run 'python regression_tests.py --quick' for details."
+    echo "Run 'python regression_tests.py --full' (with server) for full API tests."
+    echo ""
+    echo "To skip (emergency only): git commit --no-verify"
+    exit 1
+fi
+
+echo ""
+echo "OK Regression tests passed"
+exit 0
