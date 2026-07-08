@@ -2929,10 +2929,12 @@ function switchSociete(db){
 //  QR CODE MOBILE BRIDGE
 // ═══════════════════════════════════════════════════
 function showQRCode(){
-  api('/api/qrcode',{responseType:'text'}).then(function(svg){
-    document.getElementById('qr-code').innerHTML=svg;
-    openModal('modal-qr');
-  }).catch(function(e){toast('Erreur QR: '+e.message,'error');});
+  api('/api/qrcode/token').then(function(r){
+    api('/api/qrcode?data='+encodeURIComponent(r.url),{responseType:'text'}).then(function(svg){
+      document.getElementById('qr-code').innerHTML=svg;
+      openModal('modal-qr');
+    }).catch(function(e){toast('Erreur QR: '+e.message,'error');});
+  }).catch(function(e){toast('Erreur token: '+e.message,'error');});
 }
 
 // ═══════════════════════════════════════════════════

@@ -115,7 +115,7 @@ from comptable.export_excel import (
 from comptable.pieces_jointes import (
     lister_pj, get_pj, get_pj_fichier, ajouter_pj,
     lier_pj, supprimer_pj, stats_pj,
-    handle_upload, get_mobile_url, validate_mobile_token,
+    handle_upload, get_mobile_url, validate_mobile_token, generate_mobile_token,
 )
 from comptable.qrcode import generate_qr_svg
 
@@ -146,11 +146,33 @@ class ComptaHandler(SimpleHTTPRequestHandler):
             self.path = "/mobile-upload.html"
             return super().do_GET()
 
-        # ── QR Code SVG (for mobile bridge) ──
+        # ── QR Code token (returns token + URL for mobile bridge) ──
+        if path == "/api/qrcode/token":
+            # Detect best public URL
+            public_url = os.environ.get("COMPTAPRO_PUBLIC_URL")
+            if not public_url:
+                host = self.headers.get("Host", "localhost:8080")
+                # If localhost, try to detect LAN IP
+                if host.startswith("localhost") or host.startswith("127."):
+                    lan = self._detect_lan_ip()
+                    public_url = f"http://{lan}:8080" if lan else f"http://{host}"
+                else:
+                    public_url = f"http://{host}"
+            token = generate_mobile_token(public_url)
+            full_url = f"{public_url}/mobile/upload?token={token}"
+            return self._json({"token": token, "url": full_url})
+
+        # ── QR Code SVG (takes ?url= as data to encode) ──
         if path == "/api/qrcode":
-            host = self.headers.get("Host", "localhost:8080")
-            url = get_mobile_url(host)
-            svg = generate_qr_svg(url)
+            data = qs.get("data", qs.get("url", [None]))[0]
+            if not data:
+                # Fallback: auto-generate with token
+                public_url = os.environ.get(
+                    "COMPTAPRO_PUBLIC_URL",
+                    f"http://{self.headers.get('Host', 'localhost:8080')}"
+                )
+                data = get_mobile_url(public_url)
+            svg = generate_qr_svg(data)
             self.send_response(200)
             self.send_header("Content-Type", "image/svg+xml")
             self.end_headers()
@@ -822,6 +844,20 @@ class ComptaHandler(SimpleHTTPRequestHandler):
         if path == "/" or path == "":
             self.path = "/index.html"
         self._serve_static()
+
+    @staticmethod
+    def _detect_lan_ip():
+        """Detect the machine's LAN IP (192.168.x.x / 10.x.x.x / 172.16-31.x.x)."""
+        try:
+            import socket
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.settimeout(0.1)
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+            s.close()
+            return ip
+        except Exception:
+            return None
 
     def _serve_static(self):
         """Serve static files with proper Content-Type charset."""
