@@ -772,7 +772,7 @@ function expandParent(page){
   if(body&&head){body.classList.remove('collapsed');head.classList.add('open')}
 }
 
-async async function api(url,methodOrOpts,body,opts){ var reqOpts={},textMode=false; if(typeof methodOrOpts==='object'){ reqOpts=methodOrOpts; if(reqOpts.responseType==='text'){textMode=true;delete reqOpts.responseType;} if(reqOpts.body&&typeof reqOpts.body!=='string'){reqOpts.body=JSON.stringify(reqOpts.body);reqOpts.headers=reqOpts.headers||{};reqOpts.headers['Content-Type']='application/json';} } else if(typeof methodOrOpts==='string'){ reqOpts.method=methodOrOpts; if(body){reqOpts.body=JSON.stringify(body);reqOpts.headers={'Content-Type':'application/json'};} } if(opts&&opts.responseType==='text')textMode=true; var r=await fetch(API+url,reqOpts); if(textMode){ if(!r.ok)throw new Error(r.statusText); return r.text(); } var data=await r.json(); if(!r.ok)throw new Error(data.error||r.statusText); return data;
+async function api(url,methodOrOpts,body,opts){ var reqOpts={},textMode=false; if(typeof methodOrOpts==='object'){ reqOpts=methodOrOpts; if(reqOpts.responseType==='text'){textMode=true;delete reqOpts.responseType;} if(reqOpts.body&&typeof reqOpts.body!=='string'){reqOpts.body=JSON.stringify(reqOpts.body);reqOpts.headers=reqOpts.headers||{};reqOpts.headers['Content-Type']='application/json';} } else if(typeof methodOrOpts==='string'){ reqOpts.method=methodOrOpts; if(body){reqOpts.body=JSON.stringify(body);reqOpts.headers={'Content-Type':'application/json'};} } if(opts&&opts.responseType==='text')textMode=true; var r=await fetch(API+url,reqOpts); if(textMode){ if(!r.ok)throw new Error(r.statusText); return r.text(); } var data=await r.json(); if(!r.ok)throw new Error(data.error||r.statusText); return data;
 }
 
 function toast(msg,type='success'){
@@ -2132,7 +2132,12 @@ function exportCSV(){window.open('/api/export/csv?exercice_id='+exerciceId+'&typ
 const origNavigate=navigate;
 navigate=function(page){
   origNavigate(page);
-  setTimeout(()=>{if(page==='dashboard')loadDashboard();if(page==='ecritures')loadEcritures();loadNotifs();},50);
+  setTimeout(function(){
+    if(page==='dashboard')loadDashboard();
+    if(page==='ecritures')loadEcritures();
+    if(page==='pj'&&typeof loadPJ==='function')loadPJ();
+    loadNotifs();
+  },50);
 };
 
 // ═══ INIT ═══
@@ -3010,14 +3015,25 @@ function pjDelete(id){
   }).catch(function(e){toast(e.message,'error')});
 }
 
-document.addEventListener('DOMContentLoaded',function(){
-  var origNavigate=navigate;
-  navigate=function(page){
-    origNavigate(page);
-    if(page==='pj'){setTimeout(loadPJ,50);}
-  };
-});
-</script>
+
+
+/* ── ERROR LOGGER ── */
+window._comptaErrors=[];
+window.onerror=function(msg,src,line,col,err){
+  var e={time:new Date().toISOString(),msg:String(msg),src:String(src),line:line,col:col,stack:err?err.stack:''};
+  window._comptaErrors.push(e);
+  if(window._comptaErrors.length>50)window._comptaErrors.shift();
+  console.error('ComptaPro:',msg,src,line,col);
+};
+window._comptaLog=function(tag,data){
+  console.log('ComptaPro ['+tag+']:',data);
+  try{data=JSON.stringify(data);}catch(e){data=String(data);}
+  window._comptaErrors.push({time:new Date().toISOString(),msg:tag,src:'log',line:0,col:0,stack:data});
+  if(window._comptaErrors.length>50)window._comptaErrors.shift();
+};
+/* Safety wrapper: catch errors in all async operations */
+window._comptaSafe=function(fn,name){try{return fn();}catch(e){console.error('ComptaPro SAFE ['+(name||'?')+']:',e);}}
+</script></script>
 </body>
 </html>
 
