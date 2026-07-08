@@ -2930,9 +2930,9 @@ function switchSociete(db){
 // ═══════════════════════════════════════════════════
 function showQRCode(){
   api('/api/qrcode/token').then(function(r){
-    var qr=generateQR(r.url);
-    document.getElementById('qr-code').innerHTML=qr;
-    openModal('modal-qr');
+    var u='/api/qrcode?data='+encodeURIComponent(r.url);
+    document.getElementById('qr-code').innerHTML='<img src="'+u+'" style="max-width:280px;width:100%" alt="QR Code">';
+    document.getElementById('modal-qr').classList.add('show');
   }).catch(function(e){toast('Erreur: '+e.message,'error');});
 }
 
