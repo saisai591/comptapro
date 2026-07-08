@@ -285,8 +285,8 @@ def phase4():
             c.close()
 
             if r.status == 200:
-                if body.startswith(b"<svg"):
-                    s.ok(f"GET {label}", f"SVG {len(body)}B")
+                if body.startswith(b"<svg") or body.startswith(b"\x89PNG"):
+                    s.ok(f"GET {label}", f"Image {len(body)}B")
                 else:
                     try:
                         json.loads(body)

@@ -1,19 +1,20 @@
 """
 Serveur HTTP — API JSON + SPA. Style Pennylane.
-Stdlib uniquement. Routes : exercices, écritures, balance, factures,
+Routes : exercices, écritures, balance, factures,
 banque (import CSV, rapprochement), dashboard (KPIs, TVA), paramètres.
 """
 
-import json
-import logging
-import os
-import re
-import sys
-import tempfile
+import json, logging, os, re, sys, tempfile, io
 from datetime import datetime
-from http.server import HTTPServer, SimpleHTTPRequestHandler
-from http.server import ThreadingHTTPServer
+from http.server import HTTPServer, SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
+
+# QR code generation (optional dependency)
+try:
+    import qrcode as _qrlib
+    HAS_QR = True
+except ImportError:
+    HAS_QR = False
 
 # Logging
 logging.basicConfig(
@@ -117,7 +118,6 @@ from comptable.pieces_jointes import (
     lier_pj, supprimer_pj, stats_pj,
     handle_upload, get_mobile_url, validate_mobile_token, generate_mobile_token,
 )
-from comptable.qrcode import generate_qr_svg
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 
@@ -146,37 +146,43 @@ class ComptaHandler(SimpleHTTPRequestHandler):
             self.path = "/mobile-upload.html"
             return super().do_GET()
 
-        # ── QR Code token (returns token + URL for mobile bridge) ──
+                # ── QR Code token + QR Code PNG ──
         if path == "/api/qrcode/token":
-            # Detect best public URL
             public_url = os.environ.get("COMPTAPRO_PUBLIC_URL")
             if not public_url:
                 host = self.headers.get("Host", "localhost:8080")
-                # If localhost, try to detect LAN IP
                 if host.startswith("localhost") or host.startswith("127."):
                     lan = self._detect_lan_ip()
                     public_url = f"http://{lan}:8080" if lan else f"http://{host}"
                 else:
                     public_url = f"http://{host}"
             token = generate_mobile_token(public_url)
-            full_url = f"{public_url}/mobile/upload?token={token}"
+            full_url = public_url + "/mobile/upload?token=" + token
             return self._json({"token": token, "url": full_url})
 
-        # ── QR Code SVG (takes ?url= as data to encode) ──
         if path == "/api/qrcode":
             data = qs.get("data", qs.get("url", [None]))[0]
             if not data:
-                # Fallback: auto-generate with token
                 public_url = os.environ.get(
                     "COMPTAPRO_PUBLIC_URL",
                     f"http://{self.headers.get('Host', 'localhost:8080')}"
                 )
                 data = get_mobile_url(public_url)
-            svg = generate_qr_svg(data)
-            self.send_response(200)
-            self.send_header("Content-Type", "image/svg+xml")
-            self.end_headers()
-            self.wfile.write(svg.encode())
+            if HAS_QR:
+                img = _qrlib.make(data)
+                buf = io.BytesIO()
+                img.save(buf, format='PNG')
+                png = buf.getvalue()
+                self.send_response(200)
+                self.send_header("Content-Type", "image/png")
+                self.send_header("Content-Length", len(png))
+                self.end_headers()
+                self.wfile.write(png)
+            else:
+                self.send_response(200)
+                self.send_header("Content-Type", "text/plain; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(data.encode())
             return
 
         # ── Static / login page ──
