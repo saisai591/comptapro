@@ -384,6 +384,27 @@ def init_db(conn: Optional[sqlite3.Connection] = None):
         CREATE INDEX IF NOT EXISTS idx_emprunts_exercice ON emprunts(exercice_id);
     """)
 
+    # Pièces jointes (tickets de caisse, justificatifs…)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS pieces_jointes (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            nom         TEXT NOT NULL,
+            type_mime   TEXT NOT NULL DEFAULT 'image/jpeg',
+            taille      INTEGER NOT NULL DEFAULT 0,
+            date_prise  TEXT,
+            categorie   TEXT DEFAULT 'ticket',
+            ecriture_id INTEGER REFERENCES ecritures(id),
+            facture_id  INTEGER REFERENCES factures(id),
+            note_id     INTEGER REFERENCES notes_frais(id),
+            tags        TEXT DEFAULT '',
+            fichier     BLOB,
+            created_at  TEXT NOT NULL DEFAULT (datetime('now','localtime'))
+        )
+    """)
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_pj_ecriture ON pieces_jointes(ecriture_id)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_pj_facture ON pieces_jointes(facture_id)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_pj_categorie ON pieces_jointes(categorie)")
+
     # Extension : sous_type pour bons de commande/livraison/pro-forma
     try:
         conn.execute("ALTER TABLE factures ADD COLUMN sous_type TEXT DEFAULT NULL")

@@ -112,6 +112,12 @@ from comptable.export_excel import (
     exporter_ecritures_csv, exporter_journaux_csv,
     exporter_factures_csv, exporter_bilan_csv,
 )
+from comptable.pieces_jointes import (
+    lister_pj, get_pj, get_pj_fichier, ajouter_pj,
+    lier_pj, supprimer_pj, stats_pj,
+    handle_upload, get_mobile_url, validate_mobile_token,
+)
+from comptable.qrcode import generate_qr_svg
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 
@@ -127,6 +133,29 @@ class ComptaHandler(SimpleHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path
         qs = parse_qs(parsed.query)
+
+        # ── Mobile Bridge upload page ──
+        if path == "/mobile/upload" or path.startswith("/mobile/upload?"):
+            token = qs.get("token", [""])[0]
+            if not validate_mobile_token(token):
+                self.send_response(403)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.end_headers()
+                self.wfile.write("<h2>Lien expire ou invalide. Regenez un QR code depuis ComptaPro.</h2>".encode())
+                return
+            self.path = "/mobile-upload.html"
+            return super().do_GET()
+
+        # ── QR Code SVG (for mobile bridge) ──
+        if path == "/api/qrcode":
+            host = self.headers.get("Host", "localhost:8080")
+            url = get_mobile_url(host)
+            svg = generate_qr_svg(url)
+            self.send_response(200)
+            self.send_header("Content-Type", "image/svg+xml")
+            self.end_headers()
+            self.wfile.write(svg.encode())
+            return
 
         # ── Static / login page ──
         if path == "/login":
@@ -322,6 +351,42 @@ class ComptaHandler(SimpleHTTPRequestHandler):
                 return
             typ = qs.get("type", ["ecritures"])[0]
             return self._export_csv(ex_id, typ)
+
+        # ── Pieces jointes ──
+        if path == "/api/pj":
+            return self._json(lister_pj(
+                categorie=qs.get("categorie", [None])[0],
+                ecriture_id=int(qs.get("ecriture_id", [0])[0]) or None,
+                facture_id=int(qs.get("facture_id", [0])[0]) or None,
+                date_debut=qs.get("date_debut", [None])[0],
+                date_fin=qs.get("date_fin", [None])[0],
+                offset=int(qs.get("offset", [0])[0]),
+                limit=int(qs.get("limit", [50])[0]),
+            ))
+        if path == "/api/pj/stats":
+            return self._json(stats_pj())
+        if path == "/api/pj/fichier":
+            pj_id = int(qs.get("id", [0])[0])
+            if not pj_id:
+                return self._json({"error": "Parametre id requis"}, 400)
+            f = get_pj_fichier(pj_id)
+            if not f:
+                return self._json({"error": "Piece introuvable"}, 404)
+            data, mime, nom = f
+            self.send_response(200)
+            self.send_header("Content-Type", mime)
+            self.send_header("Content-Length", len(data))
+            self.send_header("Content-Disposition", f"inline; filename={nom}")
+            self.send_header("Cache-Control", "max-age=86400")
+            self.end_headers()
+            self.wfile.write(data)
+            return
+        pi = re.match(r"^/api/pj/(\d+)$", path)
+        if pi:
+            pj = get_pj(int(pi.group(1)))
+            if not pj:
+                return self._json({"error": "Piece introuvable"}, 404)
+            return self._json(pj)
 
         # Templates de facture
         if path == "/api/factures/templates":
@@ -801,6 +866,10 @@ class ComptaHandler(SimpleHTTPRequestHandler):
         if "multipart/form-data" in content_type and path == "/api/banque/import":
             return self._handle_csv_import(content_type)
 
+        # ── Pieces jointes upload (multipart) ──
+        if "multipart/form-data" in content_type and path == "/api/pj/upload":
+            return self._handle_pj_upload(content_type)
+
         data = self._read_json()
 
         # Exercices
@@ -1250,6 +1319,27 @@ class ComptaHandler(SimpleHTTPRequestHandler):
             except Exception as e:
                 return self._json({"error": str(e)}, 400)
 
+        # ── Pieces jointes POST ──
+        if path == "/api/pj/lier":
+            try:
+                lier_pj(
+                    int(data["id"]),
+                    ecriture_id=data.get("ecriture_id"),
+                    facture_id=data.get("facture_id"),
+                    note_id=data.get("note_id"),
+                    categorie=data.get("categorie"),
+                    tags=data.get("tags"),
+                )
+                return self._json({"ok": True})
+            except Exception as e:
+                return self._json({"error": str(e)}, 400)
+        if path == "/api/pj/supprimer":
+            try:
+                supprimer_pj(int(data["id"]))
+                return self._json({"ok": True})
+            except Exception as e:
+                return self._json({"error": str(e)}, 400)
+
         return self._json({"error": "Route inconnue"}, 404)
 
     # ── PUT ─────────────────────────────────────────────────────────
@@ -1466,6 +1556,42 @@ class ComptaHandler(SimpleHTTPRequestHandler):
             nb = importer_csv(ex_id, "512", tmp.name)
             os.unlink(tmp.name)
             return self._json({"ok": True, "nb_lignes": nb})
+        except Exception as e:
+            return self._json({"error": str(e)}, 400)
+
+    def _handle_pj_upload(self, content_type):
+        """Handle multipart file upload for pieces jointes (email.parser)."""
+        try:
+            import email.parser
+            cl = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(cl)
+            raw = ("Content-Type: " + content_type + "\r\n\r\n").encode() + body
+            msg = email.parser.BytesParser().parsebytes(raw)
+            categorie = "ticket"
+            date_prise = None
+            tags = ""
+            files = []
+            for part in msg.walk():
+                cd = part.get("Content-Disposition", "")
+                pd = part.get_payload(decode=True)
+                if pd is None:
+                    continue
+                m = re.search(r'name="(?P<n>[^"]+)"', cd)
+                name = m.group("n") if m else ""
+                if name == "categorie":
+                    categorie = pd.decode()
+                elif name == "date_prise":
+                    date_prise = pd.decode()
+                elif name == "tags":
+                    tags = pd.decode()
+                elif "filename=" in cd:
+                    fn = re.search(r'filename="(?P<f>[^"]+)"', cd)
+                    filename = fn.group("f") if fn else "upload.jpg"
+                    mime_type = part.get_content_type() or "image/jpeg"
+                    pj = ajouter_pj(filename, pd, type_mime=mime_type,
+                                    categorie=categorie, date_prise=date_prise, tags=tags)
+                    files.append(pj)
+            return self._json({"success": True, "uploaded": len(files), "files": files})
         except Exception as e:
             return self._json({"error": str(e)}, 400)
 

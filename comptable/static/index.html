@@ -279,6 +279,7 @@ tr:hover td{background:#f9fafb}
       <a data-page="email" onclick="navigate('email')"><span>📧 Email SMTP</span></a>
       <a data-page="audit" onclick="navigate('audit')"><span>🔍 Audit</span></a>
       <a data-page="recherche" onclick="navigate('recherche')"><span>🔎 Recherche</span></a>
+      <a data-page="pj" onclick="navigate('pj')"><span>📱 Pieces jointes</span></a>
     </div></div>
   </nav>
   <div class="footer" onclick="showSocietes()" style="cursor:pointer" title="Gerer les societes">ComptaPro v1.0</div>
@@ -303,6 +304,7 @@ tr:hover td{background:#f9fafb}
     <button class="btn btn-outline btn-sm" onclick="showNewExercice()">+ Exercice</button>
     <button class="btn btn-ghost btn-sm" onclick="toggleDarkMode()" title="Theme sombre (Ctrl+D)" style="font-size:16px" id="theme-toggle">🌙</button>
     <button class="btn btn-outline btn-sm" onclick="showShortcuts()" title="Raccourcis (?)">⌨</button>
+    <button class="btn btn-outline btn-sm" onclick="showQRCode()" title="Connecter telephone">📱</button>
   </header>
 
   <div id="content">
@@ -411,6 +413,11 @@ tr:hover td{background:#f9fafb}
       <div id="export-content"><div class="empty">Chargement...</div></div>
     </div>
 
+    <!-- PIECES JOINTES -->
+    <div id="panel-pj" class="panel">
+      <div id="pj-content"><div class="empty">Chargement...</div></div>
+    </div>
+
     <!-- PAIE -->
     <div id="panel-paie" class="panel">
       <div id="paie-content"><div class="empty">Chargement...</div></div>
@@ -453,6 +460,15 @@ tr:hover td{background:#f9fafb}
 <div class="modal-header"><h3>Societes</h3><button class="btn-ghost" onclick="closeModal('societes-modal')" style="font-size:18px">&times;</button></div>
 <div class="modal-body"><div id="societes-list"></div><button class="btn btn-sm mt-sm" onclick="newSociete()">+ Nouvelle societe</button></div>
 </div></div>
+
+<!-- QR CODE MODAL -->
+<div class="modal-overlay" id="modal-qr"><div class="modal" style="max-width:360px;text-align:center">
+<div class="modal-header"><h3>📱 Connecter telephone</h3><button class="btn-ghost" onclick="closeModal('modal-qr')" style="font-size:18px">&times;</button></div>
+<div class="modal-body">
+<div id="qr-code" style="display:flex;justify-content:center;margin:16px 0"></div>
+<p style="font-size:13px;color:var(--muted)">1. Ouvrez l'appareil photo du telephone<br>2. Scannez le QR code<br>3. Prenez vos tickets en photo</p>
+<p style="font-size:12px;color:var(--accent)">Lien valable 30 minutes</p>
+</div></div></div>
 
 <!-- ── MODAL FACTURE ── -->
 <div class="modal-overlay" id="modal-facture">
@@ -756,11 +772,7 @@ function expandParent(page){
   if(body&&head){body.classList.remove('collapsed');head.classList.add('open')}
 }
 
-async function api(url,opts={}){
-  const r=await fetch(API+url,opts);
-  const data=await r.json();
-  if(!r.ok)throw new Error(data.error||r.statusText);
-  return data;
+async async function api(url,methodOrOpts,body,opts){ var reqOpts={},textMode=false; if(typeof methodOrOpts==='object'){ reqOpts=methodOrOpts; if(reqOpts.responseType==='text'){textMode=true;delete reqOpts.responseType;} if(reqOpts.body&&typeof reqOpts.body!=='string'){reqOpts.body=JSON.stringify(reqOpts.body);reqOpts.headers=reqOpts.headers||{};reqOpts.headers['Content-Type']='application/json';} } else if(typeof methodOrOpts==='string'){ reqOpts.method=methodOrOpts; if(body){reqOpts.body=JSON.stringify(body);reqOpts.headers={'Content-Type':'application/json'};} } if(opts&&opts.responseType==='text')textMode=true; var r=await fetch(API+url,reqOpts); if(textMode){ if(!r.ok)throw new Error(r.statusText); return r.text(); } var data=await r.json(); if(!r.ok)throw new Error(data.error||r.statusText); return data;
 }
 
 function toast(msg,type='success'){
@@ -2893,6 +2905,118 @@ function newSociete(){
 function switchSociete(db){
   api('/api/societes/switch?db='+encodeURIComponent(db)).then(function(r){toast('Basculement vers : '+db);closeModal('societes-modal');setTimeout(function(){location.reload()},500);}).catch(function(e){toast(e.message,'error')});
 }
+
+// ═══ QR CODE MOBILE BRIDGE ═══
+function showQRCode(){
+  api('/api/qrcode',{responseType:'text'}).then(function(svg){
+    document.getElementById('qr-code').innerHTML=svg;
+    openModal('modal-qr');
+  }).catch(function(e){toast('Erreur QR: '+e.message,'error')});
+}
+
+// ═══ PIECES JOINTES ═══
+var pjState={page:0,limit:50,categorie:null};
+
+function loadPJ(){
+  var c=document.getElementById('pj-content');
+  c.innerHTML='<div class="empty"><div class="spinner"></div> Chargement...</div>';
+  var q='limit='+pjState.limit+'&offset='+(pjState.page*pjState.limit);
+  if(pjState.categorie)q+='&categorie='+encodeURIComponent(pjState.categorie);
+  api('/api/pj?'+q).then(function(r){
+    var cats=['ticket','facture_fournisseur','justificatif','note_frais','autre'];
+    var catNames={ticket:'Tickets de caisse',facture_fournisseur:'Factures fournisseur',justificatif:'Justificatifs',note_frais:'Notes de frais',autre:'Autres'};
+    var h='<div class="card"><div class="card-header"><h2>📱 Pieces jointes</h2><div style="display:flex;gap:8px">';
+    h+='<button class="btn btn-sm btn-outline" onclick="showQRCode()">📱 Scanner</button>';
+    h+='<button class="btn btn-sm" onclick="loadPJ()">🔄 Rafraichir</button></div></div>';
+    h+='<div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">';
+    h+='<button class="btn btn-sm '+(pjState.categorie?'btn-outline':'')+'" onclick="pjSetCat(null)">Tous</button>';
+    cats.forEach(function(cat){h+='<button class="btn btn-sm '+(pjState.categorie===cat?'':'btn-outline')+'" onclick="pjSetCat(\''+cat+'\')">'+catNames[cat]+'</button>';});
+    h+='</div>';
+    h+='<div style="font-size:12px;color:var(--muted);margin-bottom:12px">'+r.total+' piece(s)</div>';
+    if(r.items.length===0){h+='<div class="empty">Aucune piece jointe. Cliquez 📱 Scanner pour commencer.</div>';}
+    else{
+      h+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">';
+      r.items.forEach(function(p){
+        h+='<div class="card" style="padding:12px;margin:0;cursor:pointer" onclick="showPJDetail('+p.id+')">';
+        h+='<div style="display:flex;align-items:center;gap:10px">';
+        h+='<div style="width:48px;height:48px;background:#f0f2f5;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px">🖼️</div>';
+        h+='<div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(p.nom)+'</div>';
+        h+='<div style="font-size:11px;color:var(--muted)">'+esc(p.date_prise||'')+' · '+(p.taille/1024).toFixed(0)+' KB</div>';
+        h+='<div style="margin-top:2px"><span class="badge badge-neutral">'+esc(p.categorie)+'</span>';
+        if(p.tags)h+=' <span class="badge badge-info">'+esc(p.tags)+'</span>';
+        h+='</div></div></div></div>';
+      });
+      h+='</div>';
+      if(r.total>pjState.limit){
+        var pages=Math.ceil(r.total/pjState.limit);
+        h+='<div class="pagination" style="margin-top:16px">';
+        for(var i=0;i<pages;i++)h+='<button class="'+(i===pjState.page?'active':'')+'" onclick="pjPage('+i+')">'+(i+1)+'</button>';
+        h+='</div>';
+      }
+    }
+    h+='</div>';
+    c.innerHTML=h;
+  }).catch(function(e){c.innerHTML='<div class="empty">Erreur: '+e.message+'</div>';});
+}
+
+function pjSetCat(cat){
+  pjState.categorie=cat;
+  pjState.page=0;
+  loadPJ();
+}
+
+function pjPage(n){
+  pjState.page=n;
+  loadPJ();
+}
+
+function showPJDetail(id){
+  api('/api/pj/'+id).then(function(p){
+    var h='<div class="modal-header"><h3>'+esc(p.nom)+'</h3><button class="btn-ghost" onclick="closeModal(\'modal-pj-detail\')" style="font-size:18px">&times;</button></div>';
+    h+='<div class="modal-body" style="text-align:center">';
+    if(p.has_fichier)h+='<img src="/api/pj/fichier?id='+p.id+'" style="max-width:100%;max-height:60vh;border-radius:8px">';
+    h+='<div style="margin-top:12px;font-size:13px;color:var(--muted)">'+esc(p.date_prise||'')+' · '+esc(p.categorie)+' · '+(p.taille/1024).toFixed(0)+' KB</div>';
+    h+='<div style="margin-top:8px;display:flex;gap:8px;justify-content:center">';
+    h+='<button class="btn btn-sm btn-outline" onclick="pjLink('+p.id+')">🔗 Lier a une ecriture</button>';
+    h+='<button class="btn btn-sm btn-warn" onclick="pjDelete('+p.id+')">🗑️ Supprimer</button>';
+    h+='</div></div>';
+    var m=document.createElement('div');
+    m.className='modal-overlay show';
+    m.id='modal-pj-detail';
+    m.innerHTML='<div class="modal" style="max-width:700px">'+h+'</div>';
+    m.onclick=function(e){if(e.target===m){m.remove()}};
+    document.body.appendChild(m);
+  }).catch(function(e){toast('Erreur: '+e.message,'error')});
+}
+
+function pjLink(id){
+  var eid=prompt('ID de l\'ecriture ? (laisser vide pour annuler)');
+  if(!eid)return;
+  api('/api/pj/lier','POST',{id:id,ecriture_id:parseInt(eid)}).then(function(){
+    toast('Piece liee a l\'ecriture #'+eid);
+    var m=document.getElementById('modal-pj-detail');
+    if(m)m.remove();
+    loadPJ();
+  }).catch(function(e){toast(e.message,'error')});
+}
+
+function pjDelete(id){
+  if(!confirm('Supprimer cette piece ?'))return;
+  api('/api/pj/supprimer','POST',{id:id}).then(function(){
+    toast('Piece supprimee');
+    var m=document.getElementById('modal-pj-detail');
+    if(m)m.remove();
+    loadPJ();
+  }).catch(function(e){toast(e.message,'error')});
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var origNavigate=navigate;
+  navigate=function(page){
+    origNavigate(page);
+    if(page==='pj'){setTimeout(loadPJ,50);}
+  };
+});
 </script>
 </body>
 </html>

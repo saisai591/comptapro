@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ComptaPro — Scanner</title>
+<link rel="manifest" href="data:application/json,{}">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh}
+.header{background:#1a1a2e;color:#fff;padding:16px;text-align:center;font-size:18px;font-weight:700}
+.header .sub{font-size:12px;opacity:.7;margin-top:4px}
+.container{padding:16px;max-width:500px;margin:0 auto}
+.capture-area{background:#fff;border-radius:12px;padding:24px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.1);margin-bottom:16px}
+.capture-btn{display:inline-block;background:#2563eb;color:#fff;border:none;border-radius:50%;width:72px;height:72px;font-size:32px;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,.4);transition:transform .15s}
+.capture-btn:active{transform:scale(.92)}
+.capture-label{font-size:14px;color:#6b7280;margin-top:12px}
+.preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin:16px 0}
+.preview-item{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.preview-item img{width:100%;height:100%;object-fit:cover}
+.preview-item .rm{position:absolute;top:4px;right:4px;background:rgba(239,68,68,.9);color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:14px;line-height:24px;cursor:pointer}
+.actions{display:flex;gap:8px;margin-top:16px}
+.btn{flex:1;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:background .15s}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-primary:disabled{background:#93c5fd;cursor:not-allowed}
+.btn-outline{background:#fff;color:#2563eb;border:2px solid #2563eb}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:100;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.toast.error{background:#ef4444}
+.count-badge{display:inline-block;background:#2563eb;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.cat-select{margin:12px 0;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;width:100%}
+.info-text{font-size:13px;color:#9ca3af;text-align:center;margin-top:12px}
+.status-bar{text-align:center;font-size:13px;color:#6b7280;margin-top:8px;min-height:20px}
+</style>
+</head>
+<body>
+<div class="header">
+  ComptaPro 📱
+  <div class="sub">Scanner de tickets & justificatifs</div>
+</div>
+<div class="container">
+  <div class="capture-area">
+    <label for="capture">
+      <div class="capture-btn">📷</div>
+      <div class="capture-label">Toucher pour prendre une photo</div>
+    </label>
+    <input type="file" id="capture" accept="image/*" capture="environment" multiple hidden>
+    <div style="margin-top:12px">
+      <select class="cat-select" id="categorie">
+        <option value="ticket">Ticket de caisse</option>
+        <option value="facture_fournisseur">Facture fournisseur</option>
+        <option value="justificatif">Justificatif</option>
+        <option value="note_frais">Note de frais</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="preview" id="preview"></div>
+  
+  <div class="status-bar" id="status"></div>
+
+  <div class="actions">
+    <button class="btn btn-outline" id="clearBtn" disabled>🗑️ Effacer</button>
+    <button class="btn btn-primary" id="uploadBtn" disabled>
+      Envoyer <span class="count-badge" id="countBadge">0</span>
+    </button>
+  </div>
+
+  <div class="info-text">
+    Les photos sont envoyées directement à ComptaPro.<br>
+    Ajoutez cette page à l'écran d'accueil pour un accès rapide.
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const files = [];
+const MAX_SIZE = 10 * 1024 * 1024; // 10 MB per file
+
+document.getElementById('capture').addEventListener('change', function(e) {
+  for (const f of e.target.files) {
+    if (f.size > MAX_SIZE) {
+      showToast(f.name + ' trop volumineux (>10 MB)', 'error');
+      continue;
+    }
+    files.push(f);
+    addPreview(f);
+  }
+  updateUI();
+  this.value = '';
+});
+
+function addPreview(file) {
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    div.innerHTML = '<img src="' + ev.target.result + '"><span class="rm" onclick="removeFile(' + (files.length - 1) + ')">×</span>';
+    div.querySelector('.rm').onclick = function(e) {
+      e.stopPropagation();
+      removeFile(files.indexOf(file));
+    };
+    document.getElementById('preview').appendChild(div);
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeFile(idx) {
+  files.splice(idx, 1);
+  rebuildPreview();
+  updateUI();
+}
+
+function rebuildPreview() {
+  const container = document.getElementById('preview');
+  container.innerHTML = '';
+  files.forEach(function(f, i) {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const div = document.createElement('div');
+      div.className = 'preview-item';
+      div.innerHTML = '<img src="' + ev.target.result + '"><span class="rm">×</span>';
+      div.querySelector('.rm').onclick = function() { removeFile(i); };
+      container.appendChild(div);
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
+function updateUI() {
+  const n = files.length;
+  document.getElementById('countBadge').textContent = n;
+  document.getElementById('uploadBtn').disabled = n === 0;
+  document.getElementById('clearBtn').disabled = n === 0;
+  document.getElementById('status').textContent = n ? n + ' fichier(s) prêt(s)' : '';
+}
+
+document.getElementById('clearBtn').addEventListener('click', function() {
+  files.length = 0;
+  document.getElementById('preview').innerHTML = '';
+  updateUI();
+});
+
+document.getElementById('uploadBtn').addEventListener('click', function() {
+  const btn = this;
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours...';
+  
+  const formData = new FormData();
+  const categorie = document.getElementById('categorie').value;
+  const today = new Date().toISOString().split('T')[0];
+  
+  formData.append('categorie', categorie);
+  formData.append('date_prise', today);
+  files.forEach(function(f) {
+    formData.append('files', f);
+  });
+
+  fetch('/api/pj/upload', { method: 'POST', body: formData })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        showToast(data.uploaded + ' piece(s) envoyee(s) !');
+        files.length = 0;
+        document.getElementById('preview').innerHTML = '';
+        updateUI();
+        btn.textContent = 'Envoyer';
+        btn.disabled = true;
+      } else {
+        showToast('Erreur: ' + (data.error || 'inconnue'), 'error');
+        btn.disabled = false;
+        btn.textContent = 'Envoyer';
+      }
+    })
+    .catch(function(e) {
+      showToast('Erreur reseau: ' + e.message, 'error');
+      btn.disabled = false;
+      btn.textContent = 'Envoyer';
+    });
+});
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type || '') + ' show';
+  clearTimeout(t._t);
+  t._t = setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+</script>
+</body>
+</html>
