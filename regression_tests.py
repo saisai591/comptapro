@@ -98,6 +98,7 @@ def phase1():
 
     # 1.3 Required features (adapted to actual v1.0 codebase)
     features = [
+        ("function esc(", "XSS escape"),
         ("function api(", "API handler"),
         ("function navigate(", "Navigation"),
         ("function loadExercices(", "Exercice loader"),

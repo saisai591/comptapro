@@ -2930,12 +2930,11 @@ function switchSociete(db){
 // ═══════════════════════════════════════════════════
 function showQRCode(){
   var el=document.getElementById('qr-code');
-  el.innerHTML='<div class="empty"><div class="spinner"></div> Generation du QR...</div>';
+  el.innerHTML='<div class="empty"><div class="spinner"></div> Generation...</div>';
   openModal('modal-qr');
   api('/api/qrcode/token').then(function(r){
-    var u='/api/qrcode?data='+encodeURIComponent(r.url);
-    el.innerHTML='<img src="'+u+'" style="max-width:260px;width:100%;border-radius:8px;border:4px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.15)" alt="QR Code"><div style="margin-top:10px;font-size:11px;color:var(--muted);word-break:break-all">'+esc(r.url)+'</div>';
-  }).catch(function(e){el.innerHTML='<div class="empty" style="color:var(--accent)">Erreur: '+e.message+'</div>';});
+    el.innerHTML='<img src="/api/qrcode?data='+encodeURIComponent(r.url)+'" style="max-width:260px;width:100%" alt="QR"><div style="margin-top:8px;font-size:10px;color:var(--muted);word-break:break-all">'+esc(r.url)+'</div>';
+  }).catch(function(e){el.innerHTML='<div class="empty" style="color:var(--accent)">Erreur. Reessayez.<br><small>'+esc(e.message)+'</small></div>';});
 }
 
 // ── Minimal QR Code generator (MIT-style, pure JS) ──
@@ -3030,6 +3029,8 @@ window._comptaLog=function(tag,data){
   window._comptaErrors.push({time:new Date().toISOString(),msg:tag,src:'log',line:0,col:0,stack:data});
   if(window._comptaErrors.length>50)window._comptaErrors.shift();
 };
+
+function esc(s){if(!s)return"";var d=document.createElement("div");d.textContent=s;return d.innerHTML;}
 </script>
 </body>
 </html>
