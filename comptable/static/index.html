@@ -2932,9 +2932,7 @@ function showQRCode(){
   var el=document.getElementById('qr-code');
   el.innerHTML='<div class="empty"><div class="spinner"></div> Generation...</div>';
   openModal('modal-qr');
-  api('/api/qrcode/token').then(function(r){
-    el.innerHTML='<img src="/api/qrcode?data='+encodeURIComponent(r.url)+'" style="max-width:260px;width:100%" alt="QR"><div style="margin-top:8px;font-size:10px;color:var(--muted);word-break:break-all">'+esc(r.url)+'</div>';
-  }).catch(function(e){el.innerHTML='<div class="empty" style="color:var(--accent)">Erreur. Reessayez.<br><small>'+esc(e.message)+'</small></div>';});
+  el.innerHTML='<img src="/api/qrcode" style="max-width:260px;width:100%" alt="QR">';
 }
 
 // ── Minimal QR Code generator (MIT-style, pure JS) ──
